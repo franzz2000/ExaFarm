@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
     
     <body>
         
@@ -11,9 +12,20 @@
             </ui:define>
 
             <ui:define name="content">
-                Contenido principal
+                <h3>Editar datos de usuario</h3>
+                <h:form prependId="false">
+                    <h:panelGrid columns="3">
+                        <h:outputLabel for="nombre" value="First Name:"/>
+                        <h:inputText label="First Name"
+                                     id="nombre" value="#{currentUser.firstName}"
+                                     required="true"/>
+                        <h:message for="fname"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Update" actionListener="#{editUsuarioBacking.updateUsuario}"
+                                     action="myEvents?faces-redirect=true"/>
+                    
+                </h:form>
             </ui:define>
-
         </ui:composition>
         
     </body>
