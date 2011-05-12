@@ -14,11 +14,13 @@
     
     <h:body>
         <div id="top" class="top">
-            <ui:insert name="top">Top
+            <ui:insert name="top">
                 <c:if test="#{loginBacking.usuarioLoggedIn}">
                     <h:form>Bienvenido, #{sessionScope.currentUsuario.UsuarioId}<h:commandButton value="Logout" action="#{loginBacking.performLogout}"/></h:form>
                 </c:if>
-                Esto es una prueba.
+                <c:if test="#{!loginBacking.usuarioLoggedIn}">
+                    <h:outputText value="Usuario no registrado"/>
+                </c:if>
             </ui:insert>
         </div>
         <div>
@@ -30,5 +32,4 @@
             </div>
         </div>
     </h:body>
-    
 </html>
