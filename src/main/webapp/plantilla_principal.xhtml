@@ -3,8 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
-    
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:event type="preRenderView"
+             listener="#{loginBacking.forwardToLoginIfNotLoggedIn(cse)}"/>
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
@@ -15,11 +17,9 @@
     <h:body>
         <div id="top" class="top">
             <ui:insert name="top">
+                <h:graphicImage library="images" name="exafarm_logo.jpg"/>
                 <c:if test="#{loginBacking.usuarioLoggedIn}">
                     <h:form>Bienvenido, #{sessionScope.currentUsuario.UsuarioId}<h:commandButton value="Logout" action="#{loginBacking.performLogout}"/></h:form>
-                </c:if>
-                <c:if test="#{!loginBacking.usuarioLoggedIn}">
-                    <h:outputText value="Usuario no registrado"/>
                 </c:if>
             </ui:insert>
         </div>
