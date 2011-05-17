@@ -2,6 +2,18 @@
 <!DOCTYPE sun-web-app PUBLIC "-//Sun Microsystems, Inc.//DTD GlassFish Application Server 3.0 Servlet 3.0//EN" "http://www.sun.com/software/appserver/dtds/sun-web-app_3_0-0.dtd">
 <sun-web-app error-url="">
   <context-root>/Exafarm-TFC</context-root>
+  <security-role-mapping>
+    <role-name>ADMINISTRADOR</role-name>
+    <group-name>admin</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>COORDINADOR</role-name>
+    <group-name>coord</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>PROFESOR</role-name>
+    <group-name>profe</group-name>
+  </security-role-mapping>
   <class-loader delegate="true"/>
   <jsp-config>
     <property name="keepgenerated" value="true">

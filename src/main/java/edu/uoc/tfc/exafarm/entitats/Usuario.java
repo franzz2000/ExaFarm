@@ -3,13 +3,16 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import java.security.Principal;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -36,7 +39,7 @@ public class Usuario extends AbstractEntity implements Serializable {
     private String grupo;
 
     public Usuario(String usuarioId, String password, String nombre, String apellidos, String email) {
-        this.setUsuarioId(usuarioId);
+        this.setIdUsuario(usuarioId);
         this.setPassword(password);
         this.setNombre(nombre);
         this.setApellidos(apellidos);
@@ -45,12 +48,32 @@ public class Usuario extends AbstractEntity implements Serializable {
 
     public Usuario(){}
 
+    private Principal getLoggedInUser() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        return request.getUserPrincipal();
+    }
+    
+    public boolean isUserNotLogin() {
+        Principal loginUser = getLoggedInUser();
+        if (loginUser == null) {
+            return true;
+        }
+        return false;
+    }
+    
+    public String getLoginUserName() {
+        Principal loginUser = getLoggedInUser();
+        if (loginUser != null) {
+            return loginUser.getName();
+        }
+        return "Not logged in";
+    }
     
     public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setUsuarioId(String idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
