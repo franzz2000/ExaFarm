@@ -23,7 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 @Entity
 @Table (name="usuarios")
 @NamedQueries ({
-    @NamedQuery(name="usuarios.getAll", query="select u from Usuario as u")
+    @NamedQuery(name="usuarios.getAll", query="select u from Usuario as u"),
+    @NamedQuery(name="usuarios.getUsuarioById", query="select u from Usuario as u where u.idUsuario=:id")
 })
 @ManagedBean
 @RequestScoped
@@ -61,6 +62,26 @@ public class Usuario extends AbstractEntity implements Serializable {
         return false;
     }
     
+    public boolean isUsuarioIsAdministrador() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object request = context.getExternalContext().getRequest();
+        boolean result = false;
+        if (request instanceof HttpServletRequest) {
+            result = ((HttpServletRequest)request).isUserInRole("ADMINISTRADOR");
+        }
+        return result;
+    }
+    
+    public boolean isUsuarioIsCoordinador() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object request = context.getExternalContext().getRequest();
+        boolean result = false;
+        if (request instanceof HttpServletRequest) {
+            result = ((HttpServletRequest)request).isUserInRole("COORDINADOR");
+        }
+        return result;
+    }
+
     public String getLoginUserName() {
         Principal loginUser = getLoggedInUser();
         if (loginUser != null) {

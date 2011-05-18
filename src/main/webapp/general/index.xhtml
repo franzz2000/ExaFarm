@@ -8,15 +8,15 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.prime.com.tr/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
+    <f:event type="preRenderView"
+             listener="#{loginBacking.forwardToGroup(cse)}"/>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Página principal de administrador</title>
-    </h:head>
-    <h:body>
-            <h:outputText value="Esta es la página principal del administrador"/>
-            <h:form>
-                <h:commandButton action="#{securityBacking.logout}" value="Logout"/>
-                <h:outputText rendered="#{usuario.usuarioIsAdministrador}" value=" El usuario es administrador y se llama #{usuario.loginUserName}"/>
-            </h:form>
-    </h:body>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <p>
+            TODO write content
+        </p>
+    </body>
 </html>

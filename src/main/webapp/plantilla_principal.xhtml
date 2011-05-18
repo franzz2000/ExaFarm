@@ -4,21 +4,24 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <f:event type="preRenderView"
-             listener="#{loginBacking.forwardToLoginIfNotLoggedIn(cse)}"/>
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    
+
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="/resources/css/default.css" rel="stylesheet" type="text/css" />
-        <link href="/resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
-        <title>Programa ExaFarm - Gestión de exámenes de Farmacología</title>
+        <ui:insert name="title">
+            <title>Programa ExaFarm - Gestión de exámenes de Farmacología</title>
+        </ui:insert>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
     </h:head>
     <h:body>
         <div id="top" class="top">
             <ui:insert name="top">
                 <h:graphicImage library="images" name="exafarm_logo.jpg"/>
-                <c:if test="#{loginBacking.usuarioLoggedIn}">
-                    <h:form>Bienvenido, #{sessionScope.currentUsuario.UsuarioId}<h:commandButton value="Logout" action="#{loginBacking.performLogout}"/></h:form>
+                <c:if test="#{loginBacking.authenticated}">
+                    <h:form>Bienvenido, #{sessionScope.currentUser}<h:commandButton value="Logout" action="#{loginBacking.logout}"/></h:form>
                 </c:if>
             </ui:insert>
         </div>

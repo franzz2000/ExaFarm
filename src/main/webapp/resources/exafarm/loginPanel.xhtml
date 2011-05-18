@@ -1,37 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:cc="http://java.sun.com/jsf/composite">
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
 <head>
 
-<title>Not present in rendered output</title>
+<title>Composite para login</title>
 
 </head>
 
 <body>
 
 <cc:interface>
-    <cc:attribute name="useridLabel" default="Userid:"/>
-    <cc:attribute name="passwordLabel" default="Password"/>
-    <cc:attribute name="loginButtonLabel" default="Login"/>
+    <cc:attribute name="useridLabel" default="Usuario: "/>
+    <cc:attribute name="passwordLabel" default="Clave: "/>
+    <cc:attribute name="loginButtonLabel" default="Entrar"/>
     <cc:attribute name="resetButtonLabel" default="Reset"/>
 </cc:interface>
 
 <cc:implementation>
-    <form method="post" action="j_security_check">
+    <h:form  id="login" onsubmit="document.#{p:component('login')}.action='j_security_check';">
         <h:panelGrid columns="2">
             <h:outputLabel for="j_username" value="#{cc.attrs.useridLabel}"/>
-            <input type="text" name="j_username"/>
+            <p:inputText id="j_username" required="true" tabindex="1"/>
             <h:outputLabel for="j_password" value="#{cc.attrs.passwordLabel}"/>
-            <input type="password" name="j_password"/>
-            
+            <p:password id="j_password" required="true" feedback="false" minLength="0"/>
             <h:outputText value="&nbsp;"/>
             <input type="reset" name="reset" value="#{cc.attrs.resetButtonLabel}"/>
             <input type="submit" name="submit" value="#{cc.attrs.loginButtonLabel}"/>
          </h:panelGrid>
-    </form>
+    </h:form>
 </cc:implementation>
 
 </body>

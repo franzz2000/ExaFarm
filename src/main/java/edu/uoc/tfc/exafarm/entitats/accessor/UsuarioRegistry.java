@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package edu.uoc.tfc.exafarm.entitats.accessor;
 
 import edu.uoc.tfc.exafarm.entitats.Grupo;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,9 +21,9 @@ import javax.persistence.Query;
  */
 @ManagedBean(eager = true)
 @ApplicationScoped
-
 public class UsuarioRegistry extends AbstractEntityAccessor implements Serializable {
 
+// <editor-fold defaultstate="collapsed" desc="Accessing and initializing the instance">
     public static UsuarioRegistry getCurrentInstance() {
         UsuarioRegistry result = null;
         Map<String, Object> appMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
@@ -59,11 +55,25 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
     }
 
     private void populateUsers(EntityManager em) {
-        em.persist(new Usuario("admin", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", "Franz", "Jimeno", "fjimeno@uoc.edu"));
     }
-
+ // </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
     public Usuario getUsuarioByIdUsuario (final String idUsuario) {
         Usuario result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Usuario>() {
+
+                public Usuario execute(EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.getUsuarioById");
+                    query.setParameter("id", idUsuario);
+                    List<Usuario> results = query.getResultList();
+                    return results.get(0);
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
 
@@ -86,7 +96,9 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             }
         });
     }
+//</editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="Reading Grupos instances">
     public void addGrupos(final List<Grupo> toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
@@ -107,4 +119,5 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             }
         });
     }
+//</editor-fold>
 }

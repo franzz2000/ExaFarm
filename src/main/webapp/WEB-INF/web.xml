@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/editUsuario.xhtml</welcome-file>
+        <welcome-file>faces/general/index.xhtml</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>403</error-code>
@@ -31,6 +31,11 @@
             <web-resource-name>Administrador</web-resource-name>
             <description>Tareas de administrador</description>
             <url-pattern>/faces/administrador/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>General</web-resource-name>
+            <description>Distribución según categoría</description>
+            <url-pattern>/faces/general/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -44,6 +49,11 @@
             <description>Tareas de coordinador</description>
             <url-pattern>/faces/coordinador/*</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>General</web-resource-name>
+            <description/>
+            <url-pattern>/faces/general/*</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>COORDINADOR</role-name>
@@ -56,6 +66,11 @@
             <description>Tareas de profesor</description>
             <url-pattern>/faces/profesor/*</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>General</web-resource-name>
+            <description/>
+            <url-pattern>/faces/general/*</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>PROFESOR</role-name>
@@ -66,7 +81,7 @@
         <realm-name>ExaFarmSecurity</realm-name>
         <form-login-config>
             <form-login-page>/faces/login.xhtml</form-login-page>
-            <form-error-page>/faces/LoginError.xhtml</form-error-page>
+            <form-error-page>/faces/loginError.xhtml</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>
