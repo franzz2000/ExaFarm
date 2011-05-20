@@ -5,14 +5,11 @@
 
 package edu.uoc.tfc.exafarm.backing;
 
-import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.security.Principal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
@@ -54,6 +51,24 @@ public class LoginBacking extends AbstractBacking {
                 return "/faces/profesor/principal?faces-redirect=true";
 	}
         
+        
+        public void forwardToGroup(ComponentSystemEvent cse) {
+            Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+            if (!isAuthenticated()) {
+                getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/login?faces-redirect=true");
+            } else {
+                if(((HttpServletRequest)request).isUserInRole("ADMINISTRADOR")) {
+                    getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/administrador/principal?faces-redirect=true");
+                }
+                if(((HttpServletRequest)request).isUserInRole("COORDINADOR")) {
+                    getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/coordinador/principal?faces-redirect=true");
+                }
+                if(((HttpServletRequest)request).isUserInRole("PROFESOR")) {
+                    getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/profesor/principal?faces-redirect=true");
+                }
+            }
+        }
         
  
         /**

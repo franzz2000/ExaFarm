@@ -7,47 +7,59 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.prime.com.tr/ui">
     
-
+<f:view contentType="text/html">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <ui:insert name="title">
-            <title>Programa ExaFarm - Gestión de exámenes de Farmacología</title>
-        </ui:insert>
+        <title><ui:insert name="title">Programa ExaFarm - Gestión de exámenes de Farmacología</ui:insert></title>      
         <h:outputStylesheet library="css" name="default.css"/>
         <h:outputStylesheet library="css" name="cssLayout.css"/>
     </h:head>
     <h:body>
-        <div id="top" class="top">
-            <ui:insert name="top">
-                <h:graphicImage library="images" name="exafarm_logo.jpg"/>
-                <c:if test="#{loginBacking.authenticated}">
-                    <h:form>Bienvenido, #{sessionScope.currentUser}<h:commandButton value="Logout" action="#{loginBacking.logout}"/></h:form>
-                </c:if>
-            </ui:insert>
-        </div>
-        <div>
-            <div id="left">
-                <ui:insert name="left">
-                    <h3>Administrador</h3>
-                    <p>Usuario nuevo</p>
-                    <p>Modificar usuario</p>
-                    <h3>Coordinador</h3>
-                    <p>Nuevo examen</p>
-                    <p>Modificar examen activo</p>
-                    <p>Generar examen</p>
-                    <p>Ver examen</p>
-                    <h3>Profesor</h3>
-                    <p>Principal</p>
-                    <p>Ver preguntas</p>
-                    <p>Añadir pregunta</p>
-                    <p>Ver exámenes</p>
-                    <p>Seleccionar preguntas para examen</p>
-                    <p>Modificar datos personales</p>
+        <p:growl id="growl"/>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="top" height="80" resizable="false" closable="false" collapsible="false">
+                <h:panelGrid columns="2">
+                    <h:graphicImage library="images" name="exafarm_logo.jpg"/>
+                    <h:form style="font-size: 90%;"><h:outputText value=" Bienvenido, #{sessionScope.currentUser} "/><p:commandLink value="(Desconectar)" action="#{loginBacking.logout}" ajax="false"/></h:form>
+                </h:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="bottom" height="30" resizable="false" closable="false" collapsible="false">
+                    <h:outputText value="TFC - ExaFarm - UOC (Francisco José Jimeno Demuth)" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="left" width="180" resizable="true" closable="false" collapsible="true">
+                <h:form>
+                    <p:menu>
+                        <p:submenu label="Administrador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
+                            <p:menuitem value="Administrar usuarios" url="/faces/administrador/administrarUsuarios.xhtml"/>
+                            <p:menuitem value="Administrar temas" url="/faces/administrador/administrarTemas.xhtml"/>
+                            <p:menuitem value="Administrar bloques" url="/faces/administrador/administrarBloques.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="Coordinador">
+                            <p:menuitem value="Nuevo examen" ajax="false"/>
+                            <p:menuitem value="Modificar examen activo" actionListener="#{menuBacking.modificar}" update="message"/>
+                            <p:menuitem value="Generar Examen" actionListener="#{menuBacking.generarExamen}" update="message"/>
+                            <p:menuitem value="Ver examen" actionListener="#{menuBacking.verExamen}" update="message"/>
+                        </p:submenu>
+                        <p:submenu label="Profesor">
+                            <p:menuitem value="Principal" url="http://www.primefaces.org" icon="ui-icon ui-icon-home"/>
+                            <p:menuitem value="Ver Preguntas" url="#{request.contextPath}/touch" icon="ui-icon ui-icon-star"/>
+                            <p:menuitem value="Añadir pregunta" actionListener="#{buttonBean.verExamen}" update="message"/>
+                            <p:menuitem value="Ver exámenes" actionListener="#{buttonBean.verExamen}" update="message"/>
+                            <p:menuitem value="Seleccionar preguntas para examen" actionListener="#{buttonBean.verExamen}" update="message"/>
+                            <p:menuitem value="Modificar datos personales" actionListener="#{buttonBean.verExamen}" update="message"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="content">
+                    Contenido
                 </ui:insert>
-            </div>
-            <div id="content" class="left_content">
-                <ui:insert name="content">Content</ui:insert>
-            </div>
-        </div>
+            </p:layoutUnit>	
+        </p:layout>
     </h:body>
+</f:view>
 </html>

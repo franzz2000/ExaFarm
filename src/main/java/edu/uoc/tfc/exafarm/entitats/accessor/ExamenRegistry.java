@@ -1,7 +1,7 @@
 package edu.uoc.tfc.exafarm.entitats.accessor;
 
-import edu.uoc.tfc.exafarm.entitats.Grupo;
-import edu.uoc.tfc.exafarm.entitats.Usuario;
+import edu.uoc.tfc.exafarm.entitats.Bloque;
+import edu.uoc.tfc.exafarm.entitats.Tema;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -21,13 +21,13 @@ import javax.persistence.Query;
  */
 @ManagedBean(eager = true)
 @ApplicationScoped
-public class UsuarioRegistry extends AbstractEntityAccessor implements Serializable {
+public class ExamenRegistry extends AbstractEntityAccessor implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Accessing and initializing the instance">
-    public static UsuarioRegistry getCurrentInstance() {
-        UsuarioRegistry result = null;
+    public static ExamenRegistry getCurrentInstance() {
+        ExamenRegistry result = null;
         Map<String, Object> appMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-        result = (UsuarioRegistry) appMap.get("usuarioRegistry");
+        result = (ExamenRegistry) appMap.get("usuarioRegistry");
 
         return result;
     }
@@ -39,18 +39,18 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 
                 @Override
                 public void execute(EntityManager em) {
-                    Query query = em.createNamedQuery("usuarios.getAll");
-                    List<Usuario> results = query.getResultList();
+                    Query query = em.createNamedQuery("examenes.getAll");
+                    List<Tema> results = query.getResultList();
                     if(results.isEmpty()) {
                         populateUsers(em);
-                        query = em.createNamedQuery("usuarios.getAll");
+                        query = em.createNamedQuery("examenes.getAll");
                         results = query.getResultList();
                         assert(!results.isEmpty());
                     }
                 }
             });
         } catch (EntityAccessorException ex) {
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -59,25 +59,25 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
  // </editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
-    public Usuario getUsuarioByIdUsuario (final String idUsuario) {
-        Usuario result = null;
+    public Bloque getBloqueById (final String idBloque) {
+        Bloque result = null;
         try {
-            result = doInTransaction(new PersistenceAction<Usuario>() {
+            result = doInTransaction(new PersistenceAction<Bloque>() {
 
-                public Usuario execute(EntityManager em) {
+                public Bloque execute(EntityManager em) {
                     Query query = em.createNamedQuery("usuarios.getUsuarioById");
-                    query.setParameter("id", idUsuario);
-                    List<Usuario> results = query.getResultList();
+                    query.setParameter("id", idBloque);
+                    List<Bloque> results = query.getResultList();
                     return results.get(0);
                 }
             });
         } catch (EntityAccessorException ex) {
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
 
-    public void addUsuario(final Usuario toAdd) throws EntityAccessorException {
+    public void addBloque(final Bloque toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
@@ -87,7 +87,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
         });
     }
 
-    public void updateUsuario(final Usuario toUpdate) throws EntityAccessorException {
+    public void updateBloque(final Bloque toUpdate) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
@@ -96,21 +96,56 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             }
         });
     }
+    
+    public List<Bloque> getBloqueList() {
+        List<Bloque> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Bloque>>() {
+
+                public List<Bloque> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("bloques.getAll");
+                    List<Bloque> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
 //</editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Reading Grupos instances">
-    public void addGrupos(final List<Grupo> toAdd) throws EntityAccessorException {
+// <editor-fold defaultstate="collapsed" desc="Reading Tema instances">
+    public Tema getTemaById (final String idTema) {
+        Tema result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Tema>() {
+
+                public Tema execute(EntityManager em) {
+                    Query query = em.createNamedQuery("temas.getTemaById");
+                    query.setParameter("id", idTema);
+                    List<Tema> results = query.getResultList();
+                    return results.get(0);
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public void addTema(final Tema toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
             public void execute(EntityManager em) {
-                for (Grupo t:toAdd)
-                    em.persist(t);
+                em.merge(toAdd);
             }
         });
     }
 
-    public void updateGrupos(final Grupo toUpdate) throws EntityAccessorException {
+    public void updateTema(final Tema toUpdate) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
@@ -119,5 +154,24 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             }
         });
     }
+    
+    public List<Tema> getTemaList() {
+        List<Tema> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Tema>>() {
+
+                public List<Tema> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("temas.getAll");
+                    List<Tema> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
 //</editor-fold>
+
 }

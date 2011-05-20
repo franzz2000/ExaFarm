@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.prime.com.tr/ui">
     
 <h:head>
-    <title>Facelet Title</title>
+    <title>Programa ExaFarm - Login</title>
     <h:outputStylesheet library="css" name="default.css"/>
     <h:outputStylesheet library="css" name="cssLayout.css"/>
 </h:head>
@@ -16,16 +16,16 @@
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel for="username" value="Usuario"/>
-                <p:inputText id="username" value="#{loginBacking.username}" required="true" tabindex="1"/>
+                <p:inputText id="username" value="#{loginBacking.username}" required="true" tabindex="1" requiredMessage="Es necesario escribir un nombre."/>
                 <p:message for="username"/>
                 <h:outputLabel for="password" value="Clave"/>
-                <p:password id="password" value="#{loginBacking.password}" required="true" feedback="false" minLength="0"/>
-                <p:message for="username"/>
+                <p:password id="password" value="#{loginBacking.password}" required="true" feedback="false" minLength="0" requiredMessage="Es necesario escribir una clave."/>
+                <p:message for="password"/>
                 <h:outputText value="&nbsp;"/>
                 <h:commandButton type="submit" value="Enviar" action="#{loginBacking.authenticate()}"/>
              </h:panelGrid>
         </h:form>
-        <p:messages/>
+        <p:messages globalOnly="true"/>
     </center>
 </h:body>
 </html>

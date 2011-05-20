@@ -70,5 +70,9 @@ public abstract class AbstractBacking {
     public Flash getFlash() {
         return getFacesContext().getExternalContext().getFlash();
     }
+    
+    public void addMessage(String message) {
+        
+    }
 
 }

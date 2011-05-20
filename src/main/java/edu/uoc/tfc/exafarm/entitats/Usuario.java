@@ -1,9 +1,8 @@
-
-
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -11,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 @Entity
 @Table (name="usuarios")
 @NamedQueries ({
-    @NamedQuery(name="usuarios.getAll", query="select u from Usuario as u"),
-    @NamedQuery(name="usuarios.getUsuarioById", query="select u from Usuario as u where u.idUsuario=:id")
+    @NamedQuery(name="usuarios.getAll", query="SELECT u FROM Usuario AS u"),
+    @NamedQuery(name="usuarios.getUsuarioById", query="SELECT u FROM Usuario AS u WHERE u.idUsuario=:id")
 })
 @ManagedBean
 @RequestScoped
@@ -38,6 +38,8 @@ public class Usuario extends AbstractEntity implements Serializable {
     private String apellidos;
     private String email;
     private String grupo;
+    @OneToMany(mappedBy = "usuario")
+    private List<Pregunta> preguntas;
 
     public Usuario(String usuarioId, String password, String nombre, String apellidos, String email) {
         this.setIdUsuario(usuarioId);
@@ -136,6 +138,14 @@ public class Usuario extends AbstractEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Pregunta> getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
     }
 
 

@@ -1,6 +1,5 @@
 package edu.uoc.tfc.exafarm.entitats.accessor;
 
-import edu.uoc.tfc.exafarm.entitats.Grupo;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.io.Serializable;
 import java.util.Collections;
@@ -96,28 +95,24 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             }
         });
     }
-//</editor-fold>
+    
+    public List<Usuario> getUserList() {
+        List<Usuario> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Usuario>>() {
 
-// <editor-fold defaultstate="collapsed" desc="Reading Grupos instances">
-    public void addGrupos(final List<Grupo> toAdd) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
+                public List<Usuario> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.getAll");
+                    List<Usuario> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-            @Override
-            public void execute(EntityManager em) {
-                for (Grupo t:toAdd)
-                    em.persist(t);
-            }
-        });
-    }
-
-    public void updateGrupos(final Grupo toUpdate) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toUpdate);
-            }
-        });
+        return result;
     }
 //</editor-fold>
+
 }
