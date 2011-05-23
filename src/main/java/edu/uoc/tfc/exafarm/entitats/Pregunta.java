@@ -49,11 +49,11 @@ public class Pregunta extends AbstractEntity implements Serializable {
     private List<Examen> examenes;
     
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="id", insertable=false, updatable=false)
     private Usuario usuario;
     
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="id", insertable=false, updatable=false)
     private Tema tema;
     
     @OneToMany(mappedBy="pregunta")
