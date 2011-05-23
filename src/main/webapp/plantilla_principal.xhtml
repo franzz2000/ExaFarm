@@ -32,21 +32,24 @@
                 <h:form>
                     <p:menu>
                         <p:submenu label="Administrador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
+                            <p:menuitem value="Principal" url="/faces/administrador/principal.xhtml"/>
                             <p:menuitem value="Administrar usuarios" url="/faces/administrador/administrarUsuarios.xhtml"/>
                             <p:menuitem value="Administrar temas" url="/faces/administrador/administrarTemas.xhtml"/>
                             <p:menuitem value="Administrar bloques" url="/faces/administrador/administrarBloques.xhtml"/>
                         </p:submenu>
-                        <p:submenu label="Coordinador">
+                        <p:submenu label="Coordinador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <p:menuitem value="Principal" url="/faces/coordinador/principal.xhtml"/>
                             <p:menuitem value="Nuevo examen" ajax="false"/>
                             <p:menuitem value="Modificar examen activo" actionListener="#{menuBacking.modificar}" update="message"/>
                             <p:menuitem value="Generar Examen" actionListener="#{menuBacking.generarExamen}" update="message"/>
                             <p:menuitem value="Ver examen" actionListener="#{menuBacking.verExamen}" update="message"/>
+                            <p:menuitem value="Ver preguntas" url="/faces/coordinador/administrarPreguntas.xhtml"/>
                         </p:submenu>
                         <p:submenu label="Profesor">
-                            <p:menuitem value="Principal" url="http://www.primefaces.org" icon="ui-icon ui-icon-home"/>
+                            <p:menuitem value="Principal" url="/faces/profesor/principal.xhtml"/>
                             <p:menuitem value="Ver Preguntas" url="#{request.contextPath}/touch" icon="ui-icon ui-icon-star"/>
-                            <p:menuitem value="Añadir pregunta" actionListener="#{buttonBean.verExamen}" update="message"/>
-                            <p:menuitem value="Ver exámenes" actionListener="#{buttonBean.verExamen}" update="message"/>
+                            <p:menuitem value="Añadir pregunta" actionListener="#{buttonBean.verExamen}" update="growl"/>
+                            <p:menuitem value="Ver exámenes" actionListener="#{buttonBean.verExamen}" update="growl"/>
                             <p:menuitem value="Seleccionar preguntas para examen" actionListener="#{buttonBean.verExamen}" update="message"/>
                             <p:menuitem value="Modificar datos personales" actionListener="#{buttonBean.verExamen}" update="message"/>
                         </p:submenu>

@@ -2,7 +2,6 @@ package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
-import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -29,12 +28,12 @@ public class administraTemasBacking extends AbstractBacking {
         return lista;
     }
 
-    public Tema getSelectedUser() {
+    public Tema getSelectedTema() {
         return selectedTema;
     }
 
-    public void setSelectedUser(Tema selectedUser) {
-        this.selectedTema = selectedUser;
+    public void setSelectedTema(Tema selectedTema) {
+        this.selectedTema = selectedTema;
     }
     
     public boolean isPaginator() {

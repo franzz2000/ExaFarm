@@ -48,12 +48,12 @@ public class Pregunta extends AbstractEntity implements Serializable {
     @ManyToMany(mappedBy="preguntasList")
     private List<Examen> examenes;
     
-    @JoinColumn(name="FK_usuario")
     @ManyToOne
+    @JoinColumn(name="id")
     private Usuario usuario;
     
-    @JoinColumn(name="FK_tema")
     @ManyToOne
+    @JoinColumn(name="id")
     private Tema tema;
     
     @OneToMany(mappedBy="pregunta")

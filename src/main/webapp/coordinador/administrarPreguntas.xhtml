@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantilla_principal.xhtml">
+
+            <ui:define name="title">ExaFarm - Administrar Preguntas</ui:define>
+
+            <ui:define name="content">
+                <h:form prependId="false">
+                    <p:dataTable var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="#{administraPreguntasBacking.paginator}" rows="10" emptyMessage="No existen preguntas.">
+                        <f:facet name="header">
+                            Listado de Preguntas
+                        </f:facet>
+                        <p:column style="width: 16px">
+                            <p:rowToggler/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Pregunta
+                            </f:facet>
+                            <h:outputText value="#{pregunta.texto}"/>
+                        </p:column>
+                        <p:column style="width:32px;">
+                            <f:facet name="header">
+                                Modificar
+                            </f:facet>
+                            <p:commandButton oncomplete="userDialog.show()" image="ui-icon ui-icon-search">
+                                <f:setPropertyActionListener target="#{administraUsuariosBacking.selectedUser}" value="#{user}"/>
+                            </p:commandButton>                            
+                        </p:column>
+                        <p:rowExpansion>
+                            <p:column>
+                                <f:facet name="header">
+                                    Respuesta1
+                                </f:facet>
+                                <h:outputText value="#{pregunta.tema.descripcion}"/>
+                            </p:column>
+                        </p:rowExpansion>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog header="Pregunta" widgetVar="preguntaDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Nombre:"/>
+                            <p:inputText id="nombre"
+                                         value="#{administraPreguntasBacking.selectedPregunta.texto}"
+                                         required="true"/>
+                        </h:panelGrid>
+                        <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" ajax="false"/></center>
+                    </h:form>
+                </p:dialog>
+                
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

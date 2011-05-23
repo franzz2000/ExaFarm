@@ -24,7 +24,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     @Basic(optional = false)
     @NotNull
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id", nullable=false)
     protected Long id;
 
     @Override

@@ -61,6 +61,7 @@
         <auth-constraint>
             <description/>
             <role-name>COORDINADOR</role-name>
+            <role-name>ADMINISTRADOR</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -78,6 +79,8 @@
         <auth-constraint>
             <description/>
             <role-name>PROFESOR</role-name>
+            <role-name>ADMINISTRADOR</role-name>
+            <role-name>COORDINADOR</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
