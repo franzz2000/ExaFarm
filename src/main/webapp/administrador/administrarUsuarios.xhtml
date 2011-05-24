@@ -12,37 +12,95 @@
 
         <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
         <ui:define name="content">
-        
             <p:accordionPanel autoHeight="false">    
             <p:tab title="Modificar usuario">
                 <h:form>
-                    <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios.">
+                    <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios."
+                                 rowEditListener="#{administraUsuariosBacking.modifica}"
+                                 onRowEditUpdate="growl">
                         <f:facet name="header">
                             Listado de Usuarios
                         </f:facet>
-                        <p:column>
-                            <f:facet name="header">
-                                Id de usuario
-                            </f:facet>
-                            <h:outputText value="#{user.idUsuario}" style="#{user.isActivo?'':'color: red'}"/>
+                        <p:column headerText="Id de usuario" style="width: 20px;">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.idUsuario}" style="#{user.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{user.idUsuario}"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column sortBy="#{user.nombre}">
-                            <f:facet name="header">
-                                Nombre
-                            </f:facet>
-                            <h:outputText value="#{user.nombre}" style="#{user.isActivo?'':'color: red'}"/>
+                        
+                        <p:column headerText="Nombre" sortBy="#{user.nombre}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.nombre}" style="#{user.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{user.nombre}"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column sortBy="#{user.apellidos}">
-                            <f:facet name="header">
-                                Apellidos
-                            </f:facet>
-                            <h:outputText value="#{user.apellidos}" style="#{user.isActivo?'':'color: red'}"/>
+                        
+                        <p:column headerText="Apellidos" sortBy="#{user.apellidos}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.apellidos}" style="#{user.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{user.apellidos}"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Activo
-                            </f:facet>
-                            <h:outputText value="#{user.isActivo?'Sí':'No'}"/>
+                        
+                        <p:column headerText="Email">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.email}" style="#{user.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{user.email}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Clave">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="&nbsp;"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:password value="#{user.password}" feedback="false" minLength="0"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Activo">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.isActivo?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{user.isActivo}"/>
+                                </f:facet>
+                            </p:cellEditor>                            
+                        </p:column>
+                        
+                        <p:column headerText="Grupo">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{user.grupo}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{user.grupo}" >  
+                                        <f:selectItems value="#{administraUsuariosBacking.listaGrupo}"  
+                                            var="grupo"   
+                                            itemLabel="#{grupo.descripcion}"  
+                                            itemValue="#{grupo.idGrupo}" />  
+                                    </h:selectOneMenu> 
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -50,43 +108,12 @@
                             </f:facet>
                             <h:outputText value="#{user.preguntas.size()}"/>
                         </p:column>
-                        <p:column style="width:32px;">
-                            <f:facet name="header">
-                                Modificar
-                            </f:facet>
-                            <p:commandButton update="display" oncomplete="userDialog.show()" image="ui-icon ui-icon-search">
-                                <f:setPropertyActionListener target="#{administraUsuariosBacking.selectedUser}" value="#{user}"/>
-                            </p:commandButton>                            
+                        
+                        <p:column headerText="Opciones">
+                            <p:rowEditor/>
                         </p:column>
                     </p:dataTable>
-                    <p:dialog header="Usuario" widgetVar="userDialog" resizable="false" width="500" showEffect="clip" hideEffect="fold">
-                        <h:panelGrid id="display" columns="4">
-                            <h:outputText value="Id:" rendered="false"/>
-                            <p:inputText value="#{administraUsuariosBacking.selectedUser.id}" rendered="false"/>
-                            <h:outputText value="IdUsuario:"/>
-                            <p:inputText value="#{administraUsuariosBacking.selectedUser.idUsuario}"/>
-                            <h:outputText value="Nombre:"/>
-                            <p:inputText id="nombre"
-                                         value="#{administraUsuariosBacking.selectedUser.nombre}"
-                                         required="true"/>
-                            <h:outputText value="Apellidos:"/>
-                            <p:inputText id="apellidos"
-                                         value="#{administraUsuariosBacking.selectedUser.apellidos}"
-                                         required="true"/>
-                            <h:outputText value="Email:"/>
-                            <p:inputText id="email"
-                                         value="#{administraUsuariosBacking.selectedUser.email}"
-                                         required="true"/>
-                            <h:outputText value="Activo:"/>
-                            <h:selectBooleanCheckbox value="#{administraUsuariosBacking.selectedUser.isActivo}"/>
-                            <h:outputText value="Clave:"/>
-                            <p:password value="#{administraUsuariosBacking.selectedUser.password}" feedback="false" minLength="0"/>
-                            <h:outputText value="Grupo:"/>
-                            <p:inputText value="#{administraUsuariosBacking.selectedUser.grupo}"/>
-                        </h:panelGrid>
-                    <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" update="form:tabla" ajax="false"/></center>
-                </p:dialog>
-                    </h:form>
+                </h:form>
             </p:tab>
             <p:tab title="Añadir usuario nuevo">
                 <h:form>

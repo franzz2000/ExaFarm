@@ -1,5 +1,6 @@
 package edu.uoc.tfc.exafarm.entitats.accessor;
 
+import edu.uoc.tfc.exafarm.entitats.Grupo;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.io.Serializable;
 import java.util.Collections;
@@ -115,4 +116,21 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
     }
 //</editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
+    public List<Grupo> getGrupoList() {
+        List<Grupo> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
+                public List<Grupo> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("grupos.findAll");
+                    List<Grupo> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+//</editor-fold>
 }

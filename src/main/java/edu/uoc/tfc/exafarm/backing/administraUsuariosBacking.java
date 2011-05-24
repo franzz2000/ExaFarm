@@ -1,5 +1,6 @@
 package edu.uoc.tfc.exafarm.backing;
 
+import edu.uoc.tfc.exafarm.entitats.Grupo;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -17,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 public class administraUsuariosBacking extends AbstractBacking {
     List <Usuario> lista;
+    List <Grupo> listaGrupo;
     
     Usuario selectedUser;
     Usuario newUsuario;
@@ -25,8 +28,12 @@ public class administraUsuariosBacking extends AbstractBacking {
     public administraUsuariosBacking() {
         lista = new ArrayList<Usuario>();
         lista = UsuarioRegistry.getCurrentInstance().getUserList();
+        listaGrupo = UsuarioRegistry.getCurrentInstance().getGrupoList();
         selectedUser = new Usuario();
     }
+    
+    
+    
 
     public List<Usuario> getLista() {
         return lista;
@@ -34,6 +41,10 @@ public class administraUsuariosBacking extends AbstractBacking {
     
     public void setLista(List<Usuario> lista) {
         this.lista = lista;
+    }
+    
+    public List<Grupo> getListaGrupo(){
+        return listaGrupo;
     }
     
     public Usuario getSelectedUser() {
@@ -56,9 +67,11 @@ public class administraUsuariosBacking extends AbstractBacking {
         this.newUsuario = newUsuario;
     }
     
-    public void modifica() {
+    public void modifica(RowEditEvent ev) {
+        Usuario obj = null;
         try {
-            UsuarioRegistry.getCurrentInstance().updateUsuario(selectedUser);
+            obj = (Usuario) ev.getObject();
+            UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
         } catch (EntityAccessorException ex) {
             addMessage("Error al actualizar el usuario.");
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
