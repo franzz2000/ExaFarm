@@ -1,6 +1,7 @@
 package edu.uoc.tfc.exafarm.entitats.accessor;
 
 import edu.uoc.tfc.exafarm.entitats.Bloque;
+import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
 import java.io.Serializable;
@@ -175,14 +176,14 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
     }
 //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Reading Preguntas instances">
+// <editor-fold defaultstate="collapsed" desc="Reading Preguntas instances">
     public Pregunta getPreguntaById (final String idPregunta) {
         Pregunta result = null;
         try {
             result = doInTransaction(new PersistenceAction<Pregunta>() {
 
                 public Pregunta execute(EntityManager em) {
-                    Query query = em.createNamedQuery("preguntass.getPreguntaById");
+                    Query query = em.createNamedQuery("preguntas.getPreguntaById");
                     query.setParameter("id", idPregunta);
                     List<Pregunta> results = query.getResultList();
                     return results.get(0);
@@ -223,6 +224,65 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
                 public List<Pregunta> execute(EntityManager em) {
                     Query query = em.createNamedQuery("preguntas.findAll");
                     List<Pregunta> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+//</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Reading Exámenes instances">
+    public Examen getExamenById (final String idExamen) {
+        Examen result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Examen>() {
+
+                public Examen execute(EntityManager em) {
+                    Query query = em.createNamedQuery("examenes.getExamenById");
+                    query.setParameter("id", idExamen);
+                    List<Examen> results = query.getResultList();
+                    return results.get(0);
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    public void addExamen(final Examen toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toAdd);
+            }
+        });
+    }
+
+    public void updateExamen(final Examen toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+    
+    public List<Examen> getExamenList() {
+        List<Examen> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Examen>>() {
+
+                @Override
+                public List<Examen> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("examenes.findAll");
+                    List<Examen> results = query.getResultList();
                     return results;
                 }
             });

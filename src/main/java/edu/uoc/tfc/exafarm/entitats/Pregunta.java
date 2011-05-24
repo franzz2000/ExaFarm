@@ -29,11 +29,12 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "preguntas.findAll", query = "SELECT p FROM Pregunta p"),
     @NamedQuery(name = "preguntas.findById", query = "SELECT p FROM Pregunta p WHERE p.id = :id")
 })
+
 public class Pregunta extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Column(name="is_activa")
-    private Short isActiva;
+    private Boolean isActiva;
     
     @Column(name="fecha_creacion")
     @Temporal(TemporalType.DATE) 
@@ -43,21 +44,21 @@ public class Pregunta extends AbstractEntity implements Serializable {
     private String texto;
     
     @Column(name="is_corta")
-    private Short isCorta;
+    private Boolean isCorta;
     
     @ManyToMany(mappedBy="preguntasList")
     private List<Examen> examenes;
     
     @ManyToOne
-    @JoinColumn(name="id", insertable=false, updatable=false)
+    @JoinColumn(name="id_usuario", insertable=false, updatable=false)
     private Usuario usuario;
     
     @ManyToOne
-    @JoinColumn(name="id", insertable=false, updatable=false)
+    @JoinColumn(name="id_tema", insertable=false, updatable=false)
     private Tema tema;
     
     @OneToMany(mappedBy="pregunta")
-    private List<Respuesta> respuestasList;
+    private List<Respuesta> respuestas;
 
     public List<Examen> getExamenes() {
         return examenes;
@@ -75,28 +76,28 @@ public class Pregunta extends AbstractEntity implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Short getIsActiva() {
+    public Boolean getIsActiva() {
         return isActiva;
     }
 
-    public void setIsActiva(Short isActiva) {
+    public void setIsActiva(Boolean isActiva) {
         this.isActiva = isActiva;
     }
 
-    public Short getIsCorta() {
+    public Boolean getIsCorta() {
         return isCorta;
     }
 
-    public void setIsCorta(Short isCorta) {
+    public void setIsCorta(Boolean isCorta) {
         this.isCorta = isCorta;
     }
 
-    public List<Respuesta> getRespuestasList() {
-        return respuestasList;
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
     }
 
-    public void setRespuestasList(List<Respuesta> respuestasList) {
-        this.respuestasList = respuestasList;
+    public void setRespuestas(List<Respuesta> respuestasList) {
+        this.respuestas = respuestasList;
     }
 
     public Tema getTema() {
@@ -134,7 +135,7 @@ public class Pregunta extends AbstractEntity implements Serializable {
         hash += (isCorta != null ? isCorta.hashCode() : 0);
         hash += (usuario != null ? usuario.hashCode() : 0);
         hash += (tema != null ? tema.hashCode() : 0);
-        hash += (respuestasList != null ? respuestasList.hashCode() : 0);
+        hash += (respuestas != null ? respuestas.hashCode() : 0);
         return hash;
     }
 

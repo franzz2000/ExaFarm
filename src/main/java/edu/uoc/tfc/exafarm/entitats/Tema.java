@@ -30,6 +30,8 @@ public class Tema extends AbstractEntity implements Serializable {
     private String descripcion;
     @Column(name="descripcion_corta")
     private String descripcionCorta;
+    @Column(name="is_activo")
+    private Boolean isActivo;
     @JoinColumn(name="id_bloque", referencedColumnName = "id")
     @ManyToOne
     private Bloque bloque;
@@ -50,12 +52,20 @@ public class Tema extends AbstractEntity implements Serializable {
         this.descripcionCorta = descripcionCorta;
     }
 
-    public Bloque getBloques() {
+    public Bloque getBloque() {
         return bloque;
     }
 
-    public void setBloques(Bloque bloque) {
+    public void setBloque(Bloque bloque) {
         this.bloque = bloque;
+    }
+
+    public Boolean getIsActivo() {
+        return isActivo;
+    }
+
+    public void setIsActivo(Boolean isActivo) {
+        this.isActivo = isActivo;
     }
     
     @Override

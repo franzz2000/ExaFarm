@@ -102,7 +102,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
             result = doInTransaction(new PersistenceAction<List<Usuario>>() {
 
                 public List<Usuario> execute(EntityManager em) {
-                    Query query = em.createNamedQuery("usuarios.getAll");
+                    Query query = em.createNamedQuery("usuarios.findAll");
                     List<Usuario> results = query.getResultList();
                     return results;
                 }

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Entity
 @Table (name="usuarios")
 @NamedQueries ({
-    @NamedQuery(name="usuarios.getAll", query="SELECT u FROM Usuario AS u"),
+    @NamedQuery(name="usuarios.findAll", query="SELECT u FROM Usuario AS u"),
     @NamedQuery(name="usuarios.getUsuarioById", query="SELECT u FROM Usuario AS u WHERE u.idUsuario=:id")
 })
 @ManagedBean
@@ -38,6 +38,8 @@ public class Usuario extends AbstractEntity implements Serializable {
     private String apellidos;
     private String email;
     private String grupo;
+    @Column(name="is_activo")
+    private Boolean isActivo;
     @OneToMany(mappedBy = "usuario")
     private List<Pregunta> preguntas;
 
@@ -148,6 +150,13 @@ public class Usuario extends AbstractEntity implements Serializable {
         this.preguntas = preguntas;
     }
 
+    public Boolean getIsActivo() {
+        return isActivo;
+    }
+
+    public void setIsActivo(Boolean isActivo) {
+        this.isActivo = isActivo;
+    }
 
     @Override
     public int hashCode() {

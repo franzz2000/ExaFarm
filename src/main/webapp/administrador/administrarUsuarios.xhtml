@@ -22,19 +22,25 @@
                             <f:facet name="header">
                                 Id de usuario
                             </f:facet>
-                            <h:outputText value="#{user.idUsuario}"/>
+                            <h:outputText value="#{user.idUsuario}" style="#{user.isActivo?'':'color: red'}"/>
                         </p:column>
                         <p:column sortBy="#{user.nombre}">
                             <f:facet name="header">
                                 Nombre
                             </f:facet>
-                            <h:outputText value="#{user.nombre}"/>
+                            <h:outputText value="#{user.nombre}" style="#{user.isActivo?'':'color: red'}"/>
                         </p:column>
                         <p:column sortBy="#{user.apellidos}">
                             <f:facet name="header">
                                 Apellidos
                             </f:facet>
-                            <h:outputText value="#{user.apellidos}"/>
+                            <h:outputText value="#{user.apellidos}" style="#{user.isActivo?'':'color: red'}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Activo
+                            </f:facet>
+                            <h:outputText value="#{user.isActivo?'Sí':'No'}"/>
                         </p:column>
                         <p:column style="width:32px;">
                             <f:facet name="header">

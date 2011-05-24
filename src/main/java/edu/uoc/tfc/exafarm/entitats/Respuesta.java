@@ -33,17 +33,17 @@ public class Respuesta extends AbstractEntity implements Serializable {
     private String texto;
     
     @Column(name="is_correcta")
-    private Short isCorrecta;
+    private Boolean isCorrecta;
     
     @JoinColumn(name = "id_pregunta", referencedColumnName = "id")
     @ManyToOne
     private Pregunta pregunta;
 
-    public Short getIsCorrecta() {
+    public Boolean getIsCorrecta() {
         return isCorrecta;
     }
 
-    public void setIsCorrecta(Short isCorrecta) {
+    public void setIsCorrecta(Boolean isCorrecta) {
         this.isCorrecta = isCorrecta;
     }
 

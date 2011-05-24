@@ -5,6 +5,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,6 +25,8 @@ public class Bloque extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private String descripcion;
+    @Column(name="is_activo")
+    private Boolean isActivo;
 
     public String getDescripcion() {
         return descripcion;
@@ -33,11 +36,19 @@ public class Bloque extends AbstractEntity implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Boolean getIsActivo() {
+        return isActivo;
+    }
+
+    public void setIsActivo(Boolean isActivo) {
+        this.isActivo = isActivo;
+    }
     
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (descripcion != null ? descripcion.hashCode() : 0);
+        hash += (isActivo != null ? isActivo.hashCode():0);
         return hash;
     }
 

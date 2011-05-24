@@ -14,7 +14,7 @@
 
             <ui:define name="content">
                 <h:form prependId="false">
-                    <p:dataTable var="tema" value="#{administraTemasBacking.lista}" paginator="#{administraTemasBacking.paginator}" rows="10" emptyMessage="No existen usuarios.">
+                    <p:dataTable var="tema" value="#{administraTemasBacking.lista}" paginator="#{administraTemasBacking.paginator}" rows="10" emptyMessage="No existen temas.">
                         <f:facet name="header">
                             Listado de Temas
                         </f:facet>
@@ -22,13 +22,19 @@
                             <f:facet name="header">
                                 Descripción corta
                             </f:facet>
-                            <h:outputText value="#{tema.descripcionCorta}"/>
+                            <h:outputText value="#{tema.descripcionCorta}" style="#{tema.isActivo?'':'color: red'}"/>
                         </p:column>
                         <p:column sortBy="#{tema.descripcion}">
                             <f:facet name="header">
                                 Descripción
                             </f:facet>
-                            <h:outputText value="#{tema.descripcion}"/>
+                            <h:outputText value="#{tema.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
+                        </p:column>
+                        <p:column sortBy="#{tema.bloque}">
+                            <f:facet name="header">
+                                Bloque
+                            </f:facet>
+                            <h:outputText value="#{tema.bloque}" style="#{tema.isActivo?'':'color: red'}"/>
                         </p:column>
                         <p:column style="width:32px;">
                             <f:facet name="header">

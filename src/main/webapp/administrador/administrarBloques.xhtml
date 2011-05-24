@@ -22,7 +22,13 @@
                             <f:facet name="header">
                                 Descripción
                             </f:facet>
-                            <h:outputText value="#{bloque.descripcion}"/>
+                            <h:outputText value="#{bloque.descripcion}" style="#{bloque.isActivo?'':'color: red'}"/>
+                        </p:column>
+                        <p:column sortBy="#{bloque.isActivo}">
+                            <f:facet name="header">
+                                Activo
+                            </f:facet>
+                            <h:outputText value="#{bloque.isActivo}" style="#{bloque.isActivo?'':'color: red'}"/>
                         </p:column>
                         <p:column style="width:32px;">
                             <f:facet name="header">
