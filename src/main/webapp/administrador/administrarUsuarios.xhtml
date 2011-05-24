@@ -8,13 +8,13 @@
 
     <body>
 
-        <ui:composition template="./../plantilla_principal.xhtml">
+    <ui:composition template="./../plantilla_principal.xhtml">
 
-            <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
+        <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
 
             <ui:define name="content">
                 <h:form prependId="false">
-                    <p:dataTable var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios.">
+                    <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios.">
                         <f:facet name="header">
                             Listado de Usuarios
                         </f:facet>
@@ -42,19 +42,27 @@
                             </f:facet>
                             <h:outputText value="#{user.isActivo?'Sí':'No'}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Núm preguntas
+                            </f:facet>
+                            <h:outputText value="#{user.preguntas.size()}"/>
+                        </p:column>
                         <p:column style="width:32px;">
                             <f:facet name="header">
                                 Modificar
                             </f:facet>
-                            <p:commandButton oncomplete="userDialog.show()" image="ui-icon ui-icon-search">
+                            <p:commandButton update="display" oncomplete="userDialog.show()" image="ui-icon ui-icon-search">
                                 <f:setPropertyActionListener target="#{administraUsuariosBacking.selectedUser}" value="#{user}"/>
                             </p:commandButton>                            
                         </p:column>
                     </p:dataTable>
-                </h:form>
                 <p:dialog header="Usuario" widgetVar="userDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
-                    <h:form>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid id="display" columns="2">
+                            <h:outputText value="Id:"/>
+                            <p:inputText value="#{administraUsuariosBacking.selectedUser.id}"/>
+                            <h:outputText value="IdUsuario:"/>
+                            <p:inputText value="#{administraUsuariosBacking.selectedUser.idUsuario}"/>
                             <h:outputText value="Nombre:"/>
                             <p:inputText id="nombre"
                                          value="#{administraUsuariosBacking.selectedUser.nombre}"
@@ -67,13 +75,17 @@
                             <p:inputText id="email"
                                          value="#{administraUsuariosBacking.selectedUser.email}"
                                          required="true"/>
+                            <h:outputText value="Activo:"/>
+                            <h:selectBooleanCheckbox value="#{administraUsuariosBacking.selectedUser.isActivo}"/>
+                            <h:outputText value="Clave:"/>
+                            <p:password value="#{administraUsuariosBacking.selectedUser.password}" feedback="false" minLength="0"/>
+                            <h:outputText value="Grupo:"/>
+                            <p:inputText value="#{administraUsuariosBacking.selectedUser.grupo}"/>
                         </h:panelGrid>
-                        <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" ajax="false"/></center>
-                    </h:form>
+                    <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" update="form:tabla" ajax="false"/></center>
                 </p:dialog>
-                
-            </ui:define>
-        </ui:composition>
-
+            </h:form>
+        </ui:define>
+    </ui:composition>
     </body>
 </html>

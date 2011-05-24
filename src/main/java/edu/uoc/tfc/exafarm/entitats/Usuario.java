@@ -2,6 +2,7 @@ package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -43,15 +44,24 @@ public class Usuario extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "usuario")
     private List<Pregunta> preguntas;
 
-    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email) {
+    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo) {
         this.setIdUsuario(usuarioId);
         this.setPassword(password);
         this.setNombre(nombre);
         this.setApellidos(apellidos);
         this.setEmail(email);
+        this.setIsActivo(isActivo);
     }
 
-    public Usuario(){}
+    public Usuario(){
+        id=0L;
+        idUsuario = "a";
+        password = "a";
+        nombre = "a";
+        apellidos="a";
+        email="a";
+        isActivo=true;
+    }
 
     private Principal getLoggedInUser() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();

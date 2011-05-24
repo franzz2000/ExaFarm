@@ -1,9 +1,12 @@
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Usuario;
+import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 
 /**
@@ -21,13 +24,17 @@ public class administraUsuariosBacking extends AbstractBacking {
     public administraUsuariosBacking() {
         lista = new ArrayList<Usuario>();
         lista = UsuarioRegistry.getCurrentInstance().getUserList();
-        selectedUser = null;
+        selectedUser = new Usuario();
     }
 
     public List<Usuario> getLista() {
         return lista;
     }
-
+    
+    public void setLista(List<Usuario> lista) {
+        this.lista = lista;
+    }
+    
     public Usuario getSelectedUser() {
         return selectedUser;
     }
@@ -41,6 +48,12 @@ public class administraUsuariosBacking extends AbstractBacking {
     }
     
     public void modifica() {
-        addMessage("oruga");
+        try {
+            UsuarioRegistry.getCurrentInstance().updateUsuario(selectedUser);
+        } catch (EntityAccessorException ex) {
+            addMessage("Error al actualizar el usuario.");
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        addMessage("El usuario se ha modificado correctamente.");
     }
 }

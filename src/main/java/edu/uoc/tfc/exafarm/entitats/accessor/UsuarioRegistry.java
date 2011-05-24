@@ -38,11 +38,11 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 
                 @Override
                 public void execute(EntityManager em) {
-                    Query query = em.createNamedQuery("usuarios.getAll");
+                    Query query = em.createNamedQuery("usuarios.findAll");
                     List<Usuario> results = query.getResultList();
                     if(results.isEmpty()) {
                         populateUsers(em);
-                        query = em.createNamedQuery("usuarios.getAll");
+                        query = em.createNamedQuery("usuarios.findAll");
                         results = query.getResultList();
                         assert(!results.isEmpty());
                     }

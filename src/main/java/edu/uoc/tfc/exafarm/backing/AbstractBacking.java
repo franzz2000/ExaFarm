@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.util.Map;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -72,7 +73,7 @@ public abstract class AbstractBacking {
     }
     
     public void addMessage(String message) {
-        
+        getFacesContext().getCurrentInstance().addMessage(null, new FacesMessage(message));
     }
 
 }
