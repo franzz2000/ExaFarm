@@ -19,6 +19,7 @@ public class administraUsuariosBacking extends AbstractBacking {
     List <Usuario> lista;
     
     Usuario selectedUser;
+    Usuario newUsuario;
 
     /** Creates a new instance of administraUsuarios */
     public administraUsuariosBacking() {
@@ -47,6 +48,14 @@ public class administraUsuariosBacking extends AbstractBacking {
         return lista.size()>10;
     }
     
+    public Usuario getNewUsuario() {
+        return newUsuario;
+    }
+    
+    public void setNewUsuario(Usuario newUsuario){
+        this.newUsuario = newUsuario;
+    }
+    
     public void modifica() {
         try {
             UsuarioRegistry.getCurrentInstance().updateUsuario(selectedUser);
@@ -55,5 +64,14 @@ public class administraUsuariosBacking extends AbstractBacking {
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
         addMessage("El usuario se ha modificado correctamente.");
+    }
+    
+    public void agregaUsuario() {
+        try {
+            UsuarioRegistry.getCurrentInstance().addUsuario(newUsuario);
+        } catch (EntityAccessorException ex) {
+            addMessage("Error al añadir el usuario.");
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

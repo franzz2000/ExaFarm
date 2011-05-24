@@ -11,9 +11,11 @@
     <ui:composition template="./../plantilla_principal.xhtml">
 
         <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
-
-            <ui:define name="content">
-                <h:form prependId="false">
+        <ui:define name="content">
+        
+            <p:accordionPanel autoHeight="false">    
+            <p:tab title="Modificar usuario">
+                <h:form>
                     <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios.">
                         <f:facet name="header">
                             Listado de Usuarios
@@ -57,10 +59,10 @@
                             </p:commandButton>                            
                         </p:column>
                     </p:dataTable>
-                <p:dialog header="Usuario" widgetVar="userDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
-                        <h:panelGrid id="display" columns="2">
-                            <h:outputText value="Id:"/>
-                            <p:inputText value="#{administraUsuariosBacking.selectedUser.id}"/>
+                    <p:dialog header="Usuario" widgetVar="userDialog" resizable="false" width="500" showEffect="clip" hideEffect="fold">
+                        <h:panelGrid id="display" columns="4">
+                            <h:outputText value="Id:" rendered="false"/>
+                            <p:inputText value="#{administraUsuariosBacking.selectedUser.id}" rendered="false"/>
                             <h:outputText value="IdUsuario:"/>
                             <p:inputText value="#{administraUsuariosBacking.selectedUser.idUsuario}"/>
                             <h:outputText value="Nombre:"/>
@@ -84,7 +86,41 @@
                         </h:panelGrid>
                     <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" update="form:tabla" ajax="false"/></center>
                 </p:dialog>
-            </h:form>
+                    </h:form>
+            </p:tab>
+            <p:tab title="Añadir usuario nuevo">
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Id:"/>
+                        <p:inputText value="#{administraUsuariosBacking.newUsuario.id}"/>
+                        <h:outputText value="IdUsuario:"/>
+                        <p:inputText value="#{administraUsuariosBacking.newUsuario.idUsuario}"/>
+                        <h:outputText value="Nombre:"/>
+                        <p:inputText id="nombre"
+                                     value="#{administraUsuariosBacking.newUsuario.nombre}"
+                                     required="true"/>
+                        <h:outputText value="Apellidos:"/>
+                        <p:inputText id="apellidos"
+                                     value="#{administraUsuariosBacking.newUsuario.apellidos}"
+                                     required="true"/>
+                        <h:outputText value="Email:"/>
+                        <p:inputText id="email"
+                                     value="#{administraUsuariosBacking.newUsuario.email}"
+                                     required="true"/>
+                        <h:outputText value="Activo:"/>
+                        <h:selectBooleanCheckbox value="#{administraUsuariosBacking.newUsuario.isActivo}"/>
+                        <h:outputText value="Clave:"/>
+                        <p:password value="#{administraUsuariosBacking.newUsuario.password}" feedback="false" minLength="0"/>
+                        <h:outputText value="Grupo:"/>
+                        <p:inputText value="#{administraUsuariosBacking.newUsuario.grupo}"/>
+                        <h:outputText value="&nbsp;"/>
+                        <p:commandButton value="Añadir" action="#{administraUsuariosBacking.agregaUsuario}" update="growl"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:tab>
+            </p:accordionPanel>
+            
+
         </ui:define>
     </ui:composition>
     </body>
