@@ -3,7 +3,9 @@ package edu.uoc.tfc.exafarm.entitats.accessor;
 import edu.uoc.tfc.exafarm.entitats.Bloque;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
+import edu.uoc.tfc.exafarm.entitats.Respuesta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
+import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -36,38 +38,38 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
     @PostConstruct
     public void perApplicationConstructor() {
-        try {
-            doInTransaction(new PersistenceActionWithoutResult() {
-
-                @Override
-                public void execute(EntityManager em) {
-                    Query query = em.createNamedQuery("examenes.findAll");
-                    List<Tema> results = query.getResultList();
-                    if(results.isEmpty()) {
-                        populateUsers(em);
-                        query = em.createNamedQuery("examenes.findAll");
-                        results = query.getResultList();
-                        assert(!results.isEmpty());
-                    }
-                }
-            });
-        } catch (EntityAccessorException ex) {
-            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            doInTransaction(new PersistenceActionWithoutResult() {
+//
+//                @Override
+//                public void execute(EntityManager em) {
+//                    Query query = em.createNamedQuery("examenes.findAll");
+//                    List<Tema> results = query.getResultList();
+//                    if(results.isEmpty()) {
+//                        populateExamen(em);
+//                        query = em.createNamedQuery("examenes.findAll");
+//                        results = query.getResultList();
+//                        assert(!results.isEmpty());
+//                    }
+//                }
+//            });
+//        } catch (EntityAccessorException ex) {
+//            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
-    private void populateUsers(EntityManager em) {
+    private void populateExamen(EntityManager em) {
     }
  // </editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Reading Bloque instances">
-    public Bloque getBloqueById (final String idBloque) {
+    public Bloque getBloqueById (final Integer idBloque) {
         Bloque result = null;
         try {
             result = doInTransaction(new PersistenceAction<Bloque>() {
 
                 public Bloque execute(EntityManager em) {
-                    Query query = em.createNamedQuery("bloques.getBloqueById");
+                    Query query = em.createNamedQuery("bloques.findById");
                     query.setParameter("id", idBloque);
                     List<Bloque> results = query.getResultList();
                     return results.get(0);
@@ -78,13 +80,54 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         }
         return result;
     }
+    
+    public List<Bloque> getBloqueList() {
+        List<Bloque> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Bloque>>() {
+
+                @Override
+                public List<Bloque> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("bloques.findAll");
+                    List<Bloque> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
+    public List<Bloque> getBloqueListActivo() {
+        List<Bloque> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Bloque>>() {
+
+                @Override
+                public List<Bloque> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("bloques.findActivos");
+                    List<Bloque> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+//</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Bloque instances">
 
     public void addBloque(final Bloque toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
             public void execute(EntityManager em) {
-                em.merge(toAdd);
+                em.persist(toAdd);
             }
         });
     }
@@ -99,33 +142,17 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         });
     }
     
-    public List<Bloque> getBloqueList() {
-        List<Bloque> result = Collections.emptyList();
-        try {
-            result = doInTransaction(new PersistenceAction<List<Bloque>>() {
-
-                public List<Bloque> execute(EntityManager em) {
-                    Query query = em.createNamedQuery("bloques.findAll");
-                    List<Bloque> results = query.getResultList();
-                    return results;
-                }
-            });
-        } catch (EntityAccessorException ex) {
-            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return result;
-    }
+    
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Reading Tema instances">
-    public Tema getTemaById (final String idTema) {
+    public Tema getTemaById (final Long idTema) {
         Tema result = null;
         try {
             result = doInTransaction(new PersistenceAction<Tema>() {
 
                 public Tema execute(EntityManager em) {
-                    Query query = em.createNamedQuery("temas.getTemaById");
+                    Query query = em.createNamedQuery("temas.findById");
                     query.setParameter("id", idTema);
                     List<Tema> results = query.getResultList();
                     return results.get(0);
@@ -135,26 +162,6 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
-    }
-
-    public void addTema(final Tema toAdd) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toAdd);
-            }
-        });
-    }
-
-    public void updateTema(final Tema toUpdate) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toUpdate);
-            }
-        });
     }
     
     public List<Tema> getTemaList() {
@@ -174,17 +181,77 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
         return result;
     }
+    
+//</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Tema instances">
+    public void addTema(final Tema toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.persist(toAdd);
+            }
+        });
+    }
+
+    public void updateTema(final Tema toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+    
+    
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Reading Preguntas instances">
+    public List<Pregunta> getPreguntaByExamen (final Examen examen) {
+        List<Pregunta> result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<List<Pregunta>>() {
+               public List<Pregunta> execute(EntityManager em) {
+                   Query query = em.createNamedQuery("preguntas.findByExamen");
+                   query.setParameter("examen", examen);
+                   List<Pregunta> result = query.getResultList();
+                   return result;
+               } 
+            }); 
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Pregunta> getPreguntaByUsuario (final Usuario usuario) {
+        List<Pregunta> result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<List<Pregunta>>() {
+               public List<Pregunta> execute(EntityManager em) {
+                   Query query = em.createNamedQuery("preguntas.findByUsuario");
+                   query.setParameter("usuario", usuario);
+                   List<Pregunta> result = query.getResultList();
+                   return result;
+               } 
+            }); 
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
     public Pregunta getPreguntaById (final String idPregunta) {
         Pregunta result = null;
         try {
             result = doInTransaction(new PersistenceAction<Pregunta>() {
 
                 public Pregunta execute(EntityManager em) {
-                    Query query = em.createNamedQuery("preguntas.getPreguntaById");
-                    query.setParameter("id", idPregunta);
+                    Query query = em.createNamedQuery("preguntas.findById");
+                    Long id = new Long(idPregunta);
+                    query.setParameter("id", id);
                     List<Pregunta> results = query.getResultList();
                     return results.get(0);
                 }
@@ -193,26 +260,6 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
-    }
-
-    public void addPregunta(final Pregunta toAdd) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toAdd);
-            }
-        });
-    }
-
-    public void updatePregunta(final Pregunta toUpdate) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toUpdate);
-            }
-        });
     }
     
     public List<Pregunta> getPreguntaList() {
@@ -233,6 +280,51 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
         return result;
     }
+    
+    public List<Pregunta> getPreguntaByExamenAndUser(final Examen examen, final Usuario usuario) {
+        List<Pregunta> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Pregunta>>() {
+
+                @Override
+                public List<Pregunta> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("preguntas.findByExamenAndUser");
+                    query.setParameter("examen", examen);
+                    query.setParameter("usuario", usuario);
+                    List<Pregunta> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+//</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Preguntas instances">    
+    public void addPregunta(final Pregunta toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.persist(toAdd);
+            }
+        });
+    }
+
+    public void updatePregunta(final Pregunta toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+    
+    
 //</editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Reading Exámenes instances">
@@ -242,8 +334,8 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
             result = doInTransaction(new PersistenceAction<Examen>() {
 
                 public Examen execute(EntityManager em) {
-                    Query query = em.createNamedQuery("examenes.getExamenById");
-                    query.setParameter("id", idExamen);
+                    Query query = em.createNamedQuery("examenes.findById");
+                    query.setParameter("id", Long.parseLong(idExamen));
                     List<Examen> results = query.getResultList();
                     return results.get(0);
                 }
@@ -259,7 +351,7 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
             @Override
             public void execute(EntityManager em) {
-                em.merge(toAdd);
+                em.persist(toAdd);
             }
         });
     }
@@ -293,4 +385,29 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         return result;
     }
 //</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Respuesta instances">
+    public void addRespuesta(final Respuesta toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.persist(toAdd);
+            }
+        });
+    }
+
+    public void updateRespuesta(final Respuesta toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+//</editor-fold>
+
+    
+
 }

@@ -12,8 +12,7 @@
 
         <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
         <ui:define name="content">
-            <p:accordionPanel autoHeight="false">    
-            <p:tab title="Modificar usuario">
+            <p:panel header="Modificar usuario">
                 <h:form>
                     <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios."
                                  rowEditListener="#{administraUsuariosBacking.modifica}"
@@ -90,64 +89,24 @@
                         <p:column headerText="Grupo">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.grupo}"/>
+                                    <h:outputText value="#{user.grupo.idGrupo}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <h:selectOneMenu value="#{user.grupo}" >  
+                                    <h:selectOneMenu value="#{user.grupo}" converter="#{grupoListConverter}">  
                                         <f:selectItems value="#{administraUsuariosBacking.listaGrupo}"  
                                             var="grupo"   
                                             itemLabel="#{grupo.descripcion}"  
-                                            itemValue="#{grupo.idGrupo}" />  
+                                            itemValue="#{grupo}" />  
                                     </h:selectOneMenu> 
                                 </f:facet>
                             </p:cellEditor>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Núm preguntas
-                            </f:facet>
-                            <h:outputText value="#{user.preguntas.size()}"/>
-                        </p:column>
-                        
+                        </p:column>                        
                         <p:column headerText="Opciones">
                             <p:rowEditor/>
                         </p:column>
                     </p:dataTable>
                 </h:form>
-            </p:tab>
-            <p:tab title="Añadir usuario nuevo">
-                <h:form>
-                    <h:panelGrid columns="2">
-                        <h:outputText value="Id:"/>
-                        <p:inputText value="#{administraUsuariosBacking.newUsuario.id}"/>
-                        <h:outputText value="IdUsuario:"/>
-                        <p:inputText value="#{administraUsuariosBacking.newUsuario.idUsuario}"/>
-                        <h:outputText value="Nombre:"/>
-                        <p:inputText id="nombre"
-                                     value="#{administraUsuariosBacking.newUsuario.nombre}"
-                                     required="true"/>
-                        <h:outputText value="Apellidos:"/>
-                        <p:inputText id="apellidos"
-                                     value="#{administraUsuariosBacking.newUsuario.apellidos}"
-                                     required="true"/>
-                        <h:outputText value="Email:"/>
-                        <p:inputText id="email"
-                                     value="#{administraUsuariosBacking.newUsuario.email}"
-                                     required="true"/>
-                        <h:outputText value="Activo:"/>
-                        <h:selectBooleanCheckbox value="#{administraUsuariosBacking.newUsuario.isActivo}"/>
-                        <h:outputText value="Clave:"/>
-                        <p:password value="#{administraUsuariosBacking.newUsuario.password}" feedback="false" minLength="0"/>
-                        <h:outputText value="Grupo:"/>
-                        <p:inputText value="#{administraUsuariosBacking.newUsuario.grupo}"/>
-                        <h:outputText value="&nbsp;"/>
-                        <p:commandButton value="Añadir" action="#{administraUsuariosBacking.agregaUsuario}" update="growl"/>
-                    </h:panelGrid>
-                </h:form>
-            </p:tab>
-            </p:accordionPanel>
-            
-
+            </p:panel>
         </ui:define>
     </ui:composition>
     </body>

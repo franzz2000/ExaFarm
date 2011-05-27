@@ -5,6 +5,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,6 +24,7 @@ import javax.persistence.Table;
     @NamedQuery(name="temas.findAll", query = "SELECT t FROM Tema t"),
     @NamedQuery(name="temas.findById", query = "SELECT t FROM Tema t WHERE t.id = :id")
 })
+@ManagedBean
 public class Tema extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -32,8 +34,8 @@ public class Tema extends AbstractEntity implements Serializable {
     private String descripcionCorta;
     @Column(name="is_activo")
     private Boolean isActivo;
-    @JoinColumn(name="id_bloque", referencedColumnName = "id")
     @ManyToOne
+    @JoinColumn(name="id_bloque")
     private Bloque bloque;
 
     public String getDescripcion() {
@@ -48,7 +50,7 @@ public class Tema extends AbstractEntity implements Serializable {
         return descripcionCorta;
     }
 
-    public void setDescripcion_corta(String descripcionCorta) {
+    public void setDescripcionCorta(String descripcionCorta) {
         this.descripcionCorta = descripcionCorta;
     }
 

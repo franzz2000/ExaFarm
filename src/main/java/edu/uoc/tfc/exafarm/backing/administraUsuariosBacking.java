@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -22,7 +23,6 @@ public class administraUsuariosBacking extends AbstractBacking {
     List <Grupo> listaGrupo;
     
     Usuario selectedUser;
-    Usuario newUsuario;
 
     /** Creates a new instance of administraUsuarios */
     public administraUsuariosBacking() {
@@ -30,10 +30,7 @@ public class administraUsuariosBacking extends AbstractBacking {
         lista = UsuarioRegistry.getCurrentInstance().getUserList();
         listaGrupo = UsuarioRegistry.getCurrentInstance().getGrupoList();
         selectedUser = new Usuario();
-    }
-    
-    
-    
+    }    
 
     public List<Usuario> getLista() {
         return lista;
@@ -59,32 +56,31 @@ public class administraUsuariosBacking extends AbstractBacking {
         return lista.size()>10;
     }
     
-    public Usuario getNewUsuario() {
-        return newUsuario;
-    }
-    
-    public void setNewUsuario(Usuario newUsuario){
-        this.newUsuario = newUsuario;
-    }
-    
     public void modifica(RowEditEvent ev) {
         Usuario obj = null;
         try {
             obj = (Usuario) ev.getObject();
             UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
+            addMessage("El usuario se ha modificado correctamente.");
         } catch (EntityAccessorException ex) {
             addMessage("Error al actualizar el usuario.");
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        addMessage("El usuario se ha modificado correctamente.");
+        
     }
     
     public void agregaUsuario() {
+        ExternalContext extContext = getFacesContext().getExternalContext();
+
+        UsuarioRegistry eventRegistry = UsuarioRegistry.getCurrentInstance();
+        Usuario newUsuario = (Usuario) extContext.getRequestMap().get("usuario");
+        newUsuario.setId(Long.MIN_VALUE);
         try {
             UsuarioRegistry.getCurrentInstance().addUsuario(newUsuario);
         } catch (EntityAccessorException ex) {
             addMessage("Error al añadir el usuario.");
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
+        addMessage("Se ha añadido el usuario correctamente.");
     }
 }

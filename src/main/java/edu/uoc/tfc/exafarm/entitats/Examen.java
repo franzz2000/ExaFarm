@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,6 +29,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "examenes.findAll", query = "SELECT e FROM Examen e"),
     @NamedQuery(name = "examenes.findById", query = "SELECT e FROM Examen e WHERE e.id = :id")
 })
+@ManagedBean
 public class Examen extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -39,13 +41,13 @@ public class Examen extends AbstractEntity implements Serializable {
     @Column(name="descripcion")
     private String descripcion;
     @Column(name="num_preguntas")
-    private Short numPreguntas;
+    private Integer numPreguntas;
     @Column(name="num_versiones")
-    private Short numVersiones;
+    private Integer numVersiones;
     @Column(name="is_activo")
-    private Short isActivo;
+    private Boolean isActivo;
     @Column(name="is_cerrado")
-    private Short isCerrado;
+    private Boolean isCerrado;
     @ManyToMany
     @JoinTable(name="examen_pregunta",
             joinColumns= {@JoinColumn(name="id_examen", referencedColumnName="id")},
@@ -77,35 +79,35 @@ public class Examen extends AbstractEntity implements Serializable {
         this.fechaConvocatoria = fechaConvocatoria;
     }
 
-    public Short getIsActivo() {
+    public Boolean getIsActivo() {
         return isActivo;
     }
 
-    public void setIsActivo(Short isActivo) {
+    public void setIsActivo(Boolean isActivo) {
         this.isActivo = isActivo;
     }
 
-    public Short getIsCerrado() {
+    public Boolean getIsCerrado() {
         return isCerrado;
     }
 
-    public void setIsCerrado(Short isCerrado) {
+    public void setIsCerrado(Boolean isCerrado) {
         this.isCerrado = isCerrado;
     }
 
-    public Short getNumPreguntas() {
+    public Integer getNumPreguntas() {
         return numPreguntas;
     }
 
-    public void setNumPreguntas(Short numPreguntas) {
+    public void setNumPreguntas(Integer numPreguntas) {
         this.numPreguntas = numPreguntas;
     }
 
-    public Short getNumVersiones() {
+    public Integer getNumVersiones() {
         return numVersiones;
     }
 
-    public void setNumVersiones(Short numVersiones) {
+    public void setNumVersiones(Integer numVersiones) {
         this.numVersiones = numVersiones;
     }
 

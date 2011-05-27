@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">ExaFarm - Exámenes activos</ui:define>
+
+            <ui:define name="content">
+                <p:panel header="Seleccionar examen">
+                    <h:form>
+                        <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" emptyMessage="No existen exámenes activos en la base de datos.">
+                            <f:facet name="header">
+                                Listado de Exámenes
+                            </f:facet>
+                            <p:column style="width: 16px">
+                                <h:outputText value="#{examen.id}"/>
+                            </p:column>
+                            <p:column headerText="Convocatoria">
+                                <h:outputText value="#{examen.convocatoria}"/>
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{examen.fechaConvocatoria}">
+                                            <f:convertDateTime type="date" locale="es" dateStyle="long"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Seleccionar">
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                    <f:param value="#{examen.id}" name="examen"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -13,45 +13,43 @@
             <ui:define name="title">ExaFarm - Administrar Bloques</ui:define>
 
             <ui:define name="content">
-                <h:form prependId="false">
-                    <p:dataTable var="bloque" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="No existen bloques.">
-                        <f:facet name="header">
-                            Listado de Bloques
-                        </f:facet>
-                        <p:column sortBy="#{bloque.descripcion}">
-                            <f:facet name="header">
-                                Descripción
-                            </f:facet>
-                            <h:outputText value="#{bloque.descripcion}" style="#{bloque.isActivo?'':'color: red'}"/>
-                        </p:column>
-                        <p:column sortBy="#{bloque.isActivo}">
-                            <f:facet name="header">
-                                Activo
-                            </f:facet>
-                            <h:outputText value="#{bloque.isActivo}" style="#{bloque.isActivo?'':'color: red'}"/>
-                        </p:column>
-                        <p:column style="width:32px;">
-                            <f:facet name="header">
-                                Modificar
-                            </f:facet>
-                            <p:commandButton oncomplete="bloqueDialog.show()" image="ui-icon ui-icon-search">
-                                <f:setPropertyActionListener target="#{administraBloquesBacking.selectedBloque}" value="#{bloque}"/>
-                            </p:commandButton>                            
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog header="Bloque" widgetVar="bloqueDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
+                <p:panel header="Modificar bloque">
                     <h:form>
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Descripción:"/>
-                            <p:inputText id="nombre"
-                                         value="#{administraBloquesBacking.selectedBloque.descripcion}"
-                                         required="true"/>
-                        </h:panelGrid>
-                        <center><p:commandButton value="Modificar" action="#{administraUsuariosBacking.modifica}" ajax="false"/></center>
+                        <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="No existen bloques."
+                                     rowEditListener="#{administraBloquesBacking.modifica}" onRowEditUpdate="growl" style="width: 500px;">
+                            <f:facet name="header">
+                                Listado de Bloques
+                            </f:facet>
+                            <p:column rendered="false">
+                                <h:outputText value="#{block.id}"/>
+                            </p:column>
+                            <p:column headerText="Descripción" sortBy="#{block.descripcion}" style="width: 50px;">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{block.descripcion}" style="#{block.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{block.descripcion}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Activo" sortBy="#{block.isActivo}" style="width: 50px">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{block.isActivo}" style="#{block.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectBooleanCheckbox value="#{block.isActivo}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Modificar" style="width:32px;">
+                                <p:rowEditor/>
+                            </p:column>
+                        </p:dataTable>
                     </h:form>
-                </p:dialog>
-                
+                </p:panel>
             </ui:define>
         </ui:composition>
 

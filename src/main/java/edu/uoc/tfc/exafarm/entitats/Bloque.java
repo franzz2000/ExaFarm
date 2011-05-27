@@ -5,11 +5,19 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,14 +27,40 @@ import javax.persistence.Table;
 @Table(name="bloques")
 @NamedQueries({
     @NamedQuery(name = "bloques.findAll", query = "SELECT b FROM Bloque b"),
-    @NamedQuery(name = "bloques.findById", query = "SELECT b FROM Bloque b WHERE b.id = :id")
+    @NamedQuery(name = "bloques.findById", query = "SELECT b FROM Bloque b WHERE b.id = :id"),
+    @NamedQuery(name = "bloques.findActivos", query = "SELECT b FROM Bloque b WHERE b.isActivo = true")
+        
 })
-public class Bloque extends AbstractEntity implements Serializable {
+@ManagedBean
+public class Bloque implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    @Id
+    @NotNull
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id", nullable=false)
+    private Long id;
+    @Column(name="descripcion")
     private String descripcion;
     @Column(name="is_activo")
     private Boolean isActivo;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public Bloque (String descripcion, Boolean isActivo) {
+        this.setDescripcion(descripcion);
+        this.setIsActivo(isActivo);
+    }
+    public Bloque() {
+        id = 0L;
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -54,7 +88,6 @@ public class Bloque extends AbstractEntity implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Bloque)) {
             return false;
         }

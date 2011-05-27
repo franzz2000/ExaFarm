@@ -13,55 +13,65 @@
             <ui:define name="title">ExaFarm - Administrar Temas</ui:define>
 
             <ui:define name="content">
-                <h:form prependId="false">
-                    <p:dataTable var="tema" value="#{administraTemasBacking.lista}" paginator="#{administraTemasBacking.paginator}" rows="10" emptyMessage="No existen temas.">
-                        <f:facet name="header">
-                            Listado de Temas
-                        </f:facet>
-                        <p:column sortBy="#{tema.descripcionCorta}">
-                            <f:facet name="header">
-                                Descripción corta
-                            </f:facet>
-                            <h:outputText value="#{tema.descripcionCorta}" style="#{tema.isActivo?'':'color: red'}"/>
-                        </p:column>
-                        <p:column sortBy="#{tema.descripcion}">
-                            <f:facet name="header">
-                                Descripción
-                            </f:facet>
-                            <h:outputText value="#{tema.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
-                        </p:column>
-                        <p:column sortBy="#{tema.bloque}">
-                            <f:facet name="header">
-                                Bloque
-                            </f:facet>
-                            <h:outputText value="#{tema.bloque}" style="#{tema.isActivo?'':'color: red'}"/>
-                        </p:column>
-                        <p:column style="width:32px;">
-                            <f:facet name="header">
-                                Modificar
-                            </f:facet>
-                            <p:commandButton oncomplete="temaDialog.show()" image="ui-icon ui-icon-search">
-                                <f:setPropertyActionListener target="#{administraTemasBacking.selectedTema}" value="#{tema}"/>
-                            </p:commandButton>                            
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog header="Tema" widgetVar="temaDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
+                <p:panel header="Lista de Temas">
                     <h:form>
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Nombre:"/>
-                            <p:inputText id="nombre"
-                                         value="#{administraTemasBacking.selectedTema.descripcionCorta}"
-                                         required="true"/>
-                            <h:outputText value="Apellidos:"/>
-                            <p:inputText id="apellidos"
-                                         value="#{administraTemasBacking.selectedTema.descripcion}"
-                                         required="true"/>
-                        </h:panelGrid>
-                        <center><p:commandButton value="Modificar" action="#{administraTemasBacking.modifica}" ajax="false"/></center>
+                        <p:dataTable var="tema" value="#{administraTemasBacking.lista}" paginator="#{administraTemasBacking.paginator}" rows="10" emptyMessage="No existen temas."
+                                     rowEditListener="#{administraTemasBacking.modifica}" onRowEditUpdate="growl">
+                            <f:facet name="header">
+                                Listado de Temas
+                            </f:facet>
+                            <p:column headerText="Descripción corta" sortBy="#{tema.descripcionCorta}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{tema.descripcionCorta}" style="#{tema.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{tema.descripcionCorta}" style="width: 250px"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Descripción" sortBy="#{tema.descripcion}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{tema.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{tema.descripcion}" style="width: 600px"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Bloque" sortBy="#{tema.bloque.descripcion}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{tema.bloque.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}">  
+                                        <f:selectItems value="#{administraTemasBacking.listaBloque}"  
+                                            var="bloque"   
+                                            itemLabel="#{bloque.descripcion}"  
+                                            itemValue="#{bloque}" />  
+                                        </h:selectOneMenu> 
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Activo" sortBy="#{tema.isActivo}" style="width: 50px">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{tema.isActivo?'Sí':'No'}" style="#{tema.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectBooleanCheckbox value="#{tema.isActivo}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column style="width:32px;">
+                                <p:rowEditor/>
+                            </p:column>
+                        </p:dataTable>
                     </h:form>
-                </p:dialog>
-                
+                </p:panel>
             </ui:define>
         </ui:composition>
 

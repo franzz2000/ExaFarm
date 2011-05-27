@@ -18,7 +18,7 @@
         <p:layout fullPage="true">
             <p:layoutUnit position="top" height="80" resizable="false" closable="false" collapsible="false">
                 <h:panelGrid columns="2">
-                    <h:graphicImage library="images" name="exafarm_logo.jpg"/>
+                    <h:graphicImage library="images" name="exafarm_logo.png"/>
                     <h:form style="font-size: 90%;"><h:outputText value=" Bienvenido, #{sessionScope.currentUser} "/><p:commandLink value="(Desconectar)" action="#{loginBacking.logout}" ajax="false"/></h:form>
                 </h:panelGrid>
             </p:layoutUnit>
@@ -32,25 +32,24 @@
                     <p:menu>
                         <p:submenu label="Administrador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
                             <p:menuitem value="Principal" url="/faces/administrador/principal.xhtml"/>
-                            <p:menuitem value="Administrar usuarios" url="/faces/administrador/administrarUsuarios.xhtml"/>
-                            <p:menuitem value="Administrar temas" url="/faces/administrador/administrarTemas.xhtml"/>
-                            <p:menuitem value="Administrar bloques" url="/faces/administrador/administrarBloques.xhtml"/>
+                            <p:menuitem value="Lista de usuarios" url="/faces/administrador/administrarUsuarios.xhtml"/>
+                            <p:menuitem value="Añadir usuario" url="/faces/administrador/agregarUsuario.xhtml"/>
+                            <p:menuitem value="Lista de temas" url="/faces/administrador/administrarTemas.xhtml"/>
+                            <p:menuitem value="Añadir temas" url="/faces/administrador/agregarTema.xhtml"/>
+                            <p:menuitem value="Lista de bloques" url="/faces/administrador/administrarBloques.xhtml"/>
+                            <p:menuitem value="Añadir bloque" url="/faces/administrador/agregarBloque.xhtml"/>
                         </p:submenu>
                         <p:submenu label="Coordinador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
                             <p:menuitem value="Principal" url="/faces/coordinador/principal.xhtml"/>
-                            <p:menuitem value="Administrar examenes" url="/faces/coordinador/administrarExamenes.xhtml"/>
-                            <p:menuitem value="Modificar examen activo" actionListener="#{menuBacking.modificar}" update="message"/>
-                            <p:menuitem value="Generar Examen" actionListener="#{menuBacking.generarExamen}" update="message"/>
-                            <p:menuitem value="Ver examen" actionListener="#{menuBacking.verExamen}" update="message"/>
-                            <p:menuitem value="Ver preguntas" url="/faces/coordinador/administrarPreguntas.xhtml"/>
+                            <p:menuitem value="Lista de examenes" url="/faces/coordinador/administrarExamenes.xhtml"/>
+                            <p:menuitem value="Añadir examen" url="/faces/coordinador/agregarExamen.xhtml"/>
                         </p:submenu>
                         <p:submenu label="Profesor">
                             <p:menuitem value="Principal" url="/faces/profesor/principal.xhtml"/>
-                            <p:menuitem value="Ver Preguntas" url="#{request.contextPath}/touch" icon="ui-icon ui-icon-star"/>
-                            <p:menuitem value="Añadir pregunta" actionListener="#{buttonBean.verExamen}" update="growl"/>
-                            <p:menuitem value="Ver exámenes" actionListener="#{buttonBean.verExamen}" update="growl"/>
-                            <p:menuitem value="Seleccionar preguntas para examen" actionListener="#{buttonBean.verExamen}" update="message"/>
-                            <p:menuitem value="Modificar datos personales" actionListener="#{buttonBean.verExamen}" update="message"/>
+                            <p:menuitem value="Ver Preguntas" url="/faces/profesor/administrarPreguntas.xhtml"/>
+                            <p:menuitem value="Añadir pregunta" url="/faces/profesor/agregarPregunta.xhtml"/>
+                            <p:menuitem value="Seleccionar preguntas para examen" url="/faces/profesor/seleccionarExamen.xhtml"/>
+                            <p:menuitem value="Modificar datos personales" url="/faces/profesor/administrarDatos.xhtml"/>
                         </p:submenu>
                     </p:menu>
                 </h:form>

@@ -7,9 +7,6 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -35,10 +32,30 @@ public class Respuesta extends AbstractEntity implements Serializable {
     @Column(name="is_correcta")
     private Boolean isCorrecta;
     
+    @Column(name="is_activa")
+    private Boolean isActiva;
+    
     @JoinColumn(name = "id_pregunta", referencedColumnName = "id")
     @ManyToOne
     private Pregunta pregunta;
+    
+    public Boolean getIsActiva() {
+        return isActiva;
+    }
 
+    public void setIsActiva(Boolean isActiva) {
+        this.isActiva = isActiva;
+    }
+
+    public Pregunta getPregunta() {
+        return pregunta;
+    }
+
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
+    }
+
+    
     public Boolean getIsCorrecta() {
         return isCorrecta;
     }
@@ -68,7 +85,7 @@ public class Respuesta extends AbstractEntity implements Serializable {
         int hash = 0;
         hash += (texto != null ? texto.hashCode() : 0);
         hash += (isCorrecta != null ? isCorrecta.hashCode() : 0);
-        hash += (pregunta != null ? pregunta.hashCode() : 0);
+//        hash += (pregunta != null ? pregunta.hashCode() : 0);
         return hash;
     }
 

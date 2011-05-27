@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 public abstract class AbstractEntity implements PersistentEntity<Long> {
 
     @Id
-    @Basic(optional = false)
     @NotNull
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id", nullable=false)

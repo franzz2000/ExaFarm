@@ -22,7 +22,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="grupos")
 @NamedQueries ({
-    @NamedQuery(name="grupos.findAll", query="SELECT g FROM Grupo AS g")
+    @NamedQuery(name="grupos.findAll", query="SELECT g FROM Grupo AS g"),
+    @NamedQuery(name="grupos.findById", query="SELECT g FROM Grupo AS g WHERE g.idGrupo =:id")
 })
 @ManagedBean
 @RequestScoped
@@ -37,6 +38,7 @@ public class Grupo implements Serializable {
     @Column(name="descripcion")
     private String descripcion;
 
+    
 
     /**
      * Constructor

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantilla_principal.xhtml">
+            <ui:define name="title">ExaFarm - Administrar Preguntas</ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4" emptyMessage="No existen preguntas."
+                                 rowEditListener="#{administraPreguntasBacking.modifica}"
+                                 onRowEditUpdate="growl">
+                        <f:facet name="header">
+                            Listado de Preguntas
+                        </f:facet>
+                        <p:column style="width: 16px" filterBy="#{pregunta.id}" headerText="Id">
+                            <h:outputText value="#{pregunta.id}"/>
+                        </p:column>
+                        <p:column headerText="Pregunta">
+                            <h:outputText value="#{pregunta.texto}"/>
+                            <p:dataList id="subTabla" var="respuesta" value="#{pregunta.respuestas}" itemType="a">
+                                <h:outputText value="#{respuesta.texto}" style="#{respuesta.isCorrecta? 'color: green':''}"/>
+                            </p:dataList>
+                        </p:column>
+                        <p:column filterBy="#{pregunta.tema.id}" headerText="Tema" filterOptions="#{administraPreguntasBacking.temasOptions}" filterMatchMode="exact">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.tema.descripcionCorta}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{pregunta.tema}" converter="#{temaListConverter}">  
+                                        <f:selectItems value="#{administraPreguntasBacking.temas}"  
+                                            var="tema"   
+                                            itemLabel="#{tema.descripcionCorta}"  
+                                            itemValue="#{tema}"/>  
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column filterBy="#{pregunta.usuario.id}" headerText="Profesor" filterOptions="#{administraPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
+                                  rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.usuario}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{pregunta.usuario}" converter="#{usuarioListConverter}">  
+                                        <f:selectItems value="#{administraPreguntasBacking.profesores}"  
+                                            var="user"   
+                                            itemLabel="#{user.idUsuario}"  
+                                            itemValue="#{user}"/>  
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Modificar" style="width:32px;">
+                            <p:rowEditor/>
+                        </p:column>
+                        <p:column headerText="Ver pregunta">
+                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">
+                                <f:param value="#{pregunta.id}" name="pregunta"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

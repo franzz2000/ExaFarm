@@ -58,31 +58,14 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
     }
  // </editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
-    public Usuario getUsuarioByIdUsuario (final String idUsuario) {
-        Usuario result = null;
-        try {
-            result = doInTransaction(new PersistenceAction<Usuario>() {
-
-                public Usuario execute(EntityManager em) {
-                    Query query = em.createNamedQuery("usuarios.getUsuarioById");
-                    query.setParameter("id", idUsuario);
-                    List<Usuario> results = query.getResultList();
-                    return results.get(0);
-                }
-            });
-        } catch (EntityAccessorException ex) {
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
-
+// <editor-fold defaultstate="collapsed" desc="Writing Usuario instances">
+    
     public void addUsuario(final Usuario toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
 
             @Override
             public void execute(EntityManager em) {
-                em.merge(toAdd);
+                em.persist(toAdd);
             }
         });
     }
@@ -95,6 +78,106 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
                 em.merge(toUpdate);
             }
         });
+    }
+    
+    public void removeUsuario(final Usuario toRemove) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.remove(toRemove);
+            }
+        });
+    }
+    
+   
+//</editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
+    public List<Grupo> getGrupoListActivo() {
+        List<Grupo> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
+                public List<Grupo> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("grupos.findActivos");
+                    List<Grupo> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Grupo> getGrupoList() {
+        List<Grupo> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
+                public List<Grupo> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("grupos.findAll");
+                    List<Grupo> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Usuario> getUsuarioListActivo() {
+        List<Usuario> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Usuario>>() {
+                public List<Usuario> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.findActivos");
+                    List<Usuario> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public Usuario getUsuarioById (final Integer id) {
+        Usuario result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Usuario>() {
+
+                @Override
+                public Usuario execute(EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.getUsuarioById");
+                    query.setParameter("id", id);
+                    List<Usuario> results = query.getResultList();
+                    return results.get(0);
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public Usuario getUsuarioByIdUsuario (final String idUsuario) {
+        Usuario result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Usuario>() {
+
+                @Override
+                public Usuario execute(EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.getUsuarioByIdUsuario");
+                    query.setParameter("id", idUsuario);
+                    List<Usuario> results = query.getResultList();
+                    return results.get(0);
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
     
     public List<Usuario> getUserList() {
@@ -115,16 +198,43 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
         return result;
     }
 //</editor-fold>
+ 
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Grupo instances">
+    
+    public void addGrupo(final Grupo toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
 
-// <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
-    public List<Grupo> getGrupoList() {
-        List<Grupo> result = Collections.emptyList();
+            @Override
+            public void execute(EntityManager em) {
+                em.persist(toAdd);
+            }
+        });
+    }
+
+    public void updateGrupo(final Grupo toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+            
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+//</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Grupo instances">
+    public Grupo getGrupoById (final String id) {
+        Grupo result = null;
         try {
-            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
-                public List<Grupo> execute (EntityManager em) {
-                    Query query = em.createNamedQuery("grupos.findAll");
+            result = doInTransaction(new PersistenceAction<Grupo>() {
+
+                @Override
+                public Grupo execute(EntityManager em) {
+                    Query query = em.createNamedQuery("grupos.findById");
+                    query.setParameter("id", id);
                     List<Grupo> results = query.getResultList();
-                    return results;
+                    return results.get(0);
                 }
             });
         } catch (EntityAccessorException ex) {

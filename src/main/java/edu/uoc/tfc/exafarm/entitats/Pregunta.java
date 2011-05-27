@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.bean.ManagedBean;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -27,9 +28,12 @@ import javax.persistence.TemporalType;
 @Table(name="preguntas")
 @NamedQueries({
     @NamedQuery(name = "preguntas.findAll", query = "SELECT p FROM Pregunta p"),
-    @NamedQuery(name = "preguntas.findById", query = "SELECT p FROM Pregunta p WHERE p.id = :id")
+    @NamedQuery(name = "preguntas.findById", query = "SELECT p FROM Pregunta p WHERE p.id = :id"),
+    @NamedQuery(name = "preguntas.findByExamen", query = "SELECT p FROM Pregunta p WHERE p.examenes = :examen"),
+    @NamedQuery(name = "preguntas.findByUsuario", query = "SELECT p FROM Pregunta p WHERE p.usuario = :usuario"),
+    @NamedQuery(name = "preguntas.findByExamenAndUser", query = "SELECT P FROM Pregunta p WHERE p.examenes = :examen AND p.usuario = :usuario")
 })
-
+@ManagedBean
 public class Pregunta extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -135,7 +139,7 @@ public class Pregunta extends AbstractEntity implements Serializable {
         hash += (isCorta != null ? isCorta.hashCode() : 0);
         hash += (usuario != null ? usuario.hashCode() : 0);
         hash += (tema != null ? tema.hashCode() : 0);
-        hash += (respuestas != null ? respuestas.hashCode() : 0);
+//        hash += (respuestas != null ? respuestas.hashCode() : 0);
         return hash;
     }
 

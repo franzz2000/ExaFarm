@@ -13,66 +13,96 @@
             <ui:define name="title">ExaFarm - Administrar Exámenes</ui:define>
 
             <ui:define name="content">
-                <h:form prependId="false">
-                    <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" emptyMessage="No existen exámenes en la base de datos.">
-                        <f:facet name="header">
-                            Listado de Exámenes
-                        </f:facet>
-                        <p:column style="width: 16px">
-                            <f:facet name="header">
-                                Id
-                            </f:facet>
-                            <h:outputText value="#{examen.id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Convocatoria
-                            </f:facet>
-                            <h:outputText value="#{examen.convocatoria}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Número de preguntas
-                            </f:facet>
-                            <h:outputText value="#{examen.numPreguntas}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Activo
-                            </f:facet>
-                            <h:outputText value="#{examen.isActivo==1?'Sí':'No'}"/>&nbsp;
-                            <p:commandButton  image="ui-icon ui-icon-search" rendered="#{examen.isActivo==1}">
-                                
-                            </p:commandButton>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                Cerrado
-                            </f:facet>
-                            <h:outputText value="#{examen.isCerrado==1?'Sí':'No'}"/>
-                        </p:column>
-                        <p:column style="width:32px;">
-                            <f:facet name="header">
-                                Modificar
-                            </f:facet>
-                            <p:commandButton oncomplete="userDialog.show()" image="ui-icon ui-icon-search">
-                                <f:setPropertyActionListener target="#{administraExamenesBacking.selectedExamen}" value="#{examen}"/>
-                            </p:commandButton>                            
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-                <p:dialog header="Pregunta" widgetVar="preguntaDialog" resizable="false" width="300" showEffect="clip" hideEffect="fold">
+                <p:panel header="Ver/Modificar exámenes">
                     <h:form>
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Nombre:"/>
-                            <p:inputText id="nombre"
-                                         value="#{administraPreguntasBacking.selectedPregunta.texto}"
-                                         required="true"/>
-                        </h:panelGrid>
-                        <center><p:commandButton value="Modificar" action="#{administraPreguntasBacking.modifica}" ajax="false"/></center>
+                        <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" emptyMessage="No existen exámenes en la base de datos."
+                                     rowEditListener="#{administraExamenesBacking.modifica}"
+                                 onRowEditUpdate="growl">
+                            <f:facet name="header">
+                                Listado de Exámenes
+                            </f:facet>
+                            <p:column style="width: 16px">
+                                <h:outputText value="#{examen.id}"/>
+                            </p:column>
+                            <p:column headerText="Convocatoria">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.convocatoria}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{examen.convocatoria}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.fechaConvocatoria}">
+                                            <f:convertDateTime type="date" locale="es" dateStyle="long"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar value="#{examen.fechaConvocatoria}" locale="es"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Número de preguntas">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.numPreguntas}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{examen.numPreguntas}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Número de versiones">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.numVersiones}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{examen.numVersiones}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Activo">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.isActivo?'Sí':'No'}"/>&nbsp;
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectBooleanCheckbox value="#{examen.isActivo}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+
+                            </p:column>
+                            <p:column headerText="Cerrado">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{examen.isCerrado?'Sí':'No'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectBooleanCheckbox value="#{examen.isCerrado}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column style="width:32px;" headerText="Modificar">
+                                <p:rowEditor/>
+                            </p:column>
+                            <p:column headerText="Ver preguntas">
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                    <f:param value="#{examen.id}" name="examen"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Generar">
+                                <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                    <f:param value="#{examen}" name="examen"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
                     </h:form>
-                </p:dialog>
-                
+                </p:panel>
             </ui:define>
         </ui:composition>
     </body>
