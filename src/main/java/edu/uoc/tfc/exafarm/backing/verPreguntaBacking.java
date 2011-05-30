@@ -8,15 +8,14 @@ import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Respuesta;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -24,7 +23,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean
 @ViewScoped
-public class verPreguntaBacking {
+public class verPreguntaBacking implements Serializable{
     Pregunta pregunta;
     String preguntaId;
     String titulo;

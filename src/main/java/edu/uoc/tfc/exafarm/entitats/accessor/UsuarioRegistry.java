@@ -39,14 +39,23 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 
                 @Override
                 public void execute(EntityManager em) {
-                    Query query = em.createNamedQuery("usuarios.findAll");
-                    List<Usuario> results = query.getResultList();
-                    if(results.isEmpty()) {
-                        populateUsers(em);
-                        query = em.createNamedQuery("usuarios.findAll");
-                        results = query.getResultList();
-                        assert(!results.isEmpty());
-                    }
+//                    Query query = em.createNamedQuery("grupos.findAll");
+//                    List<Grupo> results = query.getResultList();
+//                    if(results.isEmpty()) {
+//                        populateGrupo(em);
+//                        query = em.createNamedQuery("grupos.findAll");
+//                        results = query.getResultList();
+//                        assert(!results.isEmpty());
+//                    }
+                    
+//                    Query query = em.createNamedQuery("usuarios.findAlle");
+//                    List<Usuario> resultsUsuarios = query.getResultList();
+//                    if(resultsUsuarios.isEmpty()) {
+//                        populateUsers(em);
+//                        query = em.createNamedQuery("usuarios.findAll");
+//                        resultsUsuarios = query.getResultList();
+//                        assert(!resultsUsuarios.isEmpty());
+//                    }
                 }
             });
         } catch (EntityAccessorException ex) {
@@ -55,6 +64,15 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
     }
 
     private void populateUsers(EntityManager em) {
+        
+//        em.persist(new Usuario("franz", "A61rMz1EUJnH3+D/dF7FzBMw0UnvdS82w67U7+oT9yU=", "Franz", "Jimeno Demuth", "fjimeno@uoc.edu", true, getGrupoById("admin")));
+//        System.out.println("Usuario por defecto creado correctamente.");
+    }
+    
+    private void populateGrupo(EntityManager em) {
+//        em.persist(new Grupo("admin", "Administrador"));
+//        em.persist(new Grupo("coord", "Coordinador"));
+//        em.persist(new Grupo("profe", "Profesor"));
     }
  // </editor-fold>
     
@@ -94,21 +112,6 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
-    public List<Grupo> getGrupoListActivo() {
-        List<Grupo> result = Collections.emptyList();
-        try {
-            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
-                public List<Grupo> execute (EntityManager em) {
-                    Query query = em.createNamedQuery("grupos.findActivos");
-                    List<Grupo> results = query.getResultList();
-                    return results;
-                }
-            });
-        } catch (EntityAccessorException ex) {
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
     
     public List<Grupo> getGrupoList() {
         List<Grupo> result = Collections.emptyList();
@@ -197,8 +200,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 
         return result;
     }
-//</editor-fold>
- 
+//</editor-fold> 
     
 // <editor-fold defaultstate="collapsed" desc="Writing Grupo instances">
     
@@ -223,7 +225,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
     }
 //</editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Writing Grupo instances">
+// <editor-fold defaultstate="collapsed" desc="Reading Grupo instances">
     public Grupo getGrupoById (final String id) {
         Grupo result = null;
         try {

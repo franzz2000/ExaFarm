@@ -43,8 +43,9 @@ public class Grupo implements Serializable {
     /**
      * Constructor
      */
-    public Grupo(String idGrupo) {
+    public Grupo(String idGrupo, String descripcion) {
         this.idGrupo = idGrupo;
+        this.descripcion = descripcion;
     }
 
     public Grupo() {}

@@ -56,13 +56,14 @@ public class Usuario extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "usuario")
     private List<Pregunta> preguntas;
 
-    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo) {
+    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo, Grupo grupo) {
         this.setIdUsuario(usuarioId);
         this.setPassword(password);
         this.setNombre(nombre);
         this.setApellidos(apellidos);
         this.setEmail(email);
         this.setIsActivo(isActivo);
+        this.setGrupo(grupo);
     }
 
     public Usuario(){

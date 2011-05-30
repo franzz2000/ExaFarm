@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -34,6 +36,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "preguntas.findByExamenAndUser", query = "SELECT P FROM Pregunta p WHERE p.examenes = :examen AND p.usuario = :usuario")
 })
 @ManagedBean
+@RequestScoped
 public class Pregunta extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -61,8 +64,19 @@ public class Pregunta extends AbstractEntity implements Serializable {
     @JoinColumn(name="id_tema", insertable=false, updatable=false)
     private Tema tema;
     
-    @OneToMany(mappedBy="pregunta")
+    @OneToMany(mappedBy="pregunta", cascade= CascadeType.ALL)
     private List<Respuesta> respuestas;
+    
+    public Pregunta(){
+        this.id = 0L;
+        this.fechaCreacion = new Date();
+        this.isActiva = true;
+        this.isCorta = false;
+    }
+    
+    public Pregunta(Long id) {
+        this.id = id;
+    }
 
     public List<Examen> getExamenes() {
         return examenes;

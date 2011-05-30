@@ -17,27 +17,53 @@
             <ui:define name="content">
                 <p:panel header="Añadir pregunta">     
                     <h:form>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="4">
                             <h:outputText value="Pregunta:"/>
                             <p:inputTextarea style="width: 500px;" id="nombre"
-                                             value="#{pregunta.texto}"
-                                         required="true"/>
+                                             value="#{agregaPreguntaBacking.newPregunta.texto}"
+                                             required="true" requiredMessage="Es necesario añadir una pregunta."/>
                             <h:outputText value="Activa:"/>
-                            <h:selectBooleanCheckbox value="#{pregunta.isActiva}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isActiva}"/>
+                            <h:outputText value="Respuesta 1:"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta1"
+                                             value="#{agregaPreguntaBacking.respuesta1.texto}"
+                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 1."/>
+                            <h:outputText value="Correcta:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta2.isCorrecta}"/>
+                            <h:outputText value="Respuesta 2:"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta2"
+                                             value="#{agregaPreguntaBacking.respuesta2.texto}"
+                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 2."/>
+                            <h:outputText value="Correcta:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta2.isCorrecta}"/>
+                            <h:outputText value="Respuesta 3:"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta3"
+                                             value="#{agregaPreguntaBacking.respuesta3.texto}"
+                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 3."/>
+                            <h:outputText value="Correcta:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta3.isCorrecta}"/>
+                            <h:outputText value="Respuesta 4:"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta4"
+                                             value="#{agregaPreguntaBacking.respuesta4.texto}"
+                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 4."/>
+                            <h:outputText value="Correcta:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta4.isCorrecta}"/>
+                            <h:outputText value="Respuesta 5:"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta5"
+                                             value="#{agregaPreguntaBacking.respuesta5.texto}"
+                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 5."/>
+                            <h:outputText value="Correcta:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta5.isCorrecta}"/>
+                            <h:outputText value="Tema:"
+                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" converter="#{temaListConverter}">  
+                                <f:selectItems value="#{agregaPreguntaBacking.temas}"  
+                                            var="tema"   
+                                            itemLabel="#{tema.descripcionCorta}"  
+                                            itemValue="#{tema}"/>  
+                                    </h:selectOneMenu>
                         </h:panelGrid>
-                        <p:dataTable id="tabla" var="respuesta" value="#{pregunta.respuestas}" emptyMessage="No existen respuestas para esta pregunta.">
-                            <p:column headerText="Respuesta">
-                                <p:inputTextarea value="#{respuesta.texto}" style="width: 500px;" required="true" requiredMessage="No pueden haber respuestas en blanco."/>
-                            </p:column>
-                            <p:column headerText="Correcta">
-                                <h:selectBooleanCheckbox value="#{respuesta.isCorrecta}"/>
-                            </p:column>
-                            <p:column headerText="Activa">
-                                <h:selectBooleanCheckbox value="#{respuesta.isActiva}"/>
-                            </p:column>
-                        </p:dataTable>
-                        <p:commandButton value="Añadir respuesta" action="#{agregaPreguntaBacking.enlargeList}" update="tabla"/>
                         <p:commandButton value="Guardar" action="#{agregaPreguntaBacking.agregaPregunta}" ajax="false"/>
+                        
                     </h:form>
                 </p:panel>
             </ui:define>
