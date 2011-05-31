@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,14 +40,22 @@ public class Respuesta extends AbstractEntity implements Serializable {
     @Column(name="is_activa")
     private Boolean isActiva;
     
-    @JoinColumn(name = "id_pregunta", referencedColumnName = "id")
     @ManyToOne
+    @JoinColumn(name = "id_pregunta")
     private Pregunta pregunta;
     
     public Respuesta() {
         this.id = 0L;
+//        this.pregunta = new Pregunta();
         this.isActiva = true;
         this.isCorrecta = false;
+    }
+    
+    public Respuesta(String texto, Boolean isCorrecta, Boolean isActiva) {
+        this.id = 0L;
+        this.texto = texto;
+        this.isCorrecta = isCorrecta;
+        this.isActiva = isActiva;
     }
     
     public Boolean getIsActiva() {

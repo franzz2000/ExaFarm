@@ -145,7 +145,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
         return result;
     }
     
-    public Usuario getUsuarioById (final Integer id) {
+    public Usuario getUsuarioById (final Long id) {
         Usuario result = null;
         try {
             result = doInTransaction(new PersistenceAction<Usuario>() {

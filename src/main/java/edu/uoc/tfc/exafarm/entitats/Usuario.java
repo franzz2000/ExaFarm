@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -53,7 +54,7 @@ public class Usuario extends AbstractEntity implements Serializable {
     private Grupo grupo;
     @Column(name="is_activo")
     private Boolean isActivo;
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade= CascadeType.ALL)
     private List<Pregunta> preguntas;
 
     public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo, Grupo grupo) {

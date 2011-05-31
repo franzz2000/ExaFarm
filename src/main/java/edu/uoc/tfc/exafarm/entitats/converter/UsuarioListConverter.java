@@ -4,8 +4,6 @@
  */
 package edu.uoc.tfc.exafarm.entitats.converter;
 
-import edu.uoc.tfc.exafarm.entitats.Pregunta;
-import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.io.Serializable;
@@ -13,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 
 /**
  *
@@ -30,7 +27,7 @@ public class UsuarioListConverter implements Converter, Serializable{
         if (value.isEmpty()) {
             return null;
         }
-        Integer id = new Integer(value);
+        Long id = new Long(value);
         return UsuarioRegistry.getCurrentInstance().getUsuarioById(id);
     }
 

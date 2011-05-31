@@ -57,11 +57,11 @@ public class Pregunta extends AbstractEntity implements Serializable {
     private List<Examen> examenes;
     
     @ManyToOne
-    @JoinColumn(name="id_usuario", insertable=false, updatable=false)
+    @JoinColumn(name="id_usuario")
     private Usuario usuario;
     
     @ManyToOne
-    @JoinColumn(name="id_tema", insertable=false, updatable=false)
+    @JoinColumn(name="id_tema")
     private Tema tema;
     
     @OneToMany(mappedBy="pregunta", cascade= CascadeType.ALL)

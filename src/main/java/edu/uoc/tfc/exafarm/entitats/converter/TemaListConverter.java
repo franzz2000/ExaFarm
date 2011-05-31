@@ -36,7 +36,11 @@ public class TemaListConverter implements Converter, Serializable{
         if (value == null || value.toString().isEmpty()) {
             return "";
         }
-        Long id =  ((Tema)value).getId();
-        return id.toString();
+        if(value instanceof Tema) {
+            Long id =  ((Tema)value).getId();
+            return id.toString();
+        } else {
+            return "";
+        }
     }       
 }

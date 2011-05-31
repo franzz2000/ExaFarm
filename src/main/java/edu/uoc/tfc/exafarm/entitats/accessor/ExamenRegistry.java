@@ -306,6 +306,7 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 // <editor-fold defaultstate="collapsed" desc="Writing Preguntas instances">    
     public void addPregunta(final Pregunta toAdd) throws EntityAccessorException {
         doInTransaction(new PersistenceActionWithoutResult() {
+            Usuario usuario;
 
             @Override
             public void execute(EntityManager em) {

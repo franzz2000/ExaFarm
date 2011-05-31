@@ -29,7 +29,7 @@
                                              value="#{agregaPreguntaBacking.respuesta1.texto}"
                                          required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 1."/>
                             <h:outputText value="Correcta:"/>
-                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta2.isCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta1.isCorrecta}"/>
                             <h:outputText value="Respuesta 2:"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta2"
                                              value="#{agregaPreguntaBacking.respuesta2.texto}"
@@ -54,9 +54,9 @@
                                          required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 5."/>
                             <h:outputText value="Correcta:"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta5.isCorrecta}"/>
-                            <h:outputText value="Tema:"
-                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" converter="#{temaListConverter}">  
-                                <f:selectItems value="#{agregaPreguntaBacking.temas}"  
+                            <h:outputText value="Tema:"/>
+                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" required="true" requiredMessage="Es necesario un tema." converter="#{temaListConverter}">
+                                <f:selectItems value="#{agregaPreguntaBacking.temasOptions}"
                                             var="tema"   
                                             itemLabel="#{tema.descripcionCorta}"  
                                             itemValue="#{tema}"/>  

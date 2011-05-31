@@ -10,12 +10,14 @@ import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
+import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -26,6 +28,7 @@ import javax.faces.model.SelectItem;
 @RequestScoped
 public class agregaPreguntaBacking extends AbstractBacking {
     List<Tema> temas;
+    Boolean correctaSeleccionada = false;
     SelectItem[] temasOptions;
     
     Pregunta newPregunta = new Pregunta();
@@ -39,16 +42,18 @@ public class agregaPreguntaBacking extends AbstractBacking {
     public agregaPreguntaBacking() {
         temas = new ArrayList<Tema>();
         temas = ExamenRegistry.getCurrentInstance().getTemaList();
-        temasOptions = createTemaOptions(temas);
+        temasOptions = createTemasOptions(temas);
     }
-    
-    public Pregunta getNewPregunta() { 
+
+    public Pregunta getNewPregunta() {
         return newPregunta;
     }
-    
+
     public void setNewPregunta(Pregunta newPregunta) {
         this.newPregunta = newPregunta;
     }
+    
+    
 
     public Respuesta getRespuesta1() {
         return respuesta1;
@@ -90,45 +95,53 @@ public class agregaPreguntaBacking extends AbstractBacking {
         this.respuesta5 = respuesta5;
     }
 
-    public List<Tema> getTemas() {
-        return temas;
+    public SelectItem[] getTemasOptions() {
+        return temasOptions;
     }
 
-    public void setTemas(List<Tema> temas) {
-        this.temas = temas;
+    public void setTemasOptions(SelectItem[] temasOptions) {
+        this.temasOptions = temasOptions;
     }
     
-    
-    
-    private SelectItem[] createTemaOptions(List<Tema> temas) {
+    private SelectItem[] createTemasOptions(List<Tema> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem("", "Seleccione tema:");
+        options[0] = new SelectItem(0L, "Seleccione tema:");
         for (int i = 0; i < temas.size(); i++) {
-            options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getDescripcionCorta());
+            options[i+1] = new SelectItem(temas.get(i), temas.get(i).getDescripcionCorta());
         }
         
         return options;
     }
     
     public void agregaPregunta() {
-        List<Respuesta> respuestas = new ArrayList<Respuesta>();
-        respuestas.add(respuesta1);
-        respuestas.add(respuesta2);
-        respuestas.add(respuesta3);
-        respuestas.add(respuesta4);
-        respuestas.add(respuesta5);
-        
-        Usuario usuario = getCurrentUser();
-        newPregunta.setUsuario(usuario);
-        
-        newPregunta.setRespuestas(respuestas);
-        
-        try {
-            ExamenRegistry.getCurrentInstance().addPregunta(newPregunta);
-            addMessage("Se ha añadido la pregunta.");
-        } catch (EntityAccessorException ex) {
-            addMessage("Error al añadir la pregunta.");
-            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (respuesta1.getIsCorrecta()||respuesta2.getIsCorrecta()||respuesta3.getIsCorrecta()||respuesta4.getIsCorrecta()||respuesta5.getIsCorrecta()) {
+                newPregunta.setId(Long.MIN_VALUE);
+
+                List<Respuesta> respuestas = new ArrayList<Respuesta>();
+                respuesta1.setPregunta(newPregunta);
+                respuesta2.setPregunta(newPregunta);
+                respuesta3.setPregunta(newPregunta);
+                respuesta4.setPregunta(newPregunta);
+                respuesta5.setPregunta(newPregunta);
+                respuestas.add(respuesta1);
+                respuestas.add(respuesta2);
+                respuestas.add(respuesta3);
+                respuestas.add(respuesta4);
+                respuestas.add(respuesta5);
+                
+                Usuario usuario = getCurrentUser();
+                newPregunta.setUsuario(usuario);
+            try {
+                ExamenRegistry.getCurrentInstance().addPregunta(newPregunta);
+                newPregunta.setRespuestas(respuestas);
+                ExamenRegistry.getCurrentInstance().updatePregunta(newPregunta);
+                addMessage("Se ha añadido la pregunta.");
+            } catch (EntityAccessorException ex) {
+                addMessage("Error al añadir la pregunta.");
+                Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            }    
+        } else {
+            addMessage("Es necesario seleccionar al menos una pregunta correcta.");
+        } 
     }
 }
