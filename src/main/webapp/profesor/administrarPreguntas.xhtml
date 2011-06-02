@@ -19,6 +19,9 @@
                         <f:facet name="header">
                             Listado de Preguntas
                         </f:facet>
+                        <f:facet name="events">
+                            <f:param value="#{administraPreguntasBacking.examenId}" name="examen"/>
+                        </f:facet>
                         <p:column style="width: 16px" filterBy="#{pregunta.id}" headerText="Id">
                             <h:outputText value="#{pregunta.id}"/>
                         </p:column>

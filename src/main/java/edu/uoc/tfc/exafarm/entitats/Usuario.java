@@ -158,16 +158,18 @@ public class Usuario extends AbstractEntity implements Serializable {
     }
 
     public void setPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes("UTF-8"));
-            byte[] byteData = md.digest();
+        if(!this.password.equals(password)) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                md.update(password.getBytes("UTF-8"));
+                byte[] byteData = md.digest();
 
-            this.password = Base64.encode(byteData);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                this.password = Base64.encode(byteData);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

@@ -27,7 +27,8 @@ import javax.persistence.TemporalType;
 @Table(name="examenes")
 @NamedQueries({
     @NamedQuery(name = "examenes.findAll", query = "SELECT e FROM Examen e"),
-    @NamedQuery(name = "examenes.findById", query = "SELECT e FROM Examen e WHERE e.id = :id")
+    @NamedQuery(name = "examenes.findById", query = "SELECT e FROM Examen e WHERE e.id = :id"),
+    @NamedQuery(name = "examenes.findByActivo", query = "SELECT e FROM Examen e WHERE e.isActivo = TRUE")
 })
 @ManagedBean
 public class Examen extends AbstractEntity implements Serializable {

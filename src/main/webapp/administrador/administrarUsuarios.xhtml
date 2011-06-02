@@ -23,7 +23,7 @@
                         <p:column headerText="Id de usuario" style="width: 20px;">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.idUsuario}" style="#{user.isActivo?'':'color: red'}"/>
+                                    <h:outputText value="#{user.idUsuario}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputText value="#{user.idUsuario}"/>
@@ -34,7 +34,7 @@
                         <p:column headerText="Nombre" sortBy="#{user.nombre}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.nombre}" style="#{user.isActivo?'':'color: red'}"/>
+                                    <h:outputText value="#{user.nombre}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputText value="#{user.nombre}"/>
@@ -45,7 +45,7 @@
                         <p:column headerText="Apellidos" sortBy="#{user.apellidos}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.apellidos}" style="#{user.isActivo?'':'color: red'}"/>
+                                    <h:outputText value="#{user.apellidos}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputText value="#{user.apellidos}"/>
@@ -56,7 +56,7 @@
                         <p:column headerText="Email">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.email}" style="#{user.isActivo?'':'color: red'}"/>
+                                    <h:outputText value="#{user.email}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputText value="#{user.email}"/>
@@ -75,21 +75,10 @@
                             </p:cellEditor>
                         </p:column>
                         
-                        <p:column headerText="Activo">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.isActivo?'Sí':'No'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:selectBooleanCheckbox value="#{user.isActivo}"/>
-                                </f:facet>
-                            </p:cellEditor>                            
-                        </p:column>
-                        
                         <p:column headerText="Grupo">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{user.grupo.idGrupo}"/>
+                                    <h:outputText value="#{user.grupo.descripcion}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <h:selectOneMenu value="#{user.grupo}" converter="#{grupoListConverter}">  

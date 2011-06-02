@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -123,10 +125,18 @@ public class administraPreguntasBacking extends AbstractBacking {
         this.temas = temas;
     }
     
+    public String getExamenId(){
+        return examenId;
+    }
     
     @PostConstruct
     public void construct(){
         examenId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");
+        if(examenId==null){
+            examenId = (String)getViewScope().get("examenId");
+        } else {
+            getViewScope().put("examenId", examenId);
+        }
         if(examenId==null) {
             Usuario usuario = getCurrentUser();
             if (usuario.isUsuarioIsAdministrador()||usuario.isUsuarioIsCoordinador()) {

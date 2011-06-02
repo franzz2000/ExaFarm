@@ -5,6 +5,7 @@
 
 package edu.uoc.tfc.exafarm.backing;
 
+import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
@@ -25,6 +26,9 @@ public abstract class AbstractBacking {
 
     @ManagedProperty(value="#{sessionScope}")
     private Map<String, Object> sessionMap;
+    
+    @ManagedProperty(value="#{viewScope}")
+    private Map<String, Object> viewScope;
 
     public Usuario getCurrentUser() {
         return (Usuario) getSessionMap().get("currentUser");
@@ -34,6 +38,17 @@ public abstract class AbstractBacking {
         getSessionMap().remove("currentUser");
         if (null != currentUser) {
             getSessionMap().put("currentUser", currentUser);
+        }
+    }
+    
+    public Examen getCurrentExamen() {
+        return(Examen) getSessionMap().get("currentExamen");
+    }
+    
+    public void setCurrentExamen(Examen currentExamen) {
+        getSessionMap().remove("currentExamen");
+        if (null != currentExamen) {
+            getSessionMap().put("currentExamen", currentExamen);
         }
     }
 
@@ -66,6 +81,14 @@ public abstract class AbstractBacking {
 
     public void setRequestMap(Map<String, Object> requestMap) {
         this.requestMap = requestMap;
+    }
+
+    public Map<String, Object> getViewScope() {
+        return viewScope;
+    }
+
+    public void setViewScope(Map<String, Object> viewScope) {
+        this.viewScope = viewScope;
     }
 
     public Flash getFlash() {

@@ -46,10 +46,10 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Número de preguntas">
+                            <p:column headerText="Preguntas seleccionadas">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{examen.numPreguntas}"/>
+                                        <h:outputText value="#{examen.preguntasList.size()}/#{examen.numPreguntas}"/>
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText value="#{examen.numPreguntas}"/>
@@ -91,7 +91,7 @@
                                 <p:rowEditor/>
                             </p:column>
                             <p:column headerText="Ver preguntas">
-                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                <p:commandButton  image="ui-icon ui-icon-search" action="#{administraExamenesBacking.preguntas}" rendered="#{examen.isActivo}" update="growl" ajax="false">
                                     <f:param value="#{examen.id}" name="examen"/>
                                 </p:commandButton>
                             </p:column>

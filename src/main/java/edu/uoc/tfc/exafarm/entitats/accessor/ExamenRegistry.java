@@ -385,6 +385,25 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
         return result;
     }
+    
+    public List<Examen> getExamenByActivo() {
+        List<Examen> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Examen>>() {
+
+                @Override
+                public List<Examen> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("examenes.findByActivo");
+                    List<Examen> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
 //</editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Writing Respuesta instances">

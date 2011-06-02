@@ -7,6 +7,8 @@ package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import java.security.Principal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -48,6 +50,15 @@ public class LoginBacking extends AbstractBacking {
                 if (isUserInRole("COORDINADOR")) {
                     return "/faces/coordinador/principal?faces-redirect=true";
                 }
+                if (isUserInRole("NINGUNO")) {
+                    addMessage("Su usuario ha estado dado de baja. Consulte con su administrador para reactivarlo");
+                    try {
+                        getRequest().logout();
+                    } catch (ServletException ex) {
+                        Logger.getLogger(LoginBacking.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return null;
+                }
                 return "/faces/profesor/principal?faces-redirect=true";
 	}
         
@@ -74,9 +85,13 @@ public class LoginBacking extends AbstractBacking {
         /**
          * Logs out using HttpServletRequest API
          */
-	public String logout() throws ServletException {
+	public String logout() {
 		if (isAuthenticated())
-			getRequest().logout();
+                    try {
+                        getRequest().logout();
+                    } catch (ServletException ex) {
+                        Logger.getLogger(LoginBacking.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 return "/faces/login";
 	}
  

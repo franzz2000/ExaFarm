@@ -113,21 +113,7 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 
 // <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
     
-    public List<Grupo> getGrupoList() {
-        List<Grupo> result = Collections.emptyList();
-        try {
-            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
-                public List<Grupo> execute (EntityManager em) {
-                    Query query = em.createNamedQuery("grupos.findAll");
-                    List<Grupo> results = query.getResultList();
-                    return results;
-                }
-            });
-        } catch (EntityAccessorException ex) {
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
+    
     
     public List<Usuario> getUsuarioListActivo() {
         List<Usuario> result = Collections.emptyList();
@@ -226,6 +212,22 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 //</editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Reading Grupo instances">
+    public List<Grupo> getGrupoList() {
+        List<Grupo> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Grupo>>() {
+                public List<Grupo> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("grupos.findAll");
+                    List<Grupo> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
     public Grupo getGrupoById (final String id) {
         Grupo result = null;
         try {

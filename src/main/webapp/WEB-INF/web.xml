@@ -104,4 +104,8 @@
         <description>Gestión de preguntas para exámenes</description>
         <role-name>PROFESOR</role-name>
     </security-role>
+    <security-role>
+        <description>Usuarios dados de baja</description>
+        <role-name>NINGUNO</role-name>
+    </security-role>
 </web-app>

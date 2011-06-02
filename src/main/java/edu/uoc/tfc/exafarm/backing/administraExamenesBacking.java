@@ -5,11 +5,10 @@ import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import org.primefaces.event.RowEditEvent;
@@ -26,11 +25,7 @@ public class administraExamenesBacking extends AbstractBacking {
     Examen selectedExamen;
 
     /** Creates a new instance of administraUsuarios */
-    public administraExamenesBacking() {
-        lista = new ArrayList<Examen>();
-        lista = ExamenRegistry.getCurrentInstance().getExamenList();
-        selectedExamen = null;
-    }
+    public administraExamenesBacking() {}
     
 
     public List<Examen> getLista() {
@@ -49,6 +44,10 @@ public class administraExamenesBacking extends AbstractBacking {
         return lista.size()>10;
     }
     
+    public String seleccionar() {
+        setCurrentExamen((Examen)getFacesContext().getExternalContext().getRequestMap().get("examen"));
+        return "/faces/profesor/seleccionarPreguntas";
+    }
     public void modifica(RowEditEvent ev) {
         Examen obj = null;
         try {
@@ -74,5 +73,20 @@ public class administraExamenesBacking extends AbstractBacking {
         }
         addMessage("Se ha añadido el examen correctamente.");
     }
-
+    
+    public String preguntas() {
+//        setCurrentExamen(getFacesContext().getExternalContext().get);
+        return "/faces/profesor/administrarPreguntas";
+    }
+    
+    @PostConstruct
+    public void construct() {
+    lista = new ArrayList<Examen>();
+        if(getCurrentUser().isUsuarioIsAdministrador()||getCurrentUser().isUsuarioIsCoordinador()) {
+            lista = ExamenRegistry.getCurrentInstance().getExamenList();
+        } else {
+            lista = ExamenRegistry.getCurrentInstance().getExamenByActivo();
+        }
+        selectedExamen = null;    
+    }
 }
