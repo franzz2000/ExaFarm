@@ -44,10 +44,7 @@ public class administraExamenesBacking extends AbstractBacking {
         return lista.size()>10;
     }
     
-    public String seleccionar() {
-        setCurrentExamen((Examen)getFacesContext().getExternalContext().getRequestMap().get("examen"));
-        return "/faces/profesor/seleccionarPreguntas";
-    }
+    
     public void modifica(RowEditEvent ev) {
         Examen obj = null;
         try {
@@ -75,7 +72,6 @@ public class administraExamenesBacking extends AbstractBacking {
     }
     
     public String preguntas() {
-//        setCurrentExamen(getFacesContext().getExternalContext().get);
         return "/faces/profesor/administrarPreguntas";
     }
     

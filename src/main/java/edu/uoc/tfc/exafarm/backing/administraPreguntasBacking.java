@@ -3,7 +3,6 @@ package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
-import edu.uoc.tfc.exafarm.entitats.Respuesta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
@@ -16,9 +15,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.RowEditEvent;
@@ -133,9 +129,9 @@ public class administraPreguntasBacking extends AbstractBacking {
     public void construct(){
         examenId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");
         if(examenId==null){
-            examenId = (String)getViewScope().get("examenId");
+            examenId = (String)getViewMap().get("examenId");
         } else {
-            getViewScope().put("examenId", examenId);
+            getViewMap().put("examenId", examenId);
         }
         if(examenId==null) {
             Usuario usuario = getCurrentUser();

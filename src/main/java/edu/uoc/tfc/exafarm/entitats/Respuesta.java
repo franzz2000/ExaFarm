@@ -105,7 +105,6 @@ public class Respuesta extends AbstractEntity implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         hash += (texto != null ? texto.hashCode() : 0);
         hash += (isCorrecta != null ? isCorrecta.hashCode() : 0);
-        hash += (pregunta != null ? pregunta.hashCode() : 0);
         return hash;
     }
 
@@ -123,9 +122,6 @@ public class Respuesta extends AbstractEntity implements Serializable {
             return false;
         }
         if ((this.isCorrecta == null && other.isCorrecta != null) || (this.isCorrecta != null && !this.isCorrecta.equals(other.isCorrecta))) {
-            return false;
-        }
-        if ((this.pregunta == null && other.pregunta != null) || (this.pregunta != null && !this.pregunta.equals(other.pregunta))) {
             return false;
         }
         return true;

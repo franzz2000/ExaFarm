@@ -5,6 +5,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -37,7 +38,7 @@ import javax.persistence.TemporalType;
 })
 @ManagedBean
 @RequestScoped
-public class Pregunta extends AbstractEntity implements Serializable {
+public class Pregunta extends AbstractEntity implements Serializable, Comparable<Pregunta> {
     private static final long serialVersionUID = 1L;
     
     @Column(name="is_activa")
@@ -142,6 +143,18 @@ public class Pregunta extends AbstractEntity implements Serializable {
         this.usuario = usuario;
     }
     
+    public String getCorrecta() {
+        String letras[] = {"A", "B", "C", "D", "E", "Ninguna"};
+        int resultado=5;
+        for (int i=0;i<respuestas.size();i++) {
+            Boolean correcta = respuestas.get(i).getIsCorrecta();
+            if (correcta) {
+                resultado = i;
+            }
+        }
+        return letras[resultado];
+    }
+    
     
     @Override
     public int hashCode() {
@@ -188,4 +201,11 @@ public class Pregunta extends AbstractEntity implements Serializable {
     public String toString() {
         return texto;
     }
+
+    @Override
+    public int compareTo(Pregunta pregunta) {
+        return this.tema.getBloque().getDescripcion().compareToIgnoreCase(pregunta.tema.getBloque().getDescripcion());
+    }
+
+    
 }

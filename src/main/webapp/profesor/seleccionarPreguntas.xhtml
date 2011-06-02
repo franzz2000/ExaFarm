@@ -16,7 +16,7 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable id="tabla" var="seleccion" value="#{seleccionaPreguntasBacking.listaSeleccion}" emptyMessage="No existen preguntas.">
+                    <p:dataTable id="tabla" var="seleccion" value="#{seleccionaPreguntasBacking.listaSeleccion}" paginator="true" rows="4" emptyMessage="No existen preguntas.">
                         <f:facet name="header">
                             <h:outputText value="#{seleccionaPreguntasBacking.titulo}"/>
                         </f:facet>

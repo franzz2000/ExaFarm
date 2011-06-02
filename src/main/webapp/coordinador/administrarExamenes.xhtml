@@ -96,8 +96,8 @@
                                 </p:commandButton>
                             </p:column>
                             <p:column headerText="Generar">
-                                <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{examen.isActivo}" update="growl" ajax="false">
-                                    <f:param value="#{examen}" name="examen"/>
+                                <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{examen.isActivo}" ajax="false">
+                                    <f:param value="#{examen.id}" name="examen"/>
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>

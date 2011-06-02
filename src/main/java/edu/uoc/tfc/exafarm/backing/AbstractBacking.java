@@ -28,7 +28,7 @@ public abstract class AbstractBacking {
     private Map<String, Object> sessionMap;
     
     @ManagedProperty(value="#{viewScope}")
-    private Map<String, Object> viewScope;
+    private Map<String, Object> viewMap;
 
     public Usuario getCurrentUser() {
         return (Usuario) getSessionMap().get("currentUser");
@@ -42,13 +42,13 @@ public abstract class AbstractBacking {
     }
     
     public Examen getCurrentExamen() {
-        return(Examen) getSessionMap().get("currentExamen");
+        return(Examen) getViewMap().get("currentExamen");
     }
     
     public void setCurrentExamen(Examen currentExamen) {
-        getSessionMap().remove("currentExamen");
+        getViewMap().remove("currentExamen");
         if (null != currentExamen) {
-            getSessionMap().put("currentExamen", currentExamen);
+            getViewMap().put("currentExamen", currentExamen);
         }
     }
 
@@ -83,12 +83,12 @@ public abstract class AbstractBacking {
         this.requestMap = requestMap;
     }
 
-    public Map<String, Object> getViewScope() {
-        return viewScope;
+    public Map<String, Object> getViewMap() {
+        return viewMap;
     }
 
-    public void setViewScope(Map<String, Object> viewScope) {
-        this.viewScope = viewScope;
+    public void setViewMap(Map<String, Object> viewScope) {
+        this.viewMap = viewScope;
     }
 
     public Flash getFlash() {
@@ -96,7 +96,11 @@ public abstract class AbstractBacking {
     }
     
     public void addMessage(String message) {
-        getFacesContext().getCurrentInstance().addMessage(null, new FacesMessage(message));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(message));
+    }
+    
+    public void addMessage(FacesMessage.Severity severity, String message) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, null));
     }
 
 }

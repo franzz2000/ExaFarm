@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla_principal.xhtml">
+
+            <ui:define name="title">
+                Administrar datos de usuario
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid columns="2">
+                            <h:outputText value="Nombre:"/>
+                            <p:inputText id="nombre"
+                                         value="#{administraDatosBacking.usuario.nombre}"
+                                         required="true" requiredMessage="El campo Nombre es necesario."/>
+                            <h:outputText value="Apellidos:"/>
+                            <p:inputText id="apellidos"
+                                         value="#{administraDatosBacking.usuario.apellidos}"
+                                         required="true" requiredMessage="El campo Apellidos es necesario."/>
+                            <h:outputText value="Email:"/>
+                            <p:inputText id="email"
+                                         value="#{administraDatosBacking.usuario.email}"/>
+                            <h:outputText value="Clave:"/>
+                            <p:password id="password" value="#{administraDatosBacking.usuario.password}" feedback="true" minLength="5"
+                                        goodLabel="Buena"
+                                        strongLabel="Fuerte"
+                                        promptLabel="Introduzca una clave"
+                                        weakLabel="Débil"
+                                        required="true"
+                                        requiredMessage="Es necesaria una clave."/>
+                            <h:outputText value="&nbsp;"/>
+                            <p:commandButton value="Modificar" actionListener="#{administraDatosBacking.modifica}" update="growl"/>
+                        </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

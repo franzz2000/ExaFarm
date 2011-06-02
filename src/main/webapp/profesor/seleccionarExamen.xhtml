@@ -34,7 +34,9 @@
                                 <h:outputText value="#{examen.isActivo}"/>
                             </p:column>
                             <p:column headerText="Seleccionar">
-                                <p:commandButton  image="ui-icon ui-icon-search" action="#{administraExamenesBacking.seleccionar}" ajax="false"/>
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" ajax="false">
+                                    <f:param name="examen" value="#{examen.id}"/>
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>

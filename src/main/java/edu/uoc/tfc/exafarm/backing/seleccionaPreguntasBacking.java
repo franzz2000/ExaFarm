@@ -4,6 +4,7 @@
  */
 package edu.uoc.tfc.exafarm.backing;
 
+import edu.uoc.tfc.exafarm.backing.Seleccion;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
@@ -82,7 +83,7 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
     } 
     
     public String getTitulo() {
-        return titulo + examen.getDescripcion();
+        return titulo;
     }
     
     public boolean isPaginator() {
@@ -115,6 +116,7 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
                 lista.add(seleccion.getPregunta());
             }
         }
+        examen = getCurrentExamen();
         examen.setPreguntasList(lista);
         try {
             ExamenRegistry.getCurrentInstance().updateExamen(examen);
@@ -128,17 +130,29 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
     
     @PostConstruct
     public void construct(){
-        examen = getCurrentExamen();
-        Usuario usuario = getCurrentUser();
-        if (getCurrentUser().isUsuarioIsAdministrador()||getCurrentUser().isUsuarioIsCoordinador()) {
-            lista = ExamenRegistry.getCurrentInstance().getPreguntaList();
-        } else {
-            lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
+        listaSeleccion = (List<Seleccion>) getViewMap().get("listaSeleccion");
+        if (listaSeleccion==null) {
+            examenId = getFacesContext().getExternalContext().getRequestParameterMap().get("examen");
+            if(examenId==null) {
+                examen = getCurrentExamen();
+            } else {
+                examen = ExamenRegistry.getCurrentInstance().getExamenById(examenId);
+                setCurrentExamen(examen);
+            }
+            Usuario usuario = getCurrentUser();
+            if (getCurrentUser().isUsuarioIsAdministrador()||getCurrentUser().isUsuarioIsCoordinador()) {
+                lista = ExamenRegistry.getCurrentInstance().getPreguntaList();
+            } else {
+                lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
+            }
+
+            listaSeleccion = new ArrayList();
+            for (Pregunta pregunta:lista) {
+                listaSeleccion.add(new Seleccion(pregunta, pregunta.getExamenes().contains(examen)));
+            }
+            getViewMap().put("listaSeleccion", listaSeleccion);
+            titulo += examen.getDescripcion();
         }
-        listaSeleccion = new ArrayList();
-        for (Pregunta pregunta:lista) {
-            listaSeleccion.add(new Seleccion(pregunta, pregunta.getExamenes().contains(examen)));
-        }
-        //titulo += " del Examen de " + examen.getDescripcion();
+        
     }
 }

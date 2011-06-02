@@ -14,6 +14,7 @@
         <h:graphicImage library="images" name="exafarm_login.jpg"/>
         <br/><h:outputText value="Por favor, introduzca nombre de usuario y contraseña para acceder a la aplicación"/>
         <h:form>
+            <p:focus/>
             <h:panelGrid columns="3">
                 <h:outputLabel for="username" value="Usuario"/>
                 <p:inputText id="username" value="#{loginBacking.username}" required="true" tabindex="1" requiredMessage="Es necesario escribir un nombre."/>

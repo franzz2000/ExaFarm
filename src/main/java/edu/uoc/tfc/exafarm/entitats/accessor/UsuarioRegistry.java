@@ -112,9 +112,6 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Reading Usuario instances">
-    
-    
-    
     public List<Usuario> getUsuarioListActivo() {
         List<Usuario> result = Collections.emptyList();
         try {
@@ -125,6 +122,22 @@ public class UsuarioRegistry extends AbstractEntityAccessor implements Serializa
                     return results;
                 }
             });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Usuario> getUsuariosAdmin() {
+        List<Usuario> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Usuario>>() {
+                public List<Usuario> execute (EntityManager em) {
+                    Query query = em.createNamedQuery("usuarios.findAdministradores");
+                    List<Usuario> results = query.getResultList();
+                    return results;
+                }
+        });
         } catch (EntityAccessorException ex) {
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }

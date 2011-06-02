@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import org.primefaces.event.RowEditEvent;
@@ -60,8 +61,13 @@ public class administraUsuariosBacking extends AbstractBacking {
         Usuario obj = null;
         try {
             obj = (Usuario) ev.getObject();
-            UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
-            addMessage("El usuario se ha modificado correctamente.");
+            if(!obj.getGrupo().equals(getCurrentUser().getGrupo())&&obj.getIdUsuario().equals(getCurrentUser().getIdUsuario())) {
+                addMessage(FacesMessage.SEVERITY_ERROR, "No es posible modificar el grupo del usuario activo.");
+                obj.setGrupo(getCurrentUser().getGrupo());
+            } else {
+                UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
+                addMessage("El usuario se ha modificado correctamente.");
+            }
         } catch (EntityAccessorException ex) {
             addMessage("Error al actualizar el usuario.");
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);

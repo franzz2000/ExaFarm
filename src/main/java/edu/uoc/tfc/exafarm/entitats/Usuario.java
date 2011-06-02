@@ -36,7 +36,8 @@ import javax.servlet.http.HttpServletRequest;
     @NamedQuery(name="usuarios.findAll", query="SELECT u FROM Usuario AS u"),
     @NamedQuery(name="usuarios.getUsuarioByIdUsuario", query="SELECT u FROM Usuario AS u WHERE u.idUsuario=:id"),
     @NamedQuery(name="usuarios.getUsuarioById", query="SELeCT u FROM Usuario AS u WHERE u.id =:id"),
-    @NamedQuery(name="usuarios.findActivos", query="SELECT u FROM Usuario AS u WHERE u.isActivo = true")
+    @NamedQuery(name="usuarios.findActivos", query="SELECT u FROM Usuario AS u WHERE u.isActivo = true"),
+    @NamedQuery(name="usuarios.findAdministradores", query="SELECT u FROM Usuario AS u WHERE u.grupo.idGrupo = 'admin'")
 })
 @ManagedBean
 @RequestScoped

@@ -38,7 +38,7 @@ public class LoginBacking extends AbstractBacking {
 			try {
 				getRequest().login(username, password);
 			} catch (ServletException e) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario o contraseña incorrectos."));
+                            addMessage(FacesMessage.SEVERITY_ERROR, "Usuario o contraseña incorrectos.");
                             return null;
                         }
 		}

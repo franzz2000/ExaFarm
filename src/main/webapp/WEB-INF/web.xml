@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>cupertino</param-value>
+        <param-value>aristo</param-value>
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -18,9 +18,7 @@
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>faces/general/index.xhtml</welcome-file>
@@ -28,6 +26,10 @@
     <error-page>
         <error-code>403</error-code>
         <location>/faces/AccessDenied.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/faces/sesionCaducada.xhtml</location>
     </error-page>
     <security-constraint>
         <display-name>Tareas de Administrador</display-name>
