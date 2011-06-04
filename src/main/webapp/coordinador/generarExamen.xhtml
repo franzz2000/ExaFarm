@@ -16,15 +16,13 @@
             </ui:define>
 
             <ui:define name="content">
-                <p:dataList value="#{generaExamenBacking.versiones}" var="lista">
-                    <h:outputText value="#{lista.texto}"/>
-                    <p:dataList value="#{lista.preguntas}" var="preg">
-                        #{preg.texto} correcta: #{preg.correcta}
-                        <p:dataList value="#{preg.respuestas}" var="resp">
-                            #{resp.texto}
-                        </p:dataList>
+                <h:form>
+                    <p:dataList value="#{generaExamenBacking.versiones}" var="lista">
+                        <h:outputText value="#{lista.texto}"/>
+                        <h:commandButton value="Generar" action="#{generaExamenBacking.createPDF}"/>
                     </p:dataList>
-                </p:dataList>
+                        
+                </h:form>
             </ui:define>
 
         </ui:composition>

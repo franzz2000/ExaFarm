@@ -71,9 +71,9 @@ public class administraExamenesBacking extends AbstractBacking {
         addMessage("Se ha añadido el examen correctamente.");
     }
     
-    public String preguntas() {
-        return "/faces/profesor/administrarPreguntas";
-    }
+//    public String preguntas() {
+//        return "/faces/profesor/administrarPreguntas";
+//    }
     
     @PostConstruct
     public void construct() {

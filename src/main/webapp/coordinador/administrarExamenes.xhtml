@@ -91,7 +91,7 @@
                                 <p:rowEditor/>
                             </p:column>
                             <p:column headerText="Ver preguntas">
-                                <p:commandButton  image="ui-icon ui-icon-search" action="#{administraExamenesBacking.preguntas}" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
                                     <f:param value="#{examen.id}" name="examen"/>
                                 </p:commandButton>
                             </p:column>
