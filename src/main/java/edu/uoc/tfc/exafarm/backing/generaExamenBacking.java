@@ -58,15 +58,17 @@ public class generaExamenBacking extends AbstractBacking implements Serializable
             Document document = new Document();
             try {
                 PdfWriter writer = PdfWriter.getInstance(document, ec.getResponseOutputStream());
-            } catch (IOException ex) {
-                Logger.getLogger(generaExamenBacking.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            document.open();
-                document.add(new Paragraph("Hello world!")); 
-        //    buildPDFContent(document, type);
+                document.open();
+                Paragraph texto = new Paragraph("Examen de farmacología");
+                texto.setLeading(-18F);
+                document.add(texto); 
+                versiones.get(1).buildPDFContent(document, writer);
             document.close();
             getFacesContext().responseComplete();
-        } catch (DocumentException ex) {
+            } catch (DocumentException ex) {
+                Logger.getLogger(generaExamenBacking.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
             Logger.getLogger(generaExamenBacking.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

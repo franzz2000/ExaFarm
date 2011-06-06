@@ -19,9 +19,8 @@
                 <h:form>
                     <p:dataList value="#{generaExamenBacking.versiones}" var="lista">
                         <h:outputText value="#{lista.texto}"/>
-                        <h:commandButton value="Generar" action="#{generaExamenBacking.createPDF}"/>
                     </p:dataList>
-                        
+                    <p:commandButton value="Generar" actionListener="#{generaExamenBacking.createPDF}" ajax="false"/>
                 </h:form>
             </ui:define>
 

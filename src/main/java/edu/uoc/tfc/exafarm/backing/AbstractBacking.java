@@ -9,12 +9,13 @@ import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 
-
+@ManagedBean
 @RequestScoped
 public abstract class AbstractBacking {
 
