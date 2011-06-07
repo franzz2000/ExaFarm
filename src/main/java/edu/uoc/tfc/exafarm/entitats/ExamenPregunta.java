@@ -4,6 +4,7 @@
  */
 package edu.uoc.tfc.exafarm.entitats;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="examen_pregunta")
 @IdClass(value = ExamenPreguntaPK.class)
-public class ExamenPregunta {
+public class ExamenPregunta implements Serializable {
     @Id
     @Column(name="id_examen")
     private Long idExamen;

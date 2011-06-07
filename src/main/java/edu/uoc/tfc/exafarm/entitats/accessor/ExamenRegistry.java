@@ -346,27 +346,6 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         }
         return result;
     }
-
-    public void addExamen(final Examen toAdd) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.persist(toAdd);
-            }
-        });
-    }
-
-    public void updateExamen(final Examen toUpdate) throws EntityAccessorException {
-        doInTransaction(new PersistenceActionWithoutResult() {
-
-            @Override
-            public void execute(EntityManager em) {
-                em.merge(toUpdate);
-            }
-        });
-    }
-    
     public List<Examen> getExamenList() {
         List<Examen> result = Collections.emptyList();
         try {
@@ -404,6 +383,31 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
         return result;
     }
+    //</editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Writing Exámenes instances">
+
+    public void addExamen(final Examen toAdd) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.persist(toAdd);
+            }
+        });
+    }
+
+    public void updateExamen(final Examen toUpdate) throws EntityAccessorException {
+        doInTransaction(new PersistenceActionWithoutResult() {
+
+            @Override
+            public void execute(EntityManager em) {
+                em.merge(toUpdate);
+            }
+        });
+    }
+    
+    
 //</editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Writing Respuesta instances">

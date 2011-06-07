@@ -16,15 +16,17 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable id="tabla" var="seleccion" value="#{seleccionaPreguntasBacking.listaSeleccion}" paginator="true" rows="4" emptyMessage="No existen preguntas.">
+                    <p:dataTable id="tabla" var="seleccion" value="#{seleccionaPreguntasBacking.listaSeleccion}" emptyMessage="No existen preguntas.">
                         <f:facet name="header">
-                            <h:outputText value="#{seleccionaPreguntasBacking.titulo}"/>
+                            <h:outputText id="tituloTabla" value="#{seleccionaPreguntasBacking.numeroPreguntas} #{seleccionaPreguntasBacking.titulo}"/>
                         </f:facet>
                         <p:column style="width: 16px">
                             <p:rowToggler rendered="#{seleccion.pregunta.examenes.size()>0}"/>
                         </p:column>
                         <p:column>
-                            <h:selectBooleanCheckbox value="#{seleccion.seleccion}"/>
+                            <h:selectBooleanCheckbox value="#{seleccion.seleccion}">
+                                <p:ajax update="tituloTabla" listener="#{seleccionaPreguntasBacking.cambioSeleccion}"/>
+                            </h:selectBooleanCheckbox>
                         </p:column>
                         <p:column style="width: 16px" filterBy="#{seleccion.pregunta.id}" headerText="Id">
                             <h:outputText value="#{seleccion.pregunta.id}"/>
@@ -48,7 +50,7 @@
                             </p:dataList>
                         </p:rowExpansion>
                     </p:dataTable>
-                    <p:commandButton value="Guardar" action="#{seleccionaPreguntasBacking.guardar}" update="growl"/>
+                    <p:commandButton value="Guardar" action="#{seleccionaPreguntasBacking.guardar}" update="growl, tabla"/>
                 </h:form>
             </ui:define>
         </ui:composition>

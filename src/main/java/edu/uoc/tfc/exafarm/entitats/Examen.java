@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -49,7 +50,7 @@ public class Examen extends AbstractEntity implements Serializable {
     private Boolean isActivo;
     @Column(name="is_cerrado")
     private Boolean isCerrado;
-    @ManyToMany
+    @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(name="examen_pregunta",
             joinColumns= {@JoinColumn(name="id_examen", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="id_pregunta", referencedColumnName="id")

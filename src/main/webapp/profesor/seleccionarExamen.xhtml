@@ -31,7 +31,7 @@
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Activo">
-                                <h:outputText value="#{examen.isActivo}"/>
+                                <h:outputText value="#{examen.isActivo?'Sí':'No'}"/>
                             </p:column>
                             <p:column headerText="Seleccionar">
                                 <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" ajax="false">

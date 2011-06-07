@@ -5,13 +5,16 @@
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author franzz2000
  */
-@ViewScoped
+@ManagedBean
+@RequestScoped
 public class Seleccion {
     private Pregunta pregunta;
     private Boolean seleccion;

@@ -4,7 +4,6 @@
  */
 package edu.uoc.tfc.exafarm.backing;
 
-import edu.uoc.tfc.exafarm.backing.Seleccion;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
@@ -12,31 +11,32 @@ import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 
 @ManagedBean
-@RequestScoped
-public class seleccionaPreguntasBacking extends AbstractBacking {
+@ViewScoped
+public class seleccionaPreguntasBacking implements Serializable{
     List<Tema> temas;
     List<Usuario> profesores;
     Examen examen;
-    List <Pregunta> lista;
+    List <Pregunta> listaPreguntas;
     List <Seleccion> listaSeleccion;
-    Pregunta[] preguntasSeleccionadas;
     Pregunta preguntaSeleccionada;
     SelectItem[] temasOptions;
     SelectItem[] profesoresOptions;
     String examenId;
+    Integer numeroPreguntas;
     
     String titulo = "Preguntas seleccionadas para el examen de ";
 
@@ -47,6 +47,7 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
         profesores = new ArrayList<Usuario>();
         profesores = UsuarioRegistry.getCurrentInstance().getUsuarioListActivo();
         profesoresOptions = createProfesorOptions(profesores);
+        numeroPreguntas=0;
     }
     
     public SelectItem[] getTemasOptions(){
@@ -56,23 +57,6 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
     public SelectItem[] getProfesoresOptions() {
         return profesoresOptions;
     }
-
-    public Pregunta getPreguntaSeleccionada() {
-        return preguntaSeleccionada;
-    }
-
-    public void setPreguntaSeleccionada(Pregunta preguntaSeleccionada) {
-        this.preguntaSeleccionada = preguntaSeleccionada;
-    }
-
-    public Pregunta[] getPreguntasSeleccionadas() {
-        return preguntasSeleccionadas;
-    }
-
-    public void setPreguntasSeleccionadas(Pregunta[] preguntasSeleccionadas) {
-        this.preguntasSeleccionadas = preguntasSeleccionadas;
-    }
-
     
     public List<Seleccion> getListaSeleccion() {
         return listaSeleccion;
@@ -86,8 +70,12 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
         return titulo;
     }
     
+    public Integer getNumeroPreguntas() {
+        return numeroPreguntas;
+    }
+    
     public boolean isPaginator() {
-        return lista.size()>10;
+        return listaPreguntas.size()>10;
     }
     
     private SelectItem[] createTemaOptions(List<Tema> temas) {
@@ -110,49 +98,61 @@ public class seleccionaPreguntasBacking extends AbstractBacking {
     }
     
     public void guardar() {
-        lista = new ArrayList<Pregunta>();
+        List<Pregunta> preguntasExamen = new ArrayList<Pregunta>();
         for(Seleccion seleccion:listaSeleccion) {
+            if (seleccion.getPregunta().getExamenes().contains(examen)&&!seleccion.getSeleccion()) {
+                seleccion.getPregunta().getExamenes().remove(examen);
+            }
+            if (!seleccion.getPregunta().getExamenes().contains(examen)&&seleccion.getSeleccion()) {
+                seleccion.getPregunta().getExamenes().add(examen);
+            }
             if (seleccion.getSeleccion()) {
-                lista.add(seleccion.getPregunta());
+                preguntasExamen.add(seleccion.getPregunta());
             }
         }
-        examen = getCurrentExamen();
-        examen.setPreguntasList(lista);
+        examen.setPreguntasList(preguntasExamen);
         try {
-            ExamenRegistry.getCurrentInstance().updateExamen(examen);
-            addMessage("Se ha actualizado la selección de preguntas");
+            ExamenRegistry.getCurrentInstance().updateExamen(examen);            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha actualizado la selección de preguntas", null));
         } catch (EntityAccessorException ex) {
-            addMessage("Error al modificar el examen.");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el examen.", null));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    public void cambioSeleccion(){
+        Seleccion currentSeleccion = (Seleccion)FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("seleccion");
+        if(currentSeleccion.getSeleccion()) {
+            numeroPreguntas++;
+        } else {
+            numeroPreguntas--;
+        }
+    }
     
     @PostConstruct
     public void construct(){
-        listaSeleccion = (List<Seleccion>) getViewMap().get("listaSeleccion");
-        if (listaSeleccion==null) {
-            examenId = getFacesContext().getExternalContext().getRequestParameterMap().get("examen");
-            if(examenId==null) {
-                examen = getCurrentExamen();
-            } else {
-                examen = ExamenRegistry.getCurrentInstance().getExamenById(examenId);
-                setCurrentExamen(examen);
-            }
-            Usuario usuario = getCurrentUser();
-            if (getCurrentUser().isUsuarioIsAdministrador()||getCurrentUser().isUsuarioIsCoordinador()) {
-                lista = ExamenRegistry.getCurrentInstance().getPreguntaList();
-            } else {
-                lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
-            }
-
-            listaSeleccion = new ArrayList();
-            for (Pregunta pregunta:lista) {
-                listaSeleccion.add(new Seleccion(pregunta, pregunta.getExamenes().contains(examen)));
-            }
-            getViewMap().put("listaSeleccion", listaSeleccion);
-            titulo += examen.getDescripcion();
+        examenId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");
+        if(examenId==null) {
+            List<Examen> examenes = ExamenRegistry.getCurrentInstance().getExamenByActivo();
+            examen = examenes.get(0);
+        } else {
+            examen = ExamenRegistry.getCurrentInstance().getExamenById(examenId);
         }
-        
+        Usuario usuario = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        if (usuario.isUsuarioIsAdministrador()||usuario.isUsuarioIsCoordinador()) {
+            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaList();
+        } else {
+            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
+        }
+
+        listaSeleccion = new ArrayList<Seleccion>();
+        for (Pregunta pregunta:listaPreguntas) {
+            Boolean seleccionada = pregunta.getExamenes().contains(examen);
+            listaSeleccion.add(new Seleccion(pregunta, seleccionada));
+            if(seleccionada)
+                numeroPreguntas++;
+            
+        }
+        titulo += examen.getDescripcion();
     }
 }
