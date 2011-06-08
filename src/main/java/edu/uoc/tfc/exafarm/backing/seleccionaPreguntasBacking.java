@@ -37,6 +37,7 @@ public class seleccionaPreguntasBacking implements Serializable{
     SelectItem[] profesoresOptions;
     String examenId;
     Integer numeroPreguntas;
+    String modificado; //Se activa si se ha modificado alguna seleccion y no se ha grabado
     
     String titulo = "Preguntas seleccionadas para el examen de ";
 
@@ -48,6 +49,7 @@ public class seleccionaPreguntasBacking implements Serializable{
         profesores = UsuarioRegistry.getCurrentInstance().getUsuarioListActivo();
         profesoresOptions = createProfesorOptions(profesores);
         numeroPreguntas=0;
+        modificado = "";
     }
     
     public SelectItem[] getTemasOptions(){
@@ -72,6 +74,10 @@ public class seleccionaPreguntasBacking implements Serializable{
     
     public Integer getNumeroPreguntas() {
         return numeroPreguntas;
+    }
+    
+    public String getModificado() {
+        return modificado;
     }
     
     public boolean isPaginator() {
@@ -112,7 +118,8 @@ public class seleccionaPreguntasBacking implements Serializable{
         }
         examen.setPreguntasList(preguntasExamen);
         try {
-            ExamenRegistry.getCurrentInstance().updateExamen(examen);            
+            ExamenRegistry.getCurrentInstance().updateExamen(examen);
+            modificado = "";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha actualizado la selección de preguntas", null));
         } catch (EntityAccessorException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el examen.", null));
@@ -127,6 +134,7 @@ public class seleccionaPreguntasBacking implements Serializable{
         } else {
             numeroPreguntas--;
         }
+        modificado = "| Datos modificados, es necesario guardar la información.";
     }
     
     @PostConstruct

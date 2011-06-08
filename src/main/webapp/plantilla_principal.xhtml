@@ -19,12 +19,14 @@
             <p:layoutUnit position="top" height="80" resizable="false" closable="false" collapsible="false">
                 <h:panelGrid columns="2">
                     <h:graphicImage library="images" name="exafarm_logo.png"/>
-                    <h:form style="font-size: 90%;"><h:outputText value=" Bienvenido, #{sessionScope.currentUser} "/><p:commandLink value="(Desconectar)" action="#{loginBacking.logout}" ajax="false"/></h:form>
+                    <h:form style="font-size: 90%;"><h:outputText value=" #{bundle.principal_bienvenido} #{sessionScope.currentUser} "/><p:commandLink value="(Desconectar)" action="#{loginBacking.logout}" ajax="false"/></h:form>
                 </h:panelGrid>
             </p:layoutUnit>
 
             <p:layoutUnit position="bottom" height="30" resizable="false" closable="false" collapsible="false">
-                    <h:outputText value="TFC - ExaFarm - UOC (Francisco José Jimeno Demuth)" />
+                <ui:insert name="bottom">
+                    <h:outputText id="estado" value="TFC - ExaFarm - UOC (Francisco José Jimeno Demuth)" />
+                </ui:insert>
             </p:layoutUnit>
 
             <p:layoutUnit position="left" width="185" resizable="false" closable="false" collapsible="true" scrollable="true">
