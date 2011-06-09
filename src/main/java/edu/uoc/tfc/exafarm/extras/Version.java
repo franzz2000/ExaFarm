@@ -34,6 +34,7 @@ public class Version {
     };
     List<Pregunta> preguntas;
     String texto;
+    Long version;
     /**
      * Constructor vacío
      */
@@ -44,9 +45,10 @@ public class Version {
      * @param texto Texto de cabecera del examen
      * @param preguntas Lista de preguntas a incluir en el examen
      */
-    public Version(String texto, List<Pregunta> preguntas) {
+    public Version(String texto, List<Pregunta> preguntas, Long version) {
         this.texto = texto;
         this.preguntas = preguntas;
+        this.version = version;
     }
             
     /**
@@ -81,6 +83,14 @@ public class Version {
      */
     public void setTexto(String version) {
         this.texto = version;
+    }
+    
+    public Long getVersion() {
+        return version;
+    }
+    
+    public void setVersion(Long version){
+        this.version = version;
     }
     
     /**
@@ -132,7 +142,7 @@ public class Version {
     }
     
     private void addPregunta(ColumnText ct, Pregunta pregunta, int i) {
-        ct.addElement(new Paragraph(i + ") " + pregunta.getTexto()));
+        ct.addElement(new Paragraph(i + ") " + pregunta.getTexto().toUpperCase()));
         com.itextpdf.text.List listaRespuestas = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.ALPHABETICAL);
         listaRespuestas.setIndentationLeft(15F);
         for(Respuesta respuesta:pregunta.getRespuestas()) {
