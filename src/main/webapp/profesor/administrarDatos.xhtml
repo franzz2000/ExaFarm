@@ -15,31 +15,33 @@
             </ui:define>
 
             <ui:define name="content">
-                <h:form>
-                    <h:panelGrid columns="2">
-                            <h:outputText value="Nombre:"/>
-                            <p:inputText id="nombre"
-                                         value="#{administraDatosBacking.usuario.nombre}"
-                                         required="true" requiredMessage="El campo Nombre es necesario."/>
-                            <h:outputText value="Apellidos:"/>
-                            <p:inputText id="apellidos"
-                                         value="#{administraDatosBacking.usuario.apellidos}"
-                                         required="true" requiredMessage="El campo Apellidos es necesario."/>
-                            <h:outputText value="Email:"/>
-                            <p:inputText id="email"
-                                         value="#{administraDatosBacking.usuario.email}"/>
-                            <h:outputText value="Clave:"/>
-                            <p:password id="password" value="#{administraDatosBacking.usuario.password}" feedback="true" minLength="5"
-                                        goodLabel="Buena"
-                                        strongLabel="Fuerte"
-                                        promptLabel="Introduzca una clave"
-                                        weakLabel="Débil"
-                                        required="true"
-                                        requiredMessage="Es necesaria una clave."/>
-                            <h:outputText value="&nbsp;"/>
-                            <p:commandButton value="Modificar" actionListener="#{administraDatosBacking.modifica}" update="growl"/>
-                        </h:panelGrid>
-                </h:form>
+                <p:panel header="Modificar datos personales">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                                <h:outputText value="Nombre:"/>
+                                <p:inputText id="nombre"
+                                             value="#{administraDatosBacking.usuario.nombre}"
+                                             required="true" requiredMessage="El campo Nombre es necesario."/>
+                                <h:outputText value="Apellidos:"/>
+                                <p:inputText id="apellidos"
+                                             value="#{administraDatosBacking.usuario.apellidos}"
+                                             required="true" requiredMessage="El campo Apellidos es necesario."/>
+                                <h:outputText value="Email:"/>
+                                <p:inputText id="email"
+                                             value="#{administraDatosBacking.usuario.email}"/>
+                                <h:outputText value="Clave:"/>
+                                <p:password id="password" value="#{administraDatosBacking.usuario.password}" feedback="true" minLength="5"
+                                            goodLabel="Buena"
+                                            strongLabel="Fuerte"
+                                            promptLabel="Introduzca una clave"
+                                            weakLabel="Débil"
+                                            required="true"
+                                            requiredMessage="Es necesaria una clave."/>
+                                <h:outputText value="&nbsp;"/>
+                                <p:commandButton value="Modificar" actionListener="#{administraDatosBacking.modifica}" update="growl"/>
+                            </h:panelGrid>
+                    </h:form>
+                </p:panel>
             </ui:define>
 
         </ui:composition>

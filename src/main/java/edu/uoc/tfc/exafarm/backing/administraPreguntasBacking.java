@@ -8,13 +8,15 @@ import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.RowEditEvent;
@@ -25,8 +27,8 @@ import org.primefaces.event.RowEditEvent;
  */
 
 @ManagedBean
-@RequestScoped
-public class administraPreguntasBacking extends AbstractBacking {
+@ViewScoped
+public class administraPreguntasBacking implements Serializable{
     String examenId;
     Examen examen;
     List <Pregunta> lista;
@@ -85,10 +87,10 @@ public class administraPreguntasBacking extends AbstractBacking {
             obj = (Pregunta) ev.getObject();
             ExamenRegistry.getCurrentInstance().updatePregunta(obj);
         } catch (EntityAccessorException ex) {
-            addMessage("Error al actualizar la pregunta.");
+            Utils.addMessage("Error al actualizar la pregunta.");
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        addMessage("La pregunta se ha modificado correctamente.");
+        Utils.addMessage("La pregunta se ha modificado correctamente.");
     }
     
     
@@ -128,13 +130,8 @@ public class administraPreguntasBacking extends AbstractBacking {
     @PostConstruct
     public void construct(){
         examenId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");
-        if(examenId==null){
-            examenId = (String)getViewMap().get("examenId");
-        } else {
-            getViewMap().put("examenId", examenId);
-        }
         if(examenId==null) {
-            Usuario usuario = getCurrentUser();
+            Usuario usuario = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
             if (usuario.isUsuarioIsAdministrador()||usuario.isUsuarioIsCoordinador()) {
                 lista = ExamenRegistry.getCurrentInstance().getPreguntaList();
             } else {

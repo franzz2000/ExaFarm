@@ -8,10 +8,11 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
     <application>
         <locale-config>
-            <default-locale>es_ES</default-locale>
+            <default-locale>es</default-locale>
+            <supported-locale>en</supported-locale>
         </locale-config>
         <resource-bundle>
-            <base-name>edu.uoc.tfc.exafarm.messages.Resources</base-name>
+            <base-name>edu.uoc.tfc.exafarm.messages.Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
     </application>

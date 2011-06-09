@@ -10,92 +10,90 @@
 
     <ui:composition template="./../plantilla_principal.xhtml">
 
-        <ui:define name="title">ExaFarm - Administrar Usuarios</ui:define>
+        <ui:define name="title">#{bundle.AdministrarUsuariosTitulo}</ui:define>
         <ui:define name="content">
-            <p:panel header="Modificar usuario">
-                <h:form>
-                    <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios."
-                                 rowEditListener="#{administraUsuariosBacking.modifica}"
-                                 onRowEditUpdate="growl">
-                        <f:facet name="header">
-                            Listado de Usuarios
-                        </f:facet>
-                        <p:column headerText="Id de usuario" style="width: 20px;">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.idUsuario}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{user.idUsuario}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
-                        <p:column headerText="Nombre" sortBy="#{user.nombre}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.nombre}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{user.nombre}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
-                        <p:column headerText="Apellidos" sortBy="#{user.apellidos}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.apellidos}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{user.apellidos}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
-                        <p:column headerText="Email">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.email}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{user.email}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
-                        <p:column headerText="Clave">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="&nbsp;"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:password value="#{user.password}" feedback="false" minLength="0"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
-                        <p:column headerText="Grupo">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{user.grupo.descripcion}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu value="#{user.grupo}" converter="#{grupoListConverter}">  
-                                        <f:selectItems value="#{administraUsuariosBacking.listaGrupo}"  
-                                            var="grupo"   
-                                            itemLabel="#{grupo.descripcion}"  
-                                            itemValue="#{grupo}" />  
-                                    </h:selectOneMenu> 
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>                        
-                        <p:column headerText="Modificar" style="width: 30px">
-                            <p:rowEditor/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-            </p:panel>
+            <h:form>
+                <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios."
+                             rowEditListener="#{administraUsuariosBacking.modifica}"
+                             onRowEditUpdate="growl">
+                    <f:facet name="header">
+                        #{bundle.AdministrarUsuariosListaUsuarios}
+                    </f:facet>
+                    <p:column headerText="#{bundle.AdministrarUsuariosIdUsuario}" style="width: 20px;">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.idUsuario}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.idUsuario}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{bundle.AdministrarUsuariosNombre}" sortBy="#{user.nombre}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.nombre}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.nombre}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{bundle.AdministrarUsuariosApellidos}" sortBy="#{user.apellidos}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.apellidos}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.apellidos}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{bundle.AdministrarUsuariosEmail}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.email}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.email}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{bundle.AdministrarUsuariosClave}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:password value="#{user.password}" feedback="false" minLength="0"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{bundle.AdministrarUsuariosGrupo}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.grupo.descripcion}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{user.grupo}" converter="#{grupoListConverter}">  
+                                    <f:selectItems value="#{administraUsuariosBacking.listaGrupo}"  
+                                        var="grupo"   
+                                        itemLabel="#{grupo.descripcion}"  
+                                        itemValue="#{grupo}" />  
+                                </h:selectOneMenu> 
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>                        
+                    <p:column headerText="#{bundle.AdministrarUsuariosModificar}" style="width: 30px">
+                        <p:rowEditor/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
         </ui:define>
     </ui:composition>
     </body>

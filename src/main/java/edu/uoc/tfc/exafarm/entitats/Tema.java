@@ -4,8 +4,11 @@
  */
 package edu.uoc.tfc.exafarm.entitats;
 
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
+import java.util.Locale;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

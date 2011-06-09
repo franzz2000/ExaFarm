@@ -8,15 +8,12 @@ package edu.uoc.tfc.exafarm.backing;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 
 @ManagedBean
-@RequestScoped
 public abstract class AbstractBacking {
 
     @ManagedProperty(value="#{facesContext}")
@@ -165,25 +162,4 @@ public abstract class AbstractBacking {
     public Flash getFlash() {
         return getFacesContext().getExternalContext().getFlash();
     }
-    
-    /**
-     * Añade un mensaje general que aparecerá en la visualización
-     * 
-     * @param message Texto que ha de aparecer
-     */
-    public void addMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(message));
-    }
-    
-    /**
-     * Añade un mensaje general con tipo de severidad.
-     * 
-     * @param severity severidad del mensaje
-     * @param message Texto que aparece
-     * 
-     */
-    public void addMessage(FacesMessage.Severity severity, String message) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, message, null));
-    }
-
 }

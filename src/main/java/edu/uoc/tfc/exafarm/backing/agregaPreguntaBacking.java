@@ -10,14 +10,13 @@ import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
-import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -135,13 +134,13 @@ public class agregaPreguntaBacking extends AbstractBacking {
                 ExamenRegistry.getCurrentInstance().addPregunta(newPregunta);
                 newPregunta.setRespuestas(respuestas);
                 ExamenRegistry.getCurrentInstance().updatePregunta(newPregunta);
-                addMessage("Se ha añadido la pregunta.");
+                Utils.addMessage("Se ha añadido la pregunta.");
             } catch (EntityAccessorException ex) {
-                addMessage("Error al añadir la pregunta.");
+                Utils.addMessage("Error al añadir la pregunta.");
                 Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
             }    
         } else {
-            addMessage("Es necesario seleccionar al menos una pregunta correcta.");
+            Utils.addMessage("Es necesario seleccionar al menos una pregunta correcta.");
         } 
     }
 }

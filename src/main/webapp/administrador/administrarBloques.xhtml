@@ -10,20 +10,20 @@
 
         <ui:composition template="./../plantilla_principal.xhtml">
 
-            <ui:define name="title">ExaFarm - Administrar Bloques</ui:define>
+            <ui:define name="title">#{bundle.AdministrarBloquesTitulo}</ui:define>
 
             <ui:define name="content">
-                <p:panel header="Modificar bloque">
+                <p:panel header="#{bundle.AdministrarBloquesTituloPanel}">
                     <h:form>
-                        <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="No existen bloques."
+                        <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="#{bundle.AdministrarBloquesNoExistenBloques}"
                                      rowEditListener="#{administraBloquesBacking.modifica}" onRowEditUpdate="growl" style="width: 500px;">
                             <f:facet name="header">
-                                Listado de Bloques
+                                #{bundle.AdministrarBloquesListadoDeBloques}
                             </f:facet>
                             <p:column rendered="false">
                                 <h:outputText value="#{block.id}"/>
                             </p:column>
-                            <p:column headerText="Descripción" sortBy="#{block.descripcion}" style="width: 50px;">
+                            <p:column headerText="#{bundle.AdministrarBloquesDescripcion}" sortBy="#{block.descripcion}" style="width: 50px;">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{block.descripcion}" style="#{block.isActivo?'':'color: red'}"/>
@@ -34,7 +34,7 @@
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column headerText="Activo" sortBy="#{block.isActivo}" style="width: 50px">
+                            <p:column headerText="#{bundle.AdministrarBloquesActivo}" sortBy="#{block.isActivo}" style="width: 50px">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{block.isActivo}" style="#{block.isActivo?'':'color: red'}"/>
@@ -44,7 +44,7 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Modificar" style="width:32px;">
+                            <p:column headerText="#{bundle.AdministrarBloquesModificar}" style="width:32px;">
                                 <p:rowEditor/>
                             </p:column>
                         </p:dataTable>
@@ -52,6 +52,5 @@
                 </p:panel>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

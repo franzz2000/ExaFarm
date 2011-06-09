@@ -9,26 +9,24 @@
     <body>
 
         <ui:composition template="./../plantilla_principal.xhtml">
-
             <ui:define name="title">
-                ExaFarm - Añadir bloque
+                #{bundle.AgregarBloqueTitulo}
             </ui:define>
-
             <ui:define name="content">
-                <p:panel header="Añadir bloque">
+                <p:panel header="#{bundle.AgregarBloqueAnadirBloque}">
                     <h:form>
                         <h:panelGrid columns="2">
-                            <h:outputText value="Descripción"/>
-                            <p:inputText value="#{bloque.descripcion}" required="true" requiredMessage="Es necesario añadir una descripción."/>
-                            <h:outputText value="Activo"/>
+                            <h:outputText value="#{bundle.AgregarBloqueDescripcion}"/>
+                            <p:inputText value="#{bloque.descripcion}" required="true"
+                                         requiredMessage="#{bundle.AgregarBloqueErrorDescripcion}"/>
+                            <h:outputText value="#{bundle.AgregarBloqueActivo}"/>
                             <h:selectBooleanCheckbox id="activo" value="#{bloque.isActivo}"/>
-                            <p:commandButton value="Añadir" actionListener="#{administraBloquesBacking.agregaBloque}" update="growl"/>
+                            <p:commandButton value="#{bundle.AgregarBloqueAnadir}" actionListener="#{administraBloquesBacking.agregaBloque}"
+                                             update="growl"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

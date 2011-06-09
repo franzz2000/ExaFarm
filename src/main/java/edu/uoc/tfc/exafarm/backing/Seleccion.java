@@ -5,8 +5,8 @@
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -14,8 +14,8 @@ import javax.faces.bean.ViewScoped;
  * @author franzz2000
  */
 @ManagedBean
-@RequestScoped
-public class Seleccion {
+@ViewScoped
+public class Seleccion implements Serializable {
     private Pregunta pregunta;
     private Boolean seleccion;
     

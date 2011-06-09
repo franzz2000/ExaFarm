@@ -128,7 +128,7 @@ public class seleccionaPreguntasBacking implements Serializable{
     }
     
     public void cambioSeleccion(){
-        Seleccion currentSeleccion = (Seleccion)FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("seleccion");
+        Seleccion currentSeleccion = (Seleccion)FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("selecciona");
         if(currentSeleccion.getSeleccion()) {
             numeroPreguntas++;
         } else {
@@ -159,7 +159,6 @@ public class seleccionaPreguntasBacking implements Serializable{
             listaSeleccion.add(new Seleccion(pregunta, seleccionada));
             if(seleccionada)
                 numeroPreguntas++;
-            
         }
         titulo += examen.getDescripcion();
     }

@@ -5,7 +5,6 @@
 
 package edu.uoc.tfc.exafarm.entitats;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

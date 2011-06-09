@@ -6,6 +6,7 @@
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ public class LoginBacking extends AbstractBacking {
 			try {
 				getRequest().login(username, password);
 			} catch (ServletException e) {
-                            addMessage(FacesMessage.SEVERITY_ERROR, "Usuario o contraseña incorrectos.");
+                            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle","LoginErrorAcceso"));
                             return null;
                         }
 		}
@@ -51,7 +52,7 @@ public class LoginBacking extends AbstractBacking {
                     return "/faces/coordinador/principal?faces-redirect=true";
                 }
                 if (isUserInRole("NINGUNO")) {
-                    addMessage("Su usuario ha estado dado de baja. Consulte con su administrador para reactivarlo");
+                    Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "LoginErrorUsuarioBaja"));
                     try {
                         getRequest().logout();
                     } catch (ServletException ex) {
@@ -133,83 +134,3 @@ public class LoginBacking extends AbstractBacking {
 	}
  
 }
-//public class LoginBacking extends AbstractBacking {
-//    private UIInput loginOutcomeChoiceList;
-//
-//    private Usuario usuarioNoAutentificado;
-//
-//    public boolean userIdIsValid(String toTest) {
-//        boolean result = false;
-//
-//        UsuarioRegistry registry = UsuarioRegistry.getCurrentInstance();
-//        result = null !=(usuarioNoAutentificado = registry.getUsuarioByIdUsuario(toTest));
-//        return result;
-//    }
-//
-//    public boolean passwordIsValid(String toTest) {
-//        boolean result = false;
-//
-//        if (null != usuarioNoAutentificado) {
-//            String usuarioPassword = usuarioNoAutentificado.getPassword();
-//            if (null != usuarioPassword && usuarioPassword.equals(toTest)) {
-//                setCurrentUsuario(usuarioNoAutentificado);
-//                result = true;
-//            }
-//        }
-//        usuarioNoAutentificado = null;
-//        return result;
-//    }
-//
-//    public String getSuccessOutcome() {
-//        String choice = (String) getLoginOutcomeChoiceList().getValue();
-//        return "/user/" + choice + "?faces-redirect=true";
-//    }
-//
-//    public void forwardToMainIfLoggedIn(ComponentSystemEvent cse) {
-//        if (isUsuarioLoggedIn()) {
-//            getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/user/allEvents?faces-redirect=true");
-//        }
-//    }
-//
-//    public void forwardToLoginIfNotLoggedIn(ComponentSystemEvent cse) {
-//        String viewId = getFacesContext().getViewRoot().getViewId();
-//        if(!isUsuarioLoggedIn() && !viewId.startsWith("/login")&&!viewId.startsWith("/register")) {
-//            getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/login?faces-redirect=true");
-//        }
-//    }
-//    
-//    public void forwardToGroup(ComponentSystemEvent cse) {
-//        Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//        UsuarioRegistry registry = UsuarioRegistry.getCurrentInstance();
-//        String idUsuario = ((HttpServletRequest)request).getUserPrincipal().getName();
-//        Usuario usuario = registry.getUsuarioByIdUsuario(idUsuario);
-//        setCurrentUsuario(usuario);
-//        
-//        if(((HttpServletRequest)request).isUserInRole("ADMINISTRADOR")) {
-//            getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/administrador/principal?faces-redirect=true");
-//        }
-//        if(((HttpServletRequest)request).isUserInRole("COORDINADOR")) {
-//            getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/coordinador/principal?faces-redirect=true");
-//        }
-//        if(((HttpServletRequest)request).isUserInRole("PROFESOR")) {
-//            getFacesContext().getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "/profesor/principal?faces-redirect=true");
-//        }
-//    }
-//    
-//
-//    public String performLogout() {
-//        String result = "/login?faces-redirect=true";
-//        setCurrentUsuario(null);
-//        getFacesContext().getExternalContext().invalidateSession();
-//
-//        return result;
-//    }
-//
-//    public UIInput getLoginOutcomeChoiceList() {
-//        return loginOutcomeChoiceList;
-//    }
-//
-//    public void setLoginOutomeChoiceList(UIInput loginOutcomeChoiceList) {
-//        this.loginOutcomeChoiceList = loginOutcomeChoiceList;
-//    }
-//}

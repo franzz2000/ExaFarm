@@ -4,13 +4,17 @@ import edu.uoc.tfc.exafarm.entitats.Grupo;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -18,8 +22,9 @@ import org.primefaces.event.RowEditEvent;
  * @author franzz2000
  */
 
-@ManagedBean
-public class administraUsuariosBacking extends AbstractBacking {
+@ManagedBean(name="administraUsuariosBacking")
+@ViewScoped
+public class administraUsuariosBacking implements Serializable{
     List <Usuario> lista;
     List <Grupo> listaGrupo;
     
@@ -59,24 +64,25 @@ public class administraUsuariosBacking extends AbstractBacking {
     
     public void modifica(RowEditEvent ev) {
         Usuario obj = null;
+        Usuario currentUser = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         try {
             obj = (Usuario) ev.getObject();
-            if(!obj.getGrupo().equals(getCurrentUser().getGrupo())&&obj.getIdUsuario().equals(getCurrentUser().getIdUsuario())) {
-                addMessage(FacesMessage.SEVERITY_ERROR, "No es posible modificar el grupo del usuario activo.");
-                obj.setGrupo(getCurrentUser().getGrupo());
+            if(!obj.getGrupo().equals(currentUser.getGrupo())&&obj.getIdUsuario().equals(currentUser.getIdUsuario())) {
+                Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorModificarGrupo"));
+                obj.setGrupo(currentUser.getGrupo());
             } else {
                 UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
-                addMessage("El usuario se ha modificado correctamente.");
+                Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuarioOKModificar"));
             }
         } catch (EntityAccessorException ex) {
-            addMessage("Error al actualizar el usuario.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorModificar", null));
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
     
     public void agregaUsuario() {
-        ExternalContext extContext = getFacesContext().getExternalContext();
+        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
 
         UsuarioRegistry eventRegistry = UsuarioRegistry.getCurrentInstance();
         Usuario newUsuario = (Usuario) extContext.getRequestMap().get("usuario");
@@ -84,9 +90,9 @@ public class administraUsuariosBacking extends AbstractBacking {
         try {
             UsuarioRegistry.getCurrentInstance().addUsuario(newUsuario);
         } catch (EntityAccessorException ex) {
-            addMessage("Error al añadir el usuario.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorAnadir", null));
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        addMessage("Se ha añadido el usuario correctamente.");
+        Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuarioOKAnadir"));
     }
 }

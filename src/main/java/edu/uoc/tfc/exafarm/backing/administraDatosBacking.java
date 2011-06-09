@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.backing;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -36,9 +37,9 @@ public class administraDatosBacking extends AbstractBacking {
     public void modifica() {
         try {
             UsuarioRegistry.getCurrentInstance().updateUsuario(usuario);
-            addMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario correctamente.");
+            Utils.addMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario correctamente.");
         } catch (EntityAccessorException ex) {
-            addMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el usuario.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el usuario.");
             Logger.getLogger(administraDatosBacking.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

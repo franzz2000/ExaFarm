@@ -11,34 +11,37 @@
         <ui:composition template="./../plantilla_principal.xhtml">
 
             <ui:define name="title">
-                title
+                #{bundle.AgregarTemaTitulo}
             </ui:define>
 
             <ui:define name="content">
-                <p:panel header="Añadir tema">
+                <p:panel header="#{bundle.AgregarTemaAnadirTema}">
                     <h:form>
                         <h:panelGrid columns="2">
-                            <h:outputText value="Descripción corta"/>
+                            <h:outputText value="#{bundle.AgregarTemaDescripcionCorta}"/>
                             <p:inputText id="descripcionCorta"
                                          value="#{tema.descripcionCorta}"
                                          required="true"
-                                         requiredMessage="Es necesaria una descripción corta"/>
-                            <h:outputText value="Descripción"/>
+                                         requiredMessage="#{bundle.AgregarTemaMsgDescripcionCorta}"/>
+                            <h:outputText value="#{bundle.AgregarTemaDescripcion}"/>
                             <p:inputText id="descripcion"
                                          value="#{tema.descripcion}"
                                          required="true"
-                                         requiredMessage="Es necesaria una descripción."/>
-                            <h:outputText value="Bloque"/>
-                            <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}">  
+                                         requiredMessage="#{bundle.AgregarTemaErrorDescripcion}"/>
+                            <h:outputText value="#{bundle.AgregarTemaBloque}"/>
+                            <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}"
+                                             required="true"
+                                             requiredMessage="#{bundle.AgregarTemaErrorBloque}">
                                         <f:selectItems value="#{administraTemasBacking.listaBloque}"  
                                             var="bloque"   
                                             itemLabel="#{bloque.descripcion}"  
                                             itemValue="#{bloque}" />  
                                         </h:selectOneMenu>
-                            <h:outputText value="Activo"/>
+                            <h:outputText value="#{bundle.AgregarTemaActivo}"/>
                             <h:selectBooleanCheckbox value="#{tema.isActivo}"/>
                             <h:outputText value="&nbsp;"/>
-                            <p:commandButton value="Añadir" actionListener="#{administraTemasBacking.agregaTema}" update="growl"/>
+                            <p:commandButton value="#{bundle.AgregarTemaAnadir}" actionListener="#{administraTemasBacking.agregaTema}"
+                                             update="growl"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>

@@ -11,41 +11,47 @@
         <ui:composition template="./../plantilla_principal.xhtml">
 
             <ui:define name="title">
-                ExaFarm - Añadir examen
+                #{bundle.AgregarExamenTitulo}
             </ui:define>
 
             <ui:define name="content">
-                <p:panel header="Añadir examen">
+                <p:panel header="#{bundle.AgregarExamenTituloPanel}">
                     <h:form>
                         <h:panelGrid columns="2">
-                            <h:outputText value="Fecha de convocatoria:"/>
-                            <p:calendar value="#{examen.fechaConvocatoria}" locale="es"/>
-                            <h:outputText value="Convocatoria:"/>
+                            <h:outputText value="#{bundle.AgregarExamenFechaConvocatoria}"/>
+                            <p:calendar value="#{examen.fechaConvocatoria}" locale="es" required="true"
+                                        requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}"/>
+                            <h:outputText value="#{bundle.AgregarExamenConvocatoria}"/>
                             <p:inputText id="convocatoria"
                                          value="#{examen.convocatoria}"
-                                         required="true"/>
-                            <h:outputText value="Descripción:"/>
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorConvocatoria}"/>
+                            <h:outputText value="#{bundle.AgregarExamenDescripcion}"/>
                             <p:inputText id="descripcion"
                                          value="#{examen.descripcion}"
-                                         required="true"/>
-                            <h:outputText value="Número de preguntas:"/>
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorDescripcion}"/>
+                            <h:outputText value="#{bundle.AgregarExamenNumeroPreguntas}"/>
                             <p:inputText id="numPreguntas"
-                                         value="#{examen.numPreguntas}"/>
-                            <h:outputText value="Número de versiones:"/>
+                                         value="#{examen.numPreguntas}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorNumeroPreguntas}"/>
+                            <h:outputText value="#{bundle.AgregarExamenNumeroVersiones}"/>
                             <p:inputText id="numVersiones"
-                                         value="#{examen.numVersiones}"/>
-                            <h:outputText value="Activo:"/>
+                                         value="#{examen.numVersiones}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorNumeroVersiones}"/>
+                            <h:outputText value="#{bundle.AgregarExamenActivo}"/>
                             <h:selectBooleanCheckbox id="activo" value="#{examen.isActivo}"/>
-                            <h:outputText value="Cerrado:"/>
+                            <h:outputText value="#{bundle.AgregarExamenCerrado}"/>
                             <h:selectBooleanCheckbox id="cerrado" value="#{examen.isCerrado}"/>
                             <h:outputText value="&nbsp;"/>
-                            <p:commandButton value="Añadir" action="#{administraExamenesBacking.agregaExamen}" update="growl"/>
+                            <p:commandButton value="#{bundle.AgregarExamenAnadir}" action="#{administraExamenesBacking.agregaExamen}"
+                                             update="growl"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -9,7 +9,7 @@
 <f:view contentType="text/html">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><ui:insert name="title">Programa ExaFarm - Gestión de exámenes de Farmacología</ui:insert></title>      
+        <title><ui:insert name="title">#{bundle.PrincipalTitulo}</ui:insert></title>      
         <h:outputStylesheet library="css" name="default.css"/>
         <h:outputStylesheet library="css" name="cssLayout.css"/>
     </h:head>
@@ -19,39 +19,39 @@
             <p:layoutUnit position="top" height="80" resizable="false" closable="false" collapsible="false">
                 <h:panelGrid columns="2">
                     <h:graphicImage library="images" name="exafarm_logo.png"/>
-                    <h:form style="font-size: 90%;"><h:outputText value=" #{bundle.principal_bienvenido} #{sessionScope.currentUser} "/><p:commandLink value="(Desconectar)" action="#{loginBacking.logout}" ajax="false"/></h:form>
+                    <h:form style="font-size: 90%;"><h:outputText value=" #{bundle.PrincipalBienvenido} #{sessionScope.currentUser} "/><p:commandLink value="(#{bundle.PrincipalDesconectar})" action="#{loginBacking.logout}" ajax="false"/></h:form>
                 </h:panelGrid>
             </p:layoutUnit>
 
             <p:layoutUnit position="bottom" height="30" resizable="false" closable="false" collapsible="false">
                 <ui:insert name="bottom">
-                    <h:outputText id="estado" value="TFC - ExaFarm - UOC (Francisco José Jimeno Demuth)" />
+                    <h:outputText id="estado" value="#{bundle.PrincipalEstado}" />
                 </ui:insert>
             </p:layoutUnit>
 
             <p:layoutUnit position="left" width="185" resizable="false" closable="false" collapsible="true" scrollable="true">
                 <h:form>
                     <p:menu>
-                        <p:submenu label="Administrador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
-                            <p:menuitem value="Principal" url="/faces/administrador/principal.xhtml"/>
-                            <p:menuitem value="Lista de usuarios" url="/faces/administrador/administrarUsuarios.xhtml"/>
-                            <p:menuitem value="Añadir usuario" url="/faces/administrador/agregarUsuario.xhtml"/>
-                            <p:menuitem value="Lista de temas" url="/faces/administrador/administrarTemas.xhtml"/>
-                            <p:menuitem value="Añadir tema" url="/faces/administrador/agregarTema.xhtml"/>
-                            <p:menuitem value="Lista de bloques" url="/faces/administrador/administrarBloques.xhtml"/>
-                            <p:menuitem value="Añadir bloque" url="/faces/administrador/agregarBloque.xhtml"/>
+                        <p:submenu label="#{bundle.PrincipalAdministrador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/administrador/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerUsuarios}" url="/faces/administrador/administrarUsuarios.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirUsuario}" url="/faces/administrador/agregarUsuario.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerTemas}" url="/faces/administrador/administrarTemas.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirTema}" url="/faces/administrador/agregarTema.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerBloques}" url="/faces/administrador/administrarBloques.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirBloque}" url="/faces/administrador/agregarBloque.xhtml"/>
                         </p:submenu>
-                        <p:submenu label="Coordinador" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
-                            <p:menuitem value="Principal" url="/faces/coordinador/principal.xhtml"/>
-                            <p:menuitem value="Lista de examenes" url="/faces/coordinador/administrarExamenes.xhtml"/>
-                            <p:menuitem value="Añadir examen" url="/faces/coordinador/agregarExamen.xhtml"/>
+                        <p:submenu label="#{bundle.PrincipalCoordinador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/coordinador/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerExamenes}" url="/faces/coordinador/administrarExamenes.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirExamen}" url="/faces/coordinador/agregarExamen.xhtml"/>
                         </p:submenu>
-                        <p:submenu label="Profesor">
-                            <p:menuitem value="Principal" url="/faces/profesor/principal.xhtml"/>
-                            <p:menuitem value="Ver Preguntas" url="/faces/profesor/administrarPreguntas.xhtml"/>
-                            <p:menuitem value="Añadir pregunta" url="/faces/profesor/agregarPregunta.xhtml"/>
-                            <p:menuitem value="Seleccionar preguntas para examen" url="/faces/profesor/seleccionarExamen.xhtml"/>
-                            <p:menuitem value="Modificar datos personales" url="/faces/profesor/administrarDatos.xhtml"/>
+                        <p:submenu label="#{bundle.PrincipalProfesor}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/profesor/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerPreguntas}" url="/faces/profesor/administrarPreguntas.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirPregunta}" url="/faces/profesor/agregarPregunta.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalSeleccionarPreguntas}" url="/faces/profesor/seleccionarExamen.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalModificarDatos}" url="/faces/profesor/administrarDatos.xhtml"/>
                         </p:submenu>
                     </p:menu>
                 </h:form>

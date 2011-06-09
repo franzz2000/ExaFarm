@@ -20,36 +20,37 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable id="tabla" var="seleccion" value="#{seleccionaPreguntasBacking.listaSeleccion}" emptyMessage="No existen preguntas.">
+                    <p:dataTable id="tabla" var="selecciona" value="#{seleccionaPreguntasBacking.listaSeleccion}" 
+                                 emptyMessage="No existen preguntas.">
                         <f:facet name="header">
                             <h:outputText value="#{seleccionaPreguntasBacking.titulo}"/>
                         </f:facet>
                         <p:column style="width: 16px">
-                            <p:rowToggler rendered="#{seleccion.pregunta.examenes.size()>0}"/>
+                            <p:rowToggler rendered="#{selecciona.pregunta.examenes.size()>0}"/>
                         </p:column>
                         <p:column>
-                            <h:selectBooleanCheckbox value="#{seleccion.seleccion}">
+                            <h:selectBooleanCheckbox value="#{selecciona.seleccion}">
                                 <p:ajax update="estado" listener="#{seleccionaPreguntasBacking.cambioSeleccion}"/>
                             </h:selectBooleanCheckbox>
                         </p:column>
-                        <p:column style="width: 16px" filterBy="#{seleccion.pregunta.id}" headerText="Id">
-                            <h:outputText value="#{seleccion.pregunta.id}"/>
+                        <p:column style="width: 16px" filterBy="#{selecciona.pregunta.id}" headerText="Id">
+                            <h:outputText value="#{selecciona.pregunta.id}"/>
                         </p:column>
                         <p:column headerText="Pregunta">
-                            <h:outputText value="#{seleccion.pregunta.texto}"/>
-                            <p:dataList id="subTabla" var="respuesta" value="#{seleccion.pregunta.respuestas}" itemType="a">
+                            <h:outputText value="#{selecciona.pregunta.texto}"/>
+                            <p:dataList id="subTabla" var="respuesta" value="#{selecciona.pregunta.respuestas}" itemType="a">
                                 <h:outputText value="#{respuesta.texto}" style="#{respuesta.isCorrecta? 'color: green':''}"/>
                             </p:dataList>
                         </p:column>
-                        <p:column filterBy="#{seleccion.pregunta.tema.id}" headerText="Tema" filterOptions="#{seleccionaPreguntasBacking.temasOptions}" filterMatchMode="exact">
-                            <h:outputText value="#{seleccion.pregunta.tema.descripcionCorta}"/>
+                        <p:column filterBy="#{selecciona.pregunta.tema.id}" headerText="Tema" filterOptions="#{seleccionaPreguntasBacking.temasOptions}" filterMatchMode="exact">
+                            <h:outputText value="#{selecciona.pregunta.tema.descripcionCorta}"/>
                         </p:column>
-                        <p:column filterBy="#{seleccion.pregunta.usuario.id}" headerText="Profesor" filterOptions="#{seleccionaPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
+                        <p:column filterBy="#{selecciona.pregunta.usuario.id}" headerText="Profesor" filterOptions="#{seleccionaPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
                                   rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
-                            <h:outputText value="#{seleccion.pregunta.usuario}"/>
+                            <h:outputText value="#{selecciona.pregunta.usuario}"/>
                         </p:column>
                         <p:rowExpansion>
-                            <p:dataList var="examen" value="#{seleccion.pregunta.examenes}">∫
+                            <p:dataList var="examen" value="#{selecciona.pregunta.examenes}">∫
                                 <h:outputText value="#{examen.descripcion}"/>                                
                             </p:dataList>
                         </p:rowExpansion>
@@ -57,8 +58,6 @@
                     <p:commandButton value="Guardar" action="#{seleccionaPreguntasBacking.guardar}" update="growl, tabla"/>
                 </h:form>
             </ui:define>
-            
-            
         </ui:composition>
 
     </body>
