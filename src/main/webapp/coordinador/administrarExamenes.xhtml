@@ -25,16 +25,6 @@
                         <p:column style="width: 16px">
                             <h:outputText value="#{examen.id}"/>
                         </p:column>
-                        <p:column headerText="#{bundle.AdministrarExamenesConvocatoria}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{examen.convocatoria}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{examen.convocatoria}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesFecha}">
                             <p:cellEditor>
                                 <f:facet name="output">

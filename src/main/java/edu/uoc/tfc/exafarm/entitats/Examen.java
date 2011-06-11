@@ -5,9 +5,13 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,10 +42,6 @@ public class Examen extends AbstractEntity implements Serializable {
     @Column(name="fecha_convocatoria")
     @Temporal(TemporalType.DATE)
     private Date fechaConvocatoria;
-    @Column(name="convocatoria")
-    private String convocatoria;
-    @Column(name="descripcion")
-    private String descripcion;
     @Column(name="num_preguntas")
     private Integer numPreguntas;
     @Column(name="num_versiones")
@@ -56,22 +56,6 @@ public class Examen extends AbstractEntity implements Serializable {
             inverseJoinColumns={@JoinColumn(name="id_pregunta", referencedColumnName="id")
     })
     private List<Pregunta> preguntasList;
-
-    public String getConvocatoria() {
-        return convocatoria;
-    }
-
-    public void setConvocatoria(String convocatoria) {
-        this.convocatoria = convocatoria;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 
     public Date getFechaConvocatoria() {
         return fechaConvocatoria;
@@ -127,8 +111,6 @@ public class Examen extends AbstractEntity implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (fechaConvocatoria != null ? fechaConvocatoria.hashCode() : 0);
-        hash += (convocatoria != null ? convocatoria.hashCode() : 0);
-        hash += (descripcion != null ? descripcion.hashCode() : 0);
         hash += (fechaConvocatoria != null ? fechaConvocatoria.hashCode() : 0);
         return hash;
     }
@@ -140,12 +122,6 @@ public class Examen extends AbstractEntity implements Serializable {
         }
         Examen other = (Examen) object;
         if ((this.fechaConvocatoria == null && other.fechaConvocatoria != null) || (this.fechaConvocatoria != null && !this.fechaConvocatoria.equals(other.fechaConvocatoria))) {
-            return false;
-        }
-        if ((this.convocatoria == null && other.convocatoria != null) || (this.convocatoria != null && !this.convocatoria.equals(other.convocatoria))) {
-            return false;
-        }
-        if ((this.descripcion == null && other.descripcion != null) || (this.descripcion != null && !this.descripcion.equals(other.descripcion))) {
             return false;
         }
         if ((this.numPreguntas == null && other.numPreguntas != null) || (this.numPreguntas != null && !this.numPreguntas.equals(other.numPreguntas))) {
@@ -165,7 +141,10 @@ public class Examen extends AbstractEntity implements Serializable {
 
     @Override
     public String toString() {
-        return convocatoria;
+        Format formatter;
+        Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        formatter = new SimpleDateFormat("MMMM yyyy", locale);
+        return formatter.format(fechaConvocatoria);
     }
     
 }

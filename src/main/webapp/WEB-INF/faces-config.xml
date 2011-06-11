@@ -15,5 +15,9 @@
             <base-name>edu.uoc.tfc.exafarm.messages.Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>edu.uoc.tfc.exafarm.messages.Examen</base-name>
+            <var>examen</var>
+        </resource-bundle>
     </application>
 </faces-config>

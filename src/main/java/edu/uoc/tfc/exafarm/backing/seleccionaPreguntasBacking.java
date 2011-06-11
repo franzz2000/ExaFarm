@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Examen;
@@ -104,19 +100,22 @@ public class seleccionaPreguntasBacking implements Serializable{
     }
     
     public void guardar() {
-        List<Pregunta> preguntasExamen = new ArrayList<Pregunta>();
         for(Seleccion seleccion:listaSeleccion) {
             if (seleccion.getPregunta().getExamenes().contains(examen)&&!seleccion.getSeleccion()) {
                 seleccion.getPregunta().getExamenes().remove(examen);
+                examen.getPreguntasList().remove(seleccion.getPregunta());
             }
             if (!seleccion.getPregunta().getExamenes().contains(examen)&&seleccion.getSeleccion()) {
                 seleccion.getPregunta().getExamenes().add(examen);
+                examen.getPreguntasList().add(seleccion.getPregunta());
             }
-            if (seleccion.getSeleccion()) {
-                preguntasExamen.add(seleccion.getPregunta());
+            try {
+                ExamenRegistry.getCurrentInstance().updatePregunta(seleccion.getPregunta());
+            } catch (EntityAccessorException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar la pregunta del examen.", null));
+                Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        examen.setPreguntasList(preguntasExamen);
         try {
             ExamenRegistry.getCurrentInstance().updateExamen(examen);
             modificado = "";
@@ -160,6 +159,6 @@ public class seleccionaPreguntasBacking implements Serializable{
             if(seleccionada)
                 numeroPreguntas++;
         }
-        titulo += examen.getDescripcion();
+        titulo += examen.toString();
     }
 }

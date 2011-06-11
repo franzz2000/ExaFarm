@@ -54,6 +54,9 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
     @Column(name="is_corta")
     private Boolean isCorta;
     
+    @Column(name="is_mezclable")
+    private Boolean isMezclable;
+    
     @ManyToMany(mappedBy="preguntasList")
     private List<Examen> examenes;
     
@@ -73,6 +76,7 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
         this.fechaCreacion = new Date();
         this.isActiva = true;
         this.isCorta = false;
+        this.isMezclable = false;
     }
     
     public Pregunta(Long id) {
@@ -141,6 +145,14 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Boolean getIsMezclable() {
+        return isMezclable;
+    }
+
+    public void setIsMezclable(Boolean isMezclable) {
+        this.isMezclable = isMezclable;
     }
     
     public String getCorrecta() {

@@ -128,12 +128,15 @@ public class agregaPreguntaBacking extends AbstractBacking {
                 respuestas.add(respuesta4);
                 respuestas.add(respuesta5);
                 
+                
+                
                 Usuario usuario = getCurrentUser();
                 newPregunta.setUsuario(usuario);
+                newPregunta.setRespuestas(respuestas);
             try {
                 ExamenRegistry.getCurrentInstance().addPregunta(newPregunta);
-                newPregunta.setRespuestas(respuestas);
-                ExamenRegistry.getCurrentInstance().updatePregunta(newPregunta);
+//                newPregunta.setRespuestas(respuestas);
+//                ExamenRegistry.getCurrentInstance().updatePregunta(newPregunta);
                 Utils.addMessage("Se ha añadido la pregunta.");
             } catch (EntityAccessorException ex) {
                 Utils.addMessage("Error al añadir la pregunta.");

@@ -60,7 +60,11 @@
                                             var="tema"   
                                             itemLabel="#{tema.descripcionCorta}"  
                                             itemValue="#{tema}"/>  
-                                    </h:selectOneMenu>
+                            </h:selectOneMenu>
+                            <h:outputText value="&nbsp;"/>
+                            <h:outputText value="&nbsp;"/>
+                            <h:outputText value="Mezclar las respuestas:"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isMezclable}"/>
                         </h:panelGrid>
                         <p:commandButton value="Guardar" action="#{agregaPreguntaBacking.agregaPregunta}" ajax="false"/>
                         
@@ -68,6 +72,5 @@
                 </p:panel>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

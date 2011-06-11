@@ -7,7 +7,6 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -110,7 +109,6 @@ public class Respuesta extends AbstractEntity implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Respuesta)) {
             return false;
         }
@@ -129,7 +127,7 @@ public class Respuesta extends AbstractEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "edu.uoc.tfc.exafarm.entitats.Respuesta[ id=" + texto + " ]";
+        return texto;
     }
     
 }

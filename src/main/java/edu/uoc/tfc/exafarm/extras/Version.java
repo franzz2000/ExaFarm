@@ -4,21 +4,16 @@
  */
 package edu.uoc.tfc.exafarm.extras;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Respuesta;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -28,13 +23,15 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class Version {
+public class Version implements Serializable {
     public static final float[][] COLUMNS = {
         { 36, 36, 296, 806 } , { 299, 36, 559, 806 }
     };
-    List<Pregunta> preguntas;
-    String texto;
-    Long version;
+    public static final Font NORMAL = new Font(FontFamily.HELVETICA, 22);
+    private List<Pregunta> preguntas;
+    private Date fechaExamen;
+    private Long numVersion;
+    private String fichero;
     /**
      * Constructor vacío
      */
@@ -45,10 +42,10 @@ public class Version {
      * @param texto Texto de cabecera del examen
      * @param preguntas Lista de preguntas a incluir en el examen
      */
-    public Version(String texto, List<Pregunta> preguntas, Long version) {
-        this.texto = texto;
+    public Version(Date fechaExamen, List<Pregunta> preguntas, Long numVersion) {
+        this.fechaExamen = fechaExamen;
         this.preguntas = preguntas;
-        this.version = version;
+        this.numVersion = numVersion;
     }
             
     /**
@@ -72,8 +69,8 @@ public class Version {
      * 
      * @return Cabecera de examen 
      */
-    public String getTexto() {
-        return texto;
+    public Date getFechaExamen() {
+        return fechaExamen;
     }
 
     /**
@@ -81,25 +78,26 @@ public class Version {
      * 
      * @param version 
      */
-    public void setTexto(String version) {
-        this.texto = version;
+    public void setFechaExamen(Date fechaExamen) {
+        this.fechaExamen = fechaExamen;
     }
     
-    public Long getVersion() {
-        return version;
+    public Long getNumVersion() {
+        return numVersion;
     }
     
-    public void setVersion(Long version){
-        this.version = version;
+    public void setNumVersion(Long numVersion){
+        this.numVersion = numVersion;
     }
+
     
     /**
-     * Mezcla las preguntas del examen.
+     * Mezcla las preguntas del examen y las respuestas si son mezclables.
      * 
      * @param seed Semilla para la generación de mezcla semialeatoria 
      */
-    public void mezcla(Long seed) {
-        Random random = new Random(seed);
+    public void mezcla() {
+        Random random = new Random(numVersion);
         Collections.shuffle(preguntas, random);
     }
     
@@ -110,45 +108,5 @@ public class Version {
         Collections.sort(preguntas);
     }
 
-    /**
-     * Genera y agrega preguntas en documento pdf
-     * @param document 
-     */
-    public void buildPDFContent(Document document, PdfWriter writer) throws DocumentException {
-        ColumnText ct = new ColumnText(writer.getDirectContent());
-        int column = 0;
-        ct.setSimpleColumn(COLUMNS[column][0], COLUMNS[column][1], COLUMNS[column][2], COLUMNS[column][3]);
-        int status = ColumnText.START_COLUMN;
-        float y;
-        com.itextpdf.text.List listaPreguntas = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
-        int i = 1;
-        for(Pregunta pregunta:preguntas) {
-            y = ct.getYLine();
-            addPregunta(ct, pregunta, i);
-            status = ct.go(true);
-            if (ColumnText.hasMoreText(status)) {
-                column = (column + 1) % 2;
-                if (column==0)
-                    document.newPage();
-                ct.setSimpleColumn(COLUMNS[column][0], COLUMNS[column][1], COLUMNS[column][2], COLUMNS[column][3]);
-                y = COLUMNS[column][3];
-            }
-            ct.setYLine(y);
-            ct.setText(null);
-            addPregunta(ct, pregunta, i);
-            i++;
-            status = ct.go();
-        }
-    }
     
-    private void addPregunta(ColumnText ct, Pregunta pregunta, int i) {
-        ct.addElement(new Paragraph(i + ") " + pregunta.getTexto().toUpperCase()));
-        com.itextpdf.text.List listaRespuestas = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.ALPHABETICAL);
-        listaRespuestas.setIndentationLeft(15F);
-        for(Respuesta respuesta:pregunta.getRespuestas()) {
-            listaRespuestas.add(respuesta.getTexto());
-        }
-        ct.addElement(listaRespuestas);
-        ct.addElement(Chunk.NEWLINE);
-    }
 }

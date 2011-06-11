@@ -14,20 +14,18 @@
         <h:graphicImage library="images" name="exafarm_login.jpg"/>
         <br/>
 <!--        <h:outputText value="Por favor, introduzca nombre de usuario y contraseña para acceder a la aplicación"/>-->
-        <h:outputText value="#{bundle.LoginBienvenida}"/>
+        <h:outputText style="padding-bottom: 20px;display: block" value="#{bundle.LoginBienvenida}"/>
         <h:form>
             <p:focus/>
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="2">
                 <h:outputLabel for="username" value="#{bundle.LoginUsuario}"/>
                 <p:inputText id="username" value="#{loginBacking.username}" required="true" tabindex="1" requiredMessage="#{bundle.LoginErrorUsuario}"/>
-                <p:message for="username"/>
                 <h:outputLabel for="password" value="#{bundle.LoginClave}"/>
                 <p:password id="password" value="#{loginBacking.password}" required="true" feedback="false" minLength="0" requiredMessage="#{bundle.LoginErrorClave}"/>
-                <p:message for="password"/>
                 <h:outputText value="&nbsp;"/>
                 <p:commandButton type="submit" value="#{bundle.LoginEnviar}" action="#{loginBacking.authenticate()}" ajax="false"/>
-                <p:messages globalOnly="true"/>
              </h:panelGrid>
+            <div style="width: 550px; display: block"><p:messages globalOnly="false"/></div>
         </h:form>
     </center>
 </h:body>

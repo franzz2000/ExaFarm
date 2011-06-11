@@ -140,7 +140,7 @@ public class administraPreguntasBacking implements Serializable{
         } else {
             examen = ExamenRegistry.getCurrentInstance().getExamenById(examenId);
             lista = ExamenRegistry.getCurrentInstance().getPreguntaByExamen(examen);
-            titulo += " del Examen de " + examen.getDescripcion();
+            titulo += " del Examen de " + examen.toString();
         }
     }
 }

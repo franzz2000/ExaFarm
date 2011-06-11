@@ -16,15 +16,18 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable value="#{generaExamenBacking.versiones}" var="lista">
+                    <p:dataTable value="#{generaExamenBacking.versiones}"
+                                 var="lista">
                         <f:facet name="header">
                             <h:outputText value="#{bundle.GeneraExamenTituloTabla}"/>
                         </f:facet>
                         <p:column>
-                            <h:outputText value="#{lista.texto}"/>
+                            <h:outputText value="#{bundle.GeneraExamenVersion} #{lista.numVersion}"/>
                         </p:column>
                         <p:column>
-                            <p:commandButton value="#{bundle.GeneraExamenGenera}" actionListener="#{generaExamenBacking.createPDF}" ajax="false"/>
+                            <p:commandButton value="#{bundle.GeneraExamenGenera}" 
+                                             actionListener="#{generaExamenBacking.createPDF}"
+                                             ajax="false"/>
                         </p:column>
                     </p:dataTable>
                     

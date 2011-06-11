@@ -19,10 +19,7 @@
                         <f:facet name="header">
                             Listado de Preguntas
                         </f:facet>
-                        <f:facet name="events">
-                            <f:param value="#{administraPreguntasBacking.examenId}" name="examen"/>
-                        </f:facet>
-                        <p:column style="width: 16px" filterBy="#{pregunta.id}" headerText="Id">
+                        <p:column style="width: 5px" filterBy="#{pregunta.id}" headerText="Id" filterStyle="width: 20px">
                             <h:outputText value="#{pregunta.id}"/>
                         </p:column>
                         <p:column headerText="Pregunta">
@@ -62,10 +59,30 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
+                        <p:column headerText="Activa">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.isActiva?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{pregunta.isActiva}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Mezclable">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.isMezclable?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{pregunta.isMezclable}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
                         <p:column headerText="Modificar" style="width:32px;">
                             <p:rowEditor/>
                         </p:column>
-                        <p:column headerText="Ver pregunta">
+                        <p:column headerText="Ver">
                             <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">
                                 <f:param value="#{pregunta.id}" name="pregunta"/>
                             </p:commandButton>
