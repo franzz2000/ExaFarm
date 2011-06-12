@@ -33,7 +33,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "examenes.findAll", query = "SELECT e FROM Examen e"),
     @NamedQuery(name = "examenes.findById", query = "SELECT e FROM Examen e WHERE e.id = :id"),
-    @NamedQuery(name = "examenes.findByActivo", query = "SELECT e FROM Examen e WHERE e.isActivo = TRUE")
+    @NamedQuery(name = "examenes.findByActivo", query = "SELECT e FROM Examen e WHERE e.isActivo = TRUE"),
+    @NamedQuery(name = "examenes.findByNoCerrado", query = "SELECT e FROM Examen e WHERE e.isCerrado = FALSE")
 })
 @ManagedBean
 public class Examen extends AbstractEntity implements Serializable {

@@ -25,7 +25,7 @@
                                 <h:outputText value="#{user.idUsuario}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{user.idUsuario}"/>
+                                <p:inputText value="#{user.idUsuario}" style="width: 40px;"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -36,7 +36,7 @@
                                 <h:outputText value="#{user.nombre}" style="#{user.grupo.idGrupo!='ningu'?'':'color: red'}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{user.nombre}"/>
+                                <p:inputText value="#{user.nombre}" style="width: 50px;"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

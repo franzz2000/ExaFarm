@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -27,6 +30,7 @@ import org.primefaces.event.RowEditEvent;
 public class administraUsuariosBacking implements Serializable{
     List <Usuario> lista;
     List <Grupo> listaGrupo;
+    SelectItem[] grupoOptions;
     
     Usuario selectedUser;
 
@@ -35,6 +39,7 @@ public class administraUsuariosBacking implements Serializable{
         lista = new ArrayList<Usuario>();
         lista = UsuarioRegistry.getCurrentInstance().getUserList();
         listaGrupo = UsuarioRegistry.getCurrentInstance().getGrupoList();
+        grupoOptions = createGrupoOptions(listaGrupo);
         selectedUser = new Usuario();
     }    
 
@@ -62,6 +67,10 @@ public class administraUsuariosBacking implements Serializable{
         return lista.size()>10;
     }
     
+    public SelectItem[] getGrupoOptions() {
+        return grupoOptions;
+    }
+    
     public void modifica(RowEditEvent ev) {
         Usuario obj = null;
         Usuario currentUser = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
@@ -72,27 +81,41 @@ public class administraUsuariosBacking implements Serializable{
                 obj.setGrupo(currentUser.getGrupo());
             } else {
                 UsuarioRegistry.getCurrentInstance().updateUsuario(obj);
-                Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuarioOKModificar"));
+                Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuariosOKModificar"));
             }
         } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorModificar", null));
             Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
-    public void agregaUsuario() {
-        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
-
-        UsuarioRegistry eventRegistry = UsuarioRegistry.getCurrentInstance();
-        Usuario newUsuario = (Usuario) extContext.getRequestMap().get("usuario");
-        newUsuario.setId(Long.MIN_VALUE);
-        try {
-            UsuarioRegistry.getCurrentInstance().addUsuario(newUsuario);
-        } catch (EntityAccessorException ex) {
-            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorAnadir", null));
-            Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+    private SelectItem[] createGrupoOptions(List<Grupo> grupos) {
+        SelectItem[] options=new SelectItem[grupos.size()+1];
+        options[0] = new SelectItem(null, Utils.getMessageResourceString("bundle", "AdministrarUsuariosSeleccioneGrupo"));
+        for (int i = 0; i < grupos.size(); i++) {
+            options[i+1] = new SelectItem(grupos.get(i), grupos.get(i).getDescripcion());
         }
-        Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuarioOKAnadir"));
+        return options;
+    }
+    
+    public String agregaUsuario() {
+        ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
+        
+        Usuario newUsuario = (Usuario) extContext.getRequestMap().get("usuario");
+        Usuario buscaUsuario = UsuarioRegistry.getCurrentInstance().getUsuarioByIdUsuario(newUsuario.getIdUsuario());
+        if(buscaUsuario!=null){
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR,Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorIdUsuarioNoRepite"));
+        } else {
+            newUsuario.setId(Long.MIN_VALUE);
+            try {
+                UsuarioRegistry.getCurrentInstance().addUsuario(newUsuario);
+                Utils.addMessage(FacesMessage.SEVERITY_INFO,Utils.getMessageResourceString("bundle", "AdministrarUsuariosOKAnadir"));
+                return "principal";
+            } catch (EntityAccessorException ex) {
+                Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarUsuariosErrorAnadir", null));
+                Logger.getLogger(UsuarioRegistry.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 }

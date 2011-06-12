@@ -16,18 +16,23 @@
                     <h:form>
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.AgregarUsuarioIdUsuario}"/>
-                            <p:inputText id="idUsuario" value="#{usuario.idUsuario}" required="true" requiredMessage="El campo IdUsuario es necesario."/>
+                            <p:inputText id="idUsuario" value="#{usuario.idUsuario}" required="true" requiredMessage="#{bundle.AgregarUsuarioErrorIdUsuario}"/>
                             <h:outputText value="#{bundle.AgregarUsuarioNombre}"/>
                             <p:inputText id="nombre"
                                          value="#{usuario.nombre}"
-                                         required="true" requiredMessage="El campo Nombre es necesario."/>
+                                         required="true" requiredMessage="#{bundle.AgregarUsuarioErrorNombre}"/>
                             <h:outputText value="#{bundle.AgregarUsuarioApellidos}"/>
                             <p:inputText id="apellidos"
                                          value="#{usuario.apellidos}"
-                                         required="true" requiredMessage="El campo Apellidos es necesario."/>
+                                         required="true" requiredMessage="#{bundle.AgregarUsuarioErrorApellidos}"/>
                             <h:outputText value="#{bundle.AgregarUsuarioEmail}"/>
                             <p:inputText id="email"
-                                         value="#{usuario.email}"/>
+                                         value="#{usuario.email}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarUsuarioErrorEmail}"
+                                         validatorMessage="#{bundle.AdministrarUsuariosEmailIncorrecto}">
+                                <f:validateRegex pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+"/>
+                            </p:inputText>
                             <h:outputText value="#{bundle.AgregarUsuarioActivo}"/>
                             <h:selectBooleanCheckbox id="activo" value="#{usuario.isActivo}"/>
                             <h:outputText value="#{bundle.AgregarUsuarioClave}"/>
@@ -37,18 +42,21 @@
                                         promptLabel="#{bundle.AgregarUsuarioIntroduzcaClave}"
                                         weakLabel="#{bundle.AgregarUsuarioDebil}"
                                         required="true"
-                                        requiredMessage="#{bundle.AgregarUsuarioErrorClave}"/>
-                            <h:outputText value="Grupo:"/>
-                            <h:selectOneMenu id="grupo" value="#{usuario.grupo.idGrupo}" >  
-                                            <f:selectItems value="#{administraUsuariosBacking.listaGrupo}"  
-                                                var="grupo"   
-                                                itemLabel="#{grupo.descripcion}"  
-                                                itemValue="#{grupo.idGrupo}" />  
+                                        requiredMessage="#{bundle.AgregarUsuarioErrorClave}"
+                                        validatorMessage="#{bundle.AgregarUsuarioErrorClaveCorta}"
+                                        />
+                            <h:outputText value="#{bundle.AgregarUsuarioGrupo}"/>
+                            <h:selectOneMenu id="grupo" value="#{usuario.grupo}" converter="#{grupoListConverter}" required="true"
+                                             requiredMessage="#{bundle.AgregarUsuarioErrorGrupo}">
+                                <f:selectItems value="#{administraUsuariosBacking.grupoOptions}"  
+                                               var="grupo"
+                                               itemLabel="#{grupo.descripcion}"  
+                                               itemValue="#{grupo}"/>  
                                         </h:selectOneMenu>
                             <h:outputText value="&nbsp;"/>
                             <p:commandButton value="#{bundle.AgregarUsuarioAnadir}"
-                                             actionListener="#{administraUsuariosBacking.agregaUsuario}"
-                                             update="growl, tab"/>
+                                             action="#{administraUsuariosBacking.agregaUsuario}"
+                                             ajax="false"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>

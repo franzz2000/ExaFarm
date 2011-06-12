@@ -32,7 +32,7 @@
                             <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}"
                                              required="true"
                                              requiredMessage="#{bundle.AgregarTemaErrorBloque}">
-                                        <f:selectItems value="#{administraTemasBacking.listaBloque}"  
+                                <f:selectItems value="#{administraTemasBacking.bloqueOptions}"
                                             var="bloque"   
                                             itemLabel="#{bloque.descripcion}"  
                                             itemValue="#{bloque}" />  

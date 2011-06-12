@@ -1,6 +1,7 @@
 package edu.uoc.tfc.exafarm.backing;
 
 
+import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
@@ -10,11 +11,13 @@ import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
 import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -36,7 +39,7 @@ public class administraPreguntasBacking implements Serializable{
     List <Usuario> profesores;
     SelectItem[] temasOptions;
     SelectItem[] profesoresOptions;
-    String titulo = "Lista de preguntas";
+    String titulo;
 
     /** Creates a new instance of administraUsuarios */
     public administraPreguntasBacking() {
@@ -50,7 +53,7 @@ public class administraPreguntasBacking implements Serializable{
     
     private SelectItem[] createTemaOptions(List<Tema> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem("", "Todos");
+        options[0] = new SelectItem("", Utils.getMessageResourceString("bundle", "AdministrarPreguntasTodos"));
         for (int i = 0; i < temas.size(); i++) {
             options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getDescripcionCorta());
         }
@@ -60,7 +63,7 @@ public class administraPreguntasBacking implements Serializable{
     
     private SelectItem[] createProfesorOptions(List<Usuario> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem("", "Todos");
+        options[0] = new SelectItem("", Utils.getMessageResourceString("bundle", "AdministrarPreguntasTodos"));
         for (int i = 0; i < temas.size(); i++) {
             options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getIdUsuario());
         }
@@ -86,11 +89,11 @@ public class administraPreguntasBacking implements Serializable{
         try {
             obj = (Pregunta) ev.getObject();
             ExamenRegistry.getCurrentInstance().updatePregunta(obj);
+            Utils.addMessage(Utils.getMessageResourceString("bundle", "AdministrarPreguntasOKActualizar"));
         } catch (EntityAccessorException ex) {
-            Utils.addMessage("Error al actualizar la pregunta.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarPreguntasErrorActualizar"));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Utils.addMessage("La pregunta se ha modificado correctamente.");
     }
     
     
@@ -137,10 +140,14 @@ public class administraPreguntasBacking implements Serializable{
             } else {
                 lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
             }
+            titulo=Utils.getMessageResourceString("bundle", "AdministrarPreguntasLista");
         } else {
             examen = ExamenRegistry.getCurrentInstance().getExamenById(examenId);
             lista = ExamenRegistry.getCurrentInstance().getPreguntaByExamen(examen);
-            titulo += " del Examen de " + examen.toString();
+            String texto = Utils.getMessageResourceString("bundle", "AdministrarPreguntasListaExamen");
+            Object[] params ={examen.toString()};
+            MessageFormat messageFormat = new MessageFormat(texto);
+            titulo = messageFormat.format(params);
         }
     }
 }

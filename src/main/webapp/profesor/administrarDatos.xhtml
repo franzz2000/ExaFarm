@@ -11,34 +11,36 @@
         <ui:composition template="./../plantilla_principal.xhtml">
 
             <ui:define name="title">
-                Administrar datos de usuario
+                #{bundle.AdministraDatosTitulo}
             </ui:define>
 
             <ui:define name="content">
-                <p:panel header="Modificar datos personales">
+                <p:panel header="#{bundle.AdministraDatosTituloPanel}">
                     <h:form>
                         <h:panelGrid columns="2">
-                                <h:outputText value="Nombre:"/>
+                                <h:outputText value="#{bundle.AdministraDatosNombre}"/>
                                 <p:inputText id="nombre"
                                              value="#{administraDatosBacking.usuario.nombre}"
-                                             required="true" requiredMessage="El campo Nombre es necesario."/>
-                                <h:outputText value="Apellidos:"/>
+                                             required="true" requiredMessage="#{bundle.AdministraDatosErrorNombre}"/>
+                                <h:outputText value="#{bundle.AdministraDatosApellidos}"/>
                                 <p:inputText id="apellidos"
                                              value="#{administraDatosBacking.usuario.apellidos}"
-                                             required="true" requiredMessage="El campo Apellidos es necesario."/>
-                                <h:outputText value="Email:"/>
+                                             required="true" requiredMessage="#{bundle.AdministraDatosErrorApellidos}"/>
+                                <h:outputText value="#{bundle.AdministraDatosEmail}"/>
                                 <p:inputText id="email"
                                              value="#{administraDatosBacking.usuario.email}"/>
-                                <h:outputText value="Clave:"/>
+                                <h:outputText value="#{bundle.AdministraDatosClave}"/>
                                 <p:password id="password" value="#{administraDatosBacking.usuario.password}" feedback="true" minLength="5"
-                                            goodLabel="Buena"
-                                            strongLabel="Fuerte"
-                                            promptLabel="Introduzca una clave"
-                                            weakLabel="Débil"
+                                            goodLabel="#{bundle.AdministraDatosClaveBuena}"
+                                            strongLabel="#{bundle.AdministraDatosClaveFuerte}"
+                                            weakLabel="#{bundle.AdministraDatosDebil}"
+                                            promptLabel="#{bundle.AdministraDatosIntroduzcaClave}"
                                             required="true"
-                                            requiredMessage="Es necesaria una clave."/>
+                                            requiredMessage="#{bundle.AdministraDatosErrorClave}"/>
                                 <h:outputText value="&nbsp;"/>
-                                <p:commandButton value="Modificar" actionListener="#{administraDatosBacking.modifica}" update="growl"/>
+                                <p:commandButton value="#{bundle.AdministraDatosModificar}"
+                                                 actionListener="#{administraDatosBacking.modifica}"
+                                                 update="growl"/>
                             </h:panelGrid>
                     </h:form>
                 </p:panel>

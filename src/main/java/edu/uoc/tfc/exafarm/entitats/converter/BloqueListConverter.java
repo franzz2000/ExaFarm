@@ -38,7 +38,6 @@ public class BloqueListConverter implements Converter, Serializable{
         if (value == null || value.toString().isEmpty()) {
             return "";
         }
-        Long id =  ((Bloque)value).getId();
-        return id.toString();
+        return ((Bloque)value).getId().toString();
     }       
 }

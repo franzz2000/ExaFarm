@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -56,6 +57,10 @@ public class administraExamenesBacking implements Serializable{
         Examen obj = null;
         try {
             obj = (Examen) ev.getObject();
+            if(obj.getIsCerrado()&&obj.getIsActivo()) {
+                obj.setIsActivo(Boolean.FALSE);
+                Utils.addMessage(FacesMessage.SEVERITY_WARN, Utils.getMessageResourceString("bundle", "AdministrarExamenesAvisoDesactivo"));
+            }
             ExamenRegistry.getCurrentInstance().updateExamen(obj);
         } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarExamenesErrorModificar"));
@@ -80,13 +85,20 @@ public class administraExamenesBacking implements Serializable{
     
     @PostConstruct
     public void construct() {
-        lista = new ArrayList<Examen>();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String pagina = fc.getViewRoot().getViewId();
         Usuario currentUser = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        if(currentUser.isUsuarioIsAdministrador()||currentUser.isUsuarioIsCoordinador()) {
-            lista = ExamenRegistry.getCurrentInstance().getExamenList();
+        if(pagina.contains("seleccionarExamen")) {
+            lista = ExamenRegistry.getCurrentInstance().getExamenByNoCerrado(); 
         } else {
-            lista = ExamenRegistry.getCurrentInstance().getExamenByActivo();
+            lista = new ArrayList<Examen>();
+            
+            if(currentUser.isUsuarioIsAdministrador()||currentUser.isUsuarioIsCoordinador()) {
+                lista = ExamenRegistry.getCurrentInstance().getExamenList();
+            } else {
+                lista = ExamenRegistry.getCurrentInstance().getExamenByActivo();
+            }
+            selectedExamen = null;
         }
-        selectedExamen = null;
     }
 }

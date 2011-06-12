@@ -37,9 +37,9 @@ public class administraDatosBacking extends AbstractBacking {
     public void modifica() {
         try {
             UsuarioRegistry.getCurrentInstance().updateUsuario(usuario);
-            Utils.addMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario correctamente.");
+            Utils.addMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "AdministraDatosOKModificado"));
         } catch (EntityAccessorException ex) {
-            Utils.addMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el usuario.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarDatosErrorModificar"));
             Logger.getLogger(administraDatosBacking.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

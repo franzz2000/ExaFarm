@@ -1,6 +1,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import com.sun.org.apache.xml.internal.security.utils.Base64;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -23,6 +24,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -35,7 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 @NamedQueries ({
     @NamedQuery(name="usuarios.findAll", query="SELECT u FROM Usuario AS u"),
     @NamedQuery(name="usuarios.getUsuarioByIdUsuario", query="SELECT u FROM Usuario AS u WHERE u.idUsuario=:id"),
-    @NamedQuery(name="usuarios.getUsuarioById", query="SELeCT u FROM Usuario AS u WHERE u.id =:id"),
+    @NamedQuery(name="usuarios.getUsuarioById", query="SELECT u FROM Usuario AS u WHERE u.id =:id"),
     @NamedQuery(name="usuarios.findActivos", query="SELECT u FROM Usuario AS u WHERE u.isActivo = true"),
     @NamedQuery(name="usuarios.findAdministradores", query="SELECT u FROM Usuario AS u WHERE u.grupo.idGrupo = 'admin'")
 })
@@ -71,6 +73,8 @@ public class Usuario extends AbstractEntity implements Serializable {
     public Usuario(){
         grupo = new Grupo();
         preguntas = Collections.emptyList();
+        isActivo=true;
+        password="";
     }
 
     private Principal getLoggedInUser() {

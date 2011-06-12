@@ -182,6 +182,24 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         return result;
     }
     
+    public List<Tema> getTemaListActivo() {
+        List<Tema> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Tema>>() {
+
+                public List<Tema> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("temas.findActivos");
+                    List<Tema> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
 //</editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Writing Tema instances">
@@ -243,6 +261,42 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         return result;
     }
     
+    public Integer getCountTemas(final Tema tema) {
+        Integer result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<Integer>() {
+
+                @Override
+                public Integer execute(EntityManager em) {
+                    Query query = em.createNamedQuery("preguntas.countByTema");
+                    query.setParameter("tema", tema);
+                    Integer result = (Integer) query.getSingleResult();
+                    return result;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public List<Pregunta> getPreguntaByUsuarioActivos (final Usuario usuario) {
+        List<Pregunta> result = null;
+        try {
+            result = doInTransaction(new PersistenceAction<List<Pregunta>>() {
+               public List<Pregunta> execute(EntityManager em) {
+                   Query query = em.createNamedQuery("preguntas.findByUsuarioActivos");
+                   query.setParameter("usuario", usuario);
+                   List<Pregunta> result = query.getResultList();
+                   return result;
+               } 
+            }); 
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
     public Pregunta getPreguntaById (final String idPregunta) {
         Pregunta result = null;
         try {
@@ -270,6 +324,25 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
                 @Override
                 public List<Pregunta> execute(EntityManager em) {
                     Query query = em.createNamedQuery("preguntas.findAll");
+                    List<Pregunta> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
+    public List<Pregunta> getPreguntaListActivos() {
+        List<Pregunta> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Pregunta>>() {
+
+                @Override
+                public List<Pregunta> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("preguntas.findActivos");
                     List<Pregunta> results = query.getResultList();
                     return results;
                 }
@@ -346,6 +419,7 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         }
         return result;
     }
+    
     public List<Examen> getExamenList() {
         List<Examen> result = Collections.emptyList();
         try {
@@ -354,6 +428,25 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
                 @Override
                 public List<Examen> execute(EntityManager em) {
                     Query query = em.createNamedQuery("examenes.findAll");
+                    List<Examen> results = query.getResultList();
+                    return results;
+                }
+            });
+        } catch (EntityAccessorException ex) {
+            Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
+    public List<Examen> getExamenByNoCerrado() {
+        List<Examen> result = Collections.emptyList();
+        try {
+            result = doInTransaction(new PersistenceAction<List<Examen>>() {
+
+                @Override
+                public List<Examen> execute(EntityManager em) {
+                    Query query = em.createNamedQuery("examenes.findByNoCerrado");
                     List<Examen> results = query.getResultList();
                     return results;
                 }
@@ -431,6 +524,8 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
         });
     }
 //</editor-fold>
+
+    
 
     
 

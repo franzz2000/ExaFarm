@@ -9,41 +9,46 @@
     <body>
 
         <ui:composition template="./../plantilla_principal.xhtml">
-            <ui:define name="title">ExaFarm - Administrar Preguntas</ui:define>
+            <ui:define name="title">#{bundle.AdministrarPreguntasTitulo}</ui:define>
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4" emptyMessage="No existen preguntas."
+                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4"
+                                 emptyMessage="#{bundle.AdministrarPreguntasNoPreguntas}"
                                  rowEditListener="#{administraPreguntasBacking.modifica}"
                                  onRowEditUpdate="growl">
                         <f:facet name="header">
-                            Listado de Preguntas
+                            #{bundle.AdministrarPreguntasTituloTabla}
                         </f:facet>
-                        <p:column style="width: 5px" filterBy="#{pregunta.id}" headerText="Id" filterStyle="width: 20px">
+                        <p:column style="width: 5px" filterBy="#{pregunta.id}" headerText="#{bundle.AdministrarPreguntasId}" 
+                                  filterStyle="width: 20px">
                             <h:outputText value="#{pregunta.id}"/>
                         </p:column>
-                        <p:column headerText="Pregunta">
+                        <p:column headerText="#{bundle.AdministrarPreguntasPregunta}">
                             <h:outputText value="#{pregunta.texto}"/>
                             <p:dataList id="subTabla" var="respuesta" value="#{pregunta.respuestas}" itemType="a">
                                 <h:outputText value="#{respuesta.texto}" style="#{respuesta.isCorrecta? 'color: green':''}"/>
                             </p:dataList>
                         </p:column>
-                        <p:column filterBy="#{pregunta.tema.id}" headerText="Tema" filterOptions="#{administraPreguntasBacking.temasOptions}" filterMatchMode="exact">
+                        <p:column filterBy="#{pregunta.tema.id}" headerText="#{bundle.AdministrarPreguntasTema}"
+                                  filterOptions="#{administraPreguntasBacking.temasOptions}" filterMatchMode="exact">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{pregunta.tema.descripcionCorta}"/>
+                                    <h:outputText value="#{pregunta.tema.descripcionCorta}-#{pregunta.tema.bloque}" 
+                                                  style="#{pregunta.isActiva? '':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
                                     <h:selectOneMenu value="#{pregunta.tema}" converter="#{temaListConverter}">  
-                                        <f:selectItems value="#{administraPreguntasBacking.temas}"  
+                                        <f:selectItems value="#{administraPreguntasBacking.temas}"      
                                             var="tema"   
-                                            itemLabel="#{tema.descripcionCorta}"  
+                                            itemLabel="#{tema.descripcionCorta}-#{tema.bloque}"  
                                             itemValue="#{tema}"/>  
                                     </h:selectOneMenu>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column filterBy="#{pregunta.usuario.id}" headerText="Profesor" filterOptions="#{administraPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
+                        <p:column filterBy="#{pregunta.usuario.id}" headerText="#{bundle.AdministrarPreguntasProfesor}"
+                                  filterOptions="#{administraPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
                                   rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
                             <p:cellEditor>
                                 <f:facet name="output">
@@ -59,7 +64,7 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Activa">
+                        <p:column headerText="#{bundle.AdministrarPreguntasActiva}">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{pregunta.isActiva?'Sí':'No'}"/>
@@ -69,7 +74,7 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Mezclable">
+                        <p:column headerText="#{bundle.AdministrarPreguntasMezclable}">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{pregunta.isMezclable?'Sí':'No'}"/>
@@ -79,10 +84,10 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Modificar" style="width:32px;">
+                        <p:column headerText="#{bundle.AdministrarPreguntasModificar}" style="width:32px;">
                             <p:rowEditor/>
                         </p:column>
-                        <p:column headerText="Ver">
+                        <p:column headerText="#{bundle.AdministrarPreguntasVer}">
                             <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">
                                 <f:param value="#{pregunta.id}" name="pregunta"/>
                             </p:commandButton>

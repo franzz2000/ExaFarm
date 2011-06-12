@@ -7,7 +7,9 @@ import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
 import edu.uoc.tfc.exafarm.entitats.accessor.UsuarioRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,7 +37,7 @@ public class seleccionaPreguntasBacking implements Serializable{
     Integer numeroPreguntas;
     String modificado; //Se activa si se ha modificado alguna seleccion y no se ha grabado
     
-    String titulo = "Preguntas seleccionadas para el examen de ";
+    String titulo = Utils.getMessageResourceString("bundle", "SeleccionarPreguntasPreguntasSeleccionadas");
 
     /** Creates a new instance of  */
     public seleccionaPreguntasBacking() {
@@ -65,7 +67,10 @@ public class seleccionaPreguntasBacking implements Serializable{
     } 
     
     public String getTitulo() {
-        return titulo;
+        String texto = Utils.getMessageResourceString("bundle", "SeleccionarPreguntasTituloPanel");
+        MessageFormat messageFormat = new MessageFormat(texto);
+        Object[] parametros = {examen.toString()};
+        return messageFormat.format(parametros);
     }
     
     public Integer getNumeroPreguntas() {
@@ -82,7 +87,7 @@ public class seleccionaPreguntasBacking implements Serializable{
     
     private SelectItem[] createTemaOptions(List<Tema> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem("", "Todos");
+        options[0] = new SelectItem("", Utils.getMessageResourceString("bundle", "SeleccionarPreguntasTodos"));
         for (int i = 0; i < temas.size(); i++) {
             options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getDescripcionCorta());
         }
@@ -92,7 +97,7 @@ public class seleccionaPreguntasBacking implements Serializable{
     
     private SelectItem[] createProfesorOptions(List<Usuario> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem("", "Todos");
+        options[0] = new SelectItem("", Utils.getMessageResourceString("bundle", "SeleccionarPreguntasTodos"));
         for (int i = 0; i < temas.size(); i++) {
             options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getIdUsuario());
         }
@@ -112,16 +117,16 @@ public class seleccionaPreguntasBacking implements Serializable{
             try {
                 ExamenRegistry.getCurrentInstance().updatePregunta(seleccion.getPregunta());
             } catch (EntityAccessorException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar la pregunta del examen.", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "SeleccionarPreguntasErrorModificar"), null));
                 Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {
             ExamenRegistry.getCurrentInstance().updateExamen(examen);
             modificado = "";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha actualizado la selección de preguntas", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "SeleccionarPreguntasOKSeleccionPreguntas"), null));
         } catch (EntityAccessorException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al modificar el examen.", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "SeleccionarPreguntasErrorSeleccionPreguntas"), null));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -133,7 +138,7 @@ public class seleccionaPreguntasBacking implements Serializable{
         } else {
             numeroPreguntas--;
         }
-        modificado = "| Datos modificados, es necesario guardar la información.";
+        modificado = "| "+Utils.getMessageResourceString("bundle", "SeleccionarPreguntasDatosModificados");
     }
     
     @PostConstruct
@@ -147,9 +152,9 @@ public class seleccionaPreguntasBacking implements Serializable{
         }
         Usuario usuario = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         if (usuario.isUsuarioIsAdministrador()||usuario.isUsuarioIsCoordinador()) {
-            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaList();
+            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaListActivos();
         } else {
-            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
+            listaPreguntas = ExamenRegistry.getCurrentInstance().getPreguntaByUsuarioActivos(usuario);
         }
 
         listaSeleccion = new ArrayList<Seleccion>();

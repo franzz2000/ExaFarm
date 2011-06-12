@@ -106,6 +106,7 @@ public class Version implements Serializable {
      */
     public void ordena() {
         Collections.sort(preguntas);
+        Collections.reverse(preguntas);
     }
 
     

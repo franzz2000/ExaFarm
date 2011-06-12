@@ -10,34 +10,33 @@
 
         <ui:composition template="/plantilla_principal.xhtml">
 
-            <ui:define name="title">ExaFarm - Exámenes activos</ui:define>
+            <ui:define name="title">#{bundle.SeleccionarExamenTitulo}</ui:define>
 
             <ui:define name="content">
-                <p:panel header="Seleccionar examen">
-                    <h:form>
-                        <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" emptyMessage="No existen exámenes activos en la base de datos.">
-                            <f:facet name="header">
-                                Listado de Exámenes
-                            </f:facet>
-                            <p:column style="width: 16px">
-                                <h:outputText value="#{examen.id}"/>
-                            </p:column>
-                            <p:column headerText="Fecha">
-                                <h:outputText value="#{examen.fechaConvocatoria}">
-                                            <f:convertDateTime type="date" locale="es" dateStyle="long"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Activo">
-                                <h:outputText value="#{examen.isActivo?'Sí':'No'}"/>
-                            </p:column>
-                            <p:column headerText="Seleccionar">
-                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" ajax="false">
-                                    <f:param name="examen" value="#{examen.id}"/>
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </p:panel>
+                <h:form>
+                    <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" 
+                                 emptyMessage="#{bundle.SeleccionarExamenNoExamenes}">
+                        <f:facet name="header">
+                            #{bundle.SeleccionarExamenTituloTabla}
+                        </f:facet>
+                        <p:column headerText="#{bundle.SeleccionarExamenId}"  style="width: 16px;">
+                            <h:outputText value="#{examen.id}" style="#{examen.isActivo?'':'color:red;'}"/>
+                        </p:column>
+                        <p:column headerText="#{bundle.SeleccionarExamenFecha}">
+                            <h:outputText value="#{examen.fechaConvocatoria}" style="#{examen.isActivo?'':'color:red;'}">
+                                <f:convertDateTime type="date" locale="es" dateStyle="long"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{bundle.SeleccionarExamenActivo}">
+                            <h:outputText value="#{examen.isActivo?'Sí':'No'}" style="#{examen.isActivo?'':'color:red;'}"/>
+                        </p:column>
+                        <p:column headerText="#{bundle.SeleccionarExamenSeleccionar}">
+                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" ajax="false">
+                                <f:param name="examen" value="#{examen.id}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

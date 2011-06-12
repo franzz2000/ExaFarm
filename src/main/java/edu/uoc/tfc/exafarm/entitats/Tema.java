@@ -4,11 +4,8 @@
  */
 package edu.uoc.tfc.exafarm.entitats;
 
-import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
-import java.util.Locale;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -25,7 +22,8 @@ import javax.persistence.Table;
 @Table(name="temas")
 @NamedQueries({
     @NamedQuery(name="temas.findAll", query = "SELECT t FROM Tema t"),
-    @NamedQuery(name="temas.findById", query = "SELECT t FROM Tema t WHERE t.id = :id")
+    @NamedQuery(name="temas.findById", query = "SELECT t FROM Tema t WHERE t.id = :id"),
+    @NamedQuery(name="temas.findActivos", query = "SELECT t FROM Tema t WHERE t.isActivo = true")
 })
 @ManagedBean
 public class Tema extends AbstractEntity implements Serializable {
@@ -40,6 +38,10 @@ public class Tema extends AbstractEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_bloque")
     private Bloque bloque;
+    
+    public Tema() {
+        isActivo=true;
+    }
 
     public String getDescripcion() {
         return descripcion;

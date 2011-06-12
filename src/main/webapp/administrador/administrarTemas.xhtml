@@ -25,7 +25,8 @@
                                     <h:outputText value="#{tema.descripcionCorta}" style="#{tema.isActivo?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{tema.descripcionCorta}" style="width: 250px"/>
+                                    <p:inputText value="#{tema.descripcionCorta}" style="width: 250px" required="true"
+                                                 requiredMessage="#{bundle.AdministrarTemasErrorDescripcionCorta}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -36,7 +37,8 @@
                                     <h:outputText value="#{tema.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{tema.descripcion}" style="width: 600px"/>
+                                    <p:inputTextarea value="#{tema.descripcion}" style="width: 300px" required="true"
+                                                     requiredMessage="#{bundle.AdministrarTemasErrorDescripcion}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -46,11 +48,12 @@
                                     <h:outputText value="#{tema.bloque.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}">  
-                                    <f:selectItems value="#{administraTemasBacking.listaBloque}"  
+                                    <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}" required="true"
+                                                     requiredMessage="#{bundle.AdministrarTemasErrorBloque}">
+                                        <f:selectItems value="#{administraTemasBacking.bloqueOptions}"  
                                         var="bloque"   
                                         itemLabel="#{bloque.descripcion}"  
-                                        itemValue="#{bloque}" />  
+                                        itemValue="#{bloque}"/>  
                                     </h:selectOneMenu> 
                                 </f:facet>
                             </p:cellEditor>

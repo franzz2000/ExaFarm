@@ -5,9 +5,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -44,6 +41,16 @@ public class Bloque implements Serializable {
     private String descripcion;
     @Column(name="is_activo")
     private Boolean isActivo;
+    
+    public Bloque() {
+        id=0L;
+        isActivo=true;
+    }
+    
+    public Bloque (String descripcion, Boolean isActivo) {
+        this.setDescripcion(descripcion);
+        this.setIsActivo(isActivo);
+    }
 
 
     public Long getId() {
@@ -54,13 +61,6 @@ public class Bloque implements Serializable {
         this.id = id;
     }
     
-    public Bloque (String descripcion, Boolean isActivo) {
-        this.setDescripcion(descripcion);
-        this.setIsActivo(isActivo);
-    }
-    public Bloque() {
-        id = 0L;
-    }
 
     public String getDescripcion() {
         return descripcion;

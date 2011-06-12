@@ -5,7 +5,6 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +33,10 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "preguntas.findById", query = "SELECT p FROM Pregunta p WHERE p.id = :id"),
     @NamedQuery(name = "preguntas.findByExamen", query = "SELECT p FROM Pregunta p WHERE p.examenes = :examen"),
     @NamedQuery(name = "preguntas.findByUsuario", query = "SELECT p FROM Pregunta p WHERE p.usuario = :usuario"),
-    @NamedQuery(name = "preguntas.findByExamenAndUser", query = "SELECT P FROM Pregunta p WHERE p.examenes = :examen AND p.usuario = :usuario")
+    @NamedQuery(name = "preguntas.findByExamenAndUser", query = "SELECT P FROM Pregunta p WHERE p.examenes = :examen AND p.usuario = :usuario"),
+    @NamedQuery(name = "preguntas.findActivos", query = "SELECT p FROM Pregunta p WHERE p.isActiva = true"),
+    @NamedQuery(name = "preguntas.findByUsuarioActivos", query = "SELECT p FROM Pregunta p WHERE p.usuario = :usuario AND p.isActiva = true"),
+    @NamedQuery(name = "preguntas.countByTema", query = "SELECT COUNT(p) FROM Pregunta p WHERE p.tema = :tema")
 })
 @ManagedBean
 @RequestScoped

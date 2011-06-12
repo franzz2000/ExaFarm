@@ -1,15 +1,24 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
 
         <ui:composition template="./../plantilla_principal.xhtml">
-            <ui:define name="title">Página principal del administrador</ui:define>
+            <ui:define name="title">#{bundle.PrincipalProfesorTitulo}</ui:define>
             
             <ui:define name="content">
-                <h1>Estadísticas de uso del Profesor</h1>
+                <p:panel header="#{bundle.PrincipalProfesorTituloPanel}">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{bundle.PrincipalProfesorNumPreguntas}"/>
+                        <h:outputText value="#{estadisticasBacking.numPreguntas}"/>
+                        <h:outputText value="#{bundle.PrincipalProfesorTemasTitulo}"/>
+                        <h:outputText value="#{estadisticasBacking.numTemas}"/>
+                    </h:panelGrid>
+                </p:panel>
             </ui:define>
 
         </ui:composition>

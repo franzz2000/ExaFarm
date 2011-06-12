@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
@@ -40,7 +41,7 @@ public class agregaPreguntaBacking extends AbstractBacking {
     
     public agregaPreguntaBacking() {
         temas = new ArrayList<Tema>();
-        temas = ExamenRegistry.getCurrentInstance().getTemaList();
+        temas = ExamenRegistry.getCurrentInstance().getTemaListActivo();
         temasOptions = createTemasOptions(temas);
     }
 
@@ -104,7 +105,7 @@ public class agregaPreguntaBacking extends AbstractBacking {
     
     private SelectItem[] createTemasOptions(List<Tema> temas) {
         SelectItem[] options=new SelectItem[temas.size()+1];
-        options[0] = new SelectItem(0L, "Seleccione tema:");
+        options[0] = new SelectItem(0L, Utils.getMessageResourceString("bundle", "AgregarPreguntaSeleccioneTema"));
         for (int i = 0; i < temas.size(); i++) {
             options[i+1] = new SelectItem(temas.get(i), temas.get(i).getDescripcionCorta());
         }
@@ -137,13 +138,13 @@ public class agregaPreguntaBacking extends AbstractBacking {
                 ExamenRegistry.getCurrentInstance().addPregunta(newPregunta);
 //                newPregunta.setRespuestas(respuestas);
 //                ExamenRegistry.getCurrentInstance().updatePregunta(newPregunta);
-                Utils.addMessage("Se ha añadido la pregunta.");
+                Utils.addMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "AgregarPreguntaOKAnadir"));
             } catch (EntityAccessorException ex) {
-                Utils.addMessage("Error al añadir la pregunta.");
+                Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPreguntaErrorAnadir"));
                 Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
             }    
         } else {
-            Utils.addMessage("Es necesario seleccionar al menos una pregunta correcta.");
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPretuntaErrorSeleccionCorrecta"));
         } 
     }
 }

@@ -8,7 +8,9 @@ import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Respuesta;
 import edu.uoc.tfc.exafarm.entitats.accessor.EntityAccessorException;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
+import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +34,6 @@ public class verPreguntaBacking implements Serializable{
     public verPreguntaBacking() {
         preguntaId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("pregunta");
         pregunta = ExamenRegistry.getCurrentInstance().getPreguntaById(preguntaId);
-        titulo = "Modificar pregunta " + pregunta.getId();
         respuestas = pregunta.getRespuestas();
     }
 
@@ -45,7 +46,10 @@ public class verPreguntaBacking implements Serializable{
     }
 
     public String getTitulo() {
-        return titulo;
+        String texto = Utils.getMessageResourceString("bundle", "VerPreguntaTituloPanel");
+        Object[] parametros = {pregunta.getId()};
+        MessageFormat messageFormat = new MessageFormat(texto);
+        return messageFormat.format(parametros);
     }
     
     public List<Respuesta> getRespuestas(){
@@ -64,9 +68,9 @@ public class verPreguntaBacking implements Serializable{
     public void modifica() {
         try {
             ExamenRegistry.getCurrentInstance().updatePregunta(pregunta);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("La pregunta se ha modificado correctamente."));
+            Utils.addMessage(FacesMessage.SEVERITY_INFO,  Utils.getMessageResourceString("bundle", "VerPreguntaOKModificar"));
         } catch (EntityAccessorException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error al actualizar la pregunta."));
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "VerPreguntaErrorModificar"));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }

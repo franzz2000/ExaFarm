@@ -11,34 +11,33 @@
         <ui:composition template="./../plantilla_principal.xhtml">
 
             <ui:define name="title">
-                ExaFarm - Modificar pregunta
+                #{bundle.VerPreguntaTitulo}
             </ui:define>
 
             <ui:define name="content">
                 <p:panel header="#{verPreguntaBacking.titulo}">
                     <h:form>
-                        <h:outputText value="Pregunta"/>
-                        <p:inputTextarea style="width: 500px; margin: 10px 0px;" value="#{verPreguntaBacking.pregunta.texto}" required="true" requiredMessage="La pregunta no puede estar en blanco."/>
-                        <p:dataTable id="tabla" var="respuesta" value="#{verPreguntaBacking.pregunta.respuestas}" emptyMessage="No existen respuestas para esta pregunta.">
+                        <h:outputText value="#{bundle.VerPreguntaPregunta}"/>
+                        <p:inputTextarea style="width: 500px; margin: 10px 0px;" value="#{verPreguntaBacking.pregunta.texto}" required="true" requiredMessage="#{bundle.VerPreguntaErrorPregunta}"/>
+                        <p:dataTable id="tabla" var="respuesta" value="#{verPreguntaBacking.pregunta.respuestas}" emptyMessage="#{bundle.VerPreguntaNoRespuestas}">
                             <f:facet name="header">
-                                <h:outputText value="Respuestas"/>
+                                <h:outputText value="#{bundle.VerPreguntaRespuestas}"/>
                             </f:facet>
-                            <p:column headerText="Respuesta">
-                                <p:inputTextarea value="#{respuesta.texto}" style="width: 500px;" required="true" requiredMessage="No pueden haber respuestas en blanco."/>
+                            <p:column headerText="#{bundle.VerPreguntaRespuesta}">
+                                <p:inputTextarea value="#{respuesta.texto}" style="width: 500px;" required="true" requiredMessage="#{bundle.VerPreguntaErrorRespuestas}"/>
                             </p:column>
-                            <p:column headerText="Correcta">
+                            <p:column headerText="#{bundle.VerPreguntaCorrecta}">
                                 <h:selectBooleanCheckbox value="#{respuesta.isCorrecta}"/>
                             </p:column>
-                            <p:column headerText="Activa" rendered="false">
+                            <p:column headerText="#{bundle.VerPreguntaActiva}" rendered="false">
                                 <h:selectBooleanCheckbox value="#{respuesta.isActiva}"/>
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton value="Guardar pregunta" actionListener="#{verPreguntaBacking.modifica}" update="tabla, growl"/>
+                        <p:commandButton value="#{bundle.VerPreguntaGuardar}" actionListener="#{verPreguntaBacking.modifica}" update="tabla, growl"/>
                     </h:form>
                 </p:panel>
             </ui:define>
             
         </ui:composition>
-
     </body>
 </html>

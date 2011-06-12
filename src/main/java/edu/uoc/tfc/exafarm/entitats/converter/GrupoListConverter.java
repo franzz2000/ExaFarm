@@ -36,7 +36,6 @@ public class GrupoListConverter implements Converter, Serializable{
         if (value == null || value.toString().isEmpty()) {
             return "";
         }
-        String id = ((Grupo) value).getIdGrupo();
-        return id;
+        return ((Grupo) value).getIdGrupo().toString();
     }       
 }

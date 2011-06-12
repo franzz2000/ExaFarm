@@ -11,63 +11,63 @@
         <ui:composition template="./../plantilla_principal.xhtml">
 
             <ui:define name="title">
-                ExaFarm - Añadir Pregunta
+                #{bundle.AgregarPreguntaTitulo}
             </ui:define>
 
             <ui:define name="content">
-                <p:panel header="Añadir pregunta">     
+                <p:panel header="#{bundle.AgregarPreguntaTituloPanel}">     
                     <h:form>
                         <h:panelGrid columns="4">
-                            <h:outputText value="Pregunta:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaPregunta}"/>
                             <p:inputTextarea style="width: 500px;" id="nombre"
                                              value="#{agregaPreguntaBacking.newPregunta.texto}"
-                                             required="true" requiredMessage="Es necesario añadir una pregunta."/>
-                            <h:outputText value="Activa:"/>
+                                             required="true" requiredMessage="#{bundle.AgregarPreguntaErrorPregunta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaActiva}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isActiva}"/>
-                            <h:outputText value="Respuesta 1:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta1}"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta1"
                                              value="#{agregaPreguntaBacking.respuesta1.texto}"
-                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 1."/>
-                            <h:outputText value="Correcta:"/>
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta1}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta1.isCorrecta}"/>
-                            <h:outputText value="Respuesta 2:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta2}"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta2"
                                              value="#{agregaPreguntaBacking.respuesta2.texto}"
-                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 2."/>
-                            <h:outputText value="Correcta:"/>
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta2}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta2.isCorrecta}"/>
-                            <h:outputText value="Respuesta 3:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta3}"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta3"
                                              value="#{agregaPreguntaBacking.respuesta3.texto}"
-                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 3."/>
-                            <h:outputText value="Correcta:"/>
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta3}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta3.isCorrecta}"/>
-                            <h:outputText value="Respuesta 4:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta4}"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta4"
                                              value="#{agregaPreguntaBacking.respuesta4.texto}"
-                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 4."/>
-                            <h:outputText value="Correcta:"/>
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta4}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta4.isCorrecta}"/>
-                            <h:outputText value="Respuesta 5:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta5}"/>
                             <p:inputTextarea style="width: 500px;" id="respuesta5"
                                              value="#{agregaPreguntaBacking.respuesta5.texto}"
-                                         required="true" requiredMessage="Es necesario añadir una respuesta en respuesta 5."/>
-                            <h:outputText value="Correcta:"/>
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta5}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta5.isCorrecta}"/>
-                            <h:outputText value="Tema:"/>
-                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" required="true" requiredMessage="Es necesario un tema." converter="#{temaListConverter}">
+                            <h:outputText value="#{bundle.AgregarPreguntaTema}"/>
+                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" required="true"
+                                             requiredMessage="#{bundle.AgregarPreguntaErrorTema}" converter="#{temaListConverter}">
                                 <f:selectItems value="#{agregaPreguntaBacking.temasOptions}"
-                                            var="tema"   
+                                            var="tema"
                                             itemLabel="#{tema.descripcionCorta}"  
                                             itemValue="#{tema}"/>  
                             </h:selectOneMenu>
                             <h:outputText value="&nbsp;"/>
                             <h:outputText value="&nbsp;"/>
-                            <h:outputText value="Mezclar las respuestas:"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaMezclarRespuestas}"/>
                             <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isMezclable}"/>
                         </h:panelGrid>
-                        <p:commandButton value="Guardar" action="#{agregaPreguntaBacking.agregaPregunta}" ajax="false"/>
-                        
+                        <p:commandButton value="#{bundle.AgregarPreguntaAnadir}" action="#{agregaPreguntaBacking.agregaPregunta}" ajax="false"/>
                     </h:form>
                 </p:panel>
             </ui:define>

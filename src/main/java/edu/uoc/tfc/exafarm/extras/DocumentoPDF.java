@@ -1,5 +1,6 @@
 package edu.uoc.tfc.exafarm.extras;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -22,9 +23,7 @@ import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +84,8 @@ public class DocumentoPDF {
                 addPreguntas();
                 documento.newPage();
                 addPlantilla();
+                documento.newPage();
+                addResultados();
             documento.close();
             FacesContext.getCurrentInstance().responseComplete();
             } catch (DocumentException ex) {
@@ -154,11 +155,9 @@ public class DocumentoPDF {
     private void addPregunta(ColumnText ct, Pregunta pregunta, int i) {
         Paragraph preguntaTxt = new Paragraph(i + ") " + pregunta.getTexto().toUpperCase(),NORMAL);
         preguntaTxt.setAlignment(Element.ALIGN_JUSTIFIED);
-//        preguntaTxt.setFirstLineIndent(-10);
         preguntaTxt.setSpacingAfter(7);
         ct.addElement(preguntaTxt);
         com.itextpdf.text.List listaRespuestas = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.ALPHABETICAL);
-//        listaRespuestas.setIndentationLeft(15);
         listaRespuestas.setPostSymbol(") ");
         List<Respuesta> respuestas = pregunta.getRespuestas();
         if(pregunta.getIsMezclable()) {
@@ -303,7 +302,59 @@ public class DocumentoPDF {
         }
         return tabla;
     }
-            
+    
+    private void addResultados() throws DocumentException {
+        Paragraph texto;
+        PdfPCell cell;
+        
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "RespuestasTitulo") + version.getNumVersion(), TITULO);
+        texto.setSpacingAfter(20);
+        documento.add(texto);
+        int i = 1;
+        PdfPTable tabla = new PdfPTable(5);
+//        tabla.setWidthPercentage(50F);
+        tabla.setWidths(new float[] {.2F,.5F,.5F,1,2});
+        tabla.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
+        tabla.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "NumPregunta"),NORMAL);
+        tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+        tabla.addCell(texto);
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "Correcta"),NORMAL);
+        tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+        tabla.addCell(texto);
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "IdPregunta"), NORMAL);
+        tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        tabla.addCell(texto);
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "Bloque"), NORMAL);
+        tabla.addCell(texto);
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "Profesor"), NORMAL);
+        tabla.addCell(texto);
+        tabla.getDefaultCell().setBackgroundColor(null);
+        tabla.setHeaderRows(1);
+        tabla.getDefaultCell().setBorder(PdfPCell.BOTTOM);
+        for(Pregunta pregunta:version.getPreguntas()) {
+            //Número de pregunta
+            texto = new Paragraph(Integer.toString(i), NORMAL);
+            tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tabla.addCell(texto);
+            //Respuesta correcta
+            texto = new Paragraph(pregunta.getCorrecta(), NORMAL);
+            tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+            tabla.addCell(texto);
+            //PreguntaId
+            texto = new Paragraph(Long.toString(pregunta.getId()), NORMAL);
+            tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(texto);
+            //Bloque de pregunta
+            texto = new Paragraph(pregunta.getTema().getBloque().getDescripcion(), NORMAL);
+            tabla.addCell(texto);
+            //Profesor
+            texto = new Paragraph(pregunta.getUsuario().getNombre() +" "+pregunta.getUsuario().getApellidos(), NORMAL);
+            tabla.addCell(texto);
+            i++;
+        }
+        documento.add(tabla);
+    }       
     
     
     /** Inner class to add a header and a footer. */

@@ -70,9 +70,9 @@ public class administraBloquesBacking implements Serializable{
         newBloque.setId(Long.MIN_VALUE);
         try {
             ExamenRegistry.getCurrentInstance().addBloque(newBloque);
-            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarBloquesErrorAnadir"));
-        } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "AdministrarBloquesOKAnadir"));
+        } catch (EntityAccessorException ex) {
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarBloquesErrorAnadir"));
             Logger.getLogger(administraBloquesBacking.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -37,7 +37,7 @@
                             <p:column headerText="#{bundle.AdministrarBloquesActivo}" sortBy="#{block.isActivo}" style="width: 50px">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{block.isActivo}" style="#{block.isActivo?'':'color: red'}"/>
+                                        <h:outputText value="#{block.isActivo?'Sí':'No'}" style="#{block.isActivo?'':'color: red'}"/>
                                     </f:facet>
                                     <f:facet name="input">
                                         <h:selectBooleanCheckbox value="#{block.isActivo}"/>
