@@ -4,6 +4,7 @@
  */
 package edu.uoc.tfc.exafarm.backing;
 
+import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Tema;
 import edu.uoc.tfc.exafarm.entitats.Usuario;
 import edu.uoc.tfc.exafarm.entitats.accessor.ExamenRegistry;
@@ -22,9 +23,7 @@ public class EstadisticasBacking extends AbstractBacking {
         return Integer.toString(getCurrentUser().getPreguntas().size());
     }
     
-    public String getNumTemas(){
-        List<Tema> temas = ExamenRegistry.getCurrentInstance().getTemaList();
-        Integer distribucion = ExamenRegistry.getCurrentInstance().getCountTemas(temas.get(1));
-        return distribucion.toString();
+    public List<Examen> getExamenesActivos(){
+        return ExamenRegistry.getCurrentInstance().getExamenByActivo();
     }
 }

@@ -1,7 +1,6 @@
 package edu.uoc.tfc.exafarm.backing;
 
 
-import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import edu.uoc.tfc.exafarm.entitats.Examen;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Tema;
@@ -82,20 +81,18 @@ public class administraPreguntasBacking implements Serializable{
     public boolean isPaginator() {
         return lista.size()>10;
     }
-    
-    
+     
     public void modifica(RowEditEvent ev) {
         Pregunta obj = null;
         try {
             obj = (Pregunta) ev.getObject();
             ExamenRegistry.getCurrentInstance().updatePregunta(obj);
-            Utils.addMessage(Utils.getMessageResourceString("bundle", "AdministrarPreguntasOKActualizar"));
+            Utils.addMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "AdministrarPreguntasOKActualizar"));
         } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarPreguntasErrorActualizar"));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     
     
     public SelectItem[] getTemasOptions(){

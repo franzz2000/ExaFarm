@@ -29,11 +29,13 @@
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{examen.fechaConvocatoria}">
-                                        <f:convertDateTime type="date" locale="es" dateStyle="long"/>
+                                        <f:convertDateTime type="date" dateStyle="long"/>
                                     </h:outputText>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:calendar value="#{examen.fechaConvocatoria}" locale="es"/>
+                                    <p:inputText value="#{examen.fechaConvocatoria}">
+                                        <f:convertDateTime type="date" pattern="dd/mm/yyyy"/>
+                                    </p:inputText>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>

@@ -5,6 +5,7 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -83,6 +84,18 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
     
     public Pregunta(Long id) {
         this.id = id;
+    }
+    
+    public Pregunta(Pregunta pregunta) {
+        this.id = 0L;
+        this.fechaCreacion = pregunta.getFechaCreacion();
+        this.texto = pregunta.getTexto();
+        this.isCorta = pregunta.getIsCorta();
+        this.isMezclable = pregunta.getIsMezclable();
+        this.usuario = pregunta.getUsuario();
+        this.tema = pregunta.getTema();
+        this.examenes = new ArrayList();
+        this.respuestas = pregunta.getRespuestas();
     }
 
     public List<Examen> getExamenes() {

@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
@@ -52,6 +55,9 @@ public class Usuario extends AbstractEntity implements Serializable {
     private String nombre;
     private String apellidos;
     private String email;
+    @Column(name="last_login")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
     @ManyToOne
     @JoinColumn(name="grupo")
     private Grupo grupo;
@@ -140,6 +146,14 @@ public class Usuario extends AbstractEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
     public Grupo getGrupo() {

@@ -17,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -76,11 +75,11 @@ public class administraExamenesBacking implements Serializable{
         newExamen.setId(Long.MIN_VALUE);
         try {
             ExamenRegistry.getCurrentInstance().addExamen(newExamen);
+            Utils.addMessage(FacesMessage.SEVERITY_INFO, Utils.getMessageResourceString("bundle", "AdministrarExamenesOKAnadir"));
         } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarExamenesErrorAnadir"));
             Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarExamenesOKAnadir"));
     }
     
     @PostConstruct

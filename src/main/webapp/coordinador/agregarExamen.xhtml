@@ -19,8 +19,9 @@
                     <h:form>
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.AgregarExamenFechaConvocatoria}"/>
-                            <p:calendar value="#{examen.fechaConvocatoria}" locale="es" required="true"
-                                        requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}"/>
+                            <p:inputText value="#{examen.fechaConvocatoria}" required="true" requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}">
+                                <f:convertDateTime locale="es" pattern="dd/mm/yyyy"/>
+                            </p:inputText>
                             <h:outputText value="#{bundle.AgregarExamenNumeroPreguntas}"/>
                             <p:inputText id="numPreguntas"
                                          value="#{examen.numPreguntas}"

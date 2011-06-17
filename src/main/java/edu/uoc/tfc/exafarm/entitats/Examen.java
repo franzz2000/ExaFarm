@@ -5,9 +5,11 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import java.io.Serializable;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import java.util.List;
 import java.util.Locale;
 import javax.faces.bean.ManagedBean;
