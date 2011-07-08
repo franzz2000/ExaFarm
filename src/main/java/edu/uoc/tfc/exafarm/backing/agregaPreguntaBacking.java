@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -146,5 +147,23 @@ public class agregaPreguntaBacking extends AbstractBacking {
         } else {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPretuntaErrorSeleccionCorrecta"));
         } 
+    }
+    
+    @PostConstruct
+    public void construct() {
+        String idPregunta = getFacesContext().getExternalContext().getRequestParameterMap().get("pregunta");
+        Pregunta pregunta = ExamenRegistry.getCurrentInstance().getPreguntaById(idPregunta);
+        if(pregunta != null) {
+            newPregunta.setTexto(pregunta.getTexto());
+            newPregunta.setIsActiva(pregunta.getIsActiva());
+            newPregunta.setIsCorta(pregunta.getIsCorta());
+            newPregunta.setIsMezclable(pregunta.getIsMezclable());
+            respuesta1.setTexto(pregunta.getRespuestas().get(0).getTexto());
+            respuesta2.setTexto(pregunta.getRespuestas().get(1).getTexto());
+            respuesta3.setTexto(pregunta.getRespuestas().get(2).getTexto());
+            respuesta4.setTexto(pregunta.getRespuestas().get(3).getTexto());
+            respuesta5.setTexto(pregunta.getRespuestas().get(4).getTexto());
+            
+        }
     }
 }
