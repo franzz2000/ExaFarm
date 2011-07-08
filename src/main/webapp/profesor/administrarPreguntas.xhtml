@@ -13,7 +13,7 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4"
+                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="10"
                                  emptyMessage="#{bundle.AdministrarPreguntasNoPreguntas}"
                                  rowEditListener="#{administraPreguntasBacking.modifica}"
                                  onRowEditUpdate="growl">

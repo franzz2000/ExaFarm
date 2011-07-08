@@ -40,6 +40,7 @@
                             <p:menuitem value="#{bundle.PrincipalAnadirTema}" url="/faces/administrador/agregarTema.xhtml"/>
                             <p:menuitem value="#{bundle.PrincipalVerBloques}" url="/faces/administrador/administrarBloques.xhtml"/>
                             <p:menuitem value="#{bundle.PrincipalAnadirBloque}" url="/faces/administrador/agregarBloque.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAdministrarPreguntas}" url="/faces/administrador/administrarPreguntas.xhtml"/>
                         </p:submenu>
                         <p:submenu label="#{bundle.PrincipalCoordinador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
                             <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/coordinador/principal.xhtml"/>
