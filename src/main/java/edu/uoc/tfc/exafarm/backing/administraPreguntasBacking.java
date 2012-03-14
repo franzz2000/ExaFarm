@@ -133,9 +133,9 @@ public class administraPreguntasBacking implements Serializable{
         if(examenId==null) {
             Usuario usuario = (Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
             if (usuario.isUsuarioIsAdministrador()||usuario.isUsuarioIsCoordinador()) {
-                lista = ExamenRegistry.getCurrentInstance().getPreguntaListActivos();
+                lista = ExamenRegistry.getCurrentInstance().getPreguntaList();
             } else {
-                lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuarioActivos(usuario);
+                lista = ExamenRegistry.getCurrentInstance().getPreguntaByUsuario(usuario);
             }
             titulo=Utils.getMessageResourceString("bundle", "AdministrarPreguntasLista");
         } else {

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.uoc.tfc.exafarm.backing;
 
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
@@ -114,7 +110,7 @@ public class agregaPreguntaBacking extends AbstractBacking {
         return options;
     }
     
-    public void agregaPregunta() {
+    public String agregaPregunta() {
         if (respuesta1.getIsCorrecta()||respuesta2.getIsCorrecta()||respuesta3.getIsCorrecta()||respuesta4.getIsCorrecta()||respuesta5.getIsCorrecta()) {
                 newPregunta.setId(Long.MIN_VALUE);
 
@@ -145,8 +141,10 @@ public class agregaPreguntaBacking extends AbstractBacking {
                 Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
             }    
         } else {
-            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPretuntaErrorSeleccionCorrecta"));
+            Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPreguntaErrorSeleccionCorrecta"));
+            return "";
         } 
+        return "principal.xhtml?faces-redirect=true";
     }
     
     @PostConstruct

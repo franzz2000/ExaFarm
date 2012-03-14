@@ -20,7 +20,7 @@
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.AgregarExamenFechaConvocatoria}"/>
                             <p:inputText value="#{examen.fechaConvocatoria}" required="true" requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}">
-                                <f:convertDateTime locale="es" pattern="dd/mm/yyyy"/>
+                                <f:convertDateTime locale="es" pattern="dd/MM/yyyy"/>
                             </p:inputText>
                             <h:outputText value="#{bundle.AgregarExamenNumeroPreguntas}"/>
                             <p:inputText id="numPreguntas"

@@ -1,10 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
     <groupId>edu.uoc.tfc</groupId>
     <artifactId>Exafarm-TFC</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
+    
     <name>Exafarm-TFC Java EE 6 Webapp</name>
     <url>http://maven.apache.org</url>
     <repositories>
@@ -21,15 +23,16 @@
         </repository>
         <repository>
             <id>prime-repo</id>
-            <name>Prime Technology Maven Repository</name>
-            <url>http://repository.prime.com.tr</url>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
             <layout>default</layout>
         </repository>
         <repository>
-      <id>itextpdf.com</id>
-      <name>Maven Repository for iText</name>
-      <url>http://maven.itextpdf.com/</url>
-    </repository>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
+            <id>eclipselink</id>
+            <layout>default</layout>
+            <name>Repository for library Library[eclipselink]</name>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -51,6 +54,24 @@
             <groupId>taglibs</groupId>
             <artifactId>standard</artifactId>
             <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+            <version>2.3.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -77,9 +98,16 @@
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.0.4</version>
+            <version>5.1.3</version>
             <scope>compile</scope>
+            <type>jar</type>
         </dependency>
+        <dependency> 
+            <groupId>org.bouncycastle</groupId> 
+            <artifactId>bctsp-jdk16</artifactId> 
+            <version>1.46</version> 
+            <type>jar</type> 
+        </dependency> 
     </dependencies>
     <build>
         <plugins>
@@ -140,9 +168,9 @@
         </profile>
     </profiles>
     <properties>
-        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
     </properties>
 </project>
-

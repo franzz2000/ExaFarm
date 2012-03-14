@@ -1,7 +1,6 @@
 package edu.uoc.tfc.exafarm.entitats;
 
 import com.sun.org.apache.xml.internal.security.utils.Base64;
-import edu.uoc.tfc.exafarm.extras.Utils;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -15,19 +14,8 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -67,13 +55,13 @@ public class Usuario extends AbstractEntity implements Serializable {
     private List<Pregunta> preguntas;
 
     public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo, Grupo grupo) {
-        this.setIdUsuario(usuarioId);
-        this.setPassword(password);
-        this.setNombre(nombre);
-        this.setApellidos(apellidos);
-        this.setEmail(email);
-        this.setIsActivo(isActivo);
-        this.setGrupo(grupo);
+        this.idUsuario = usuarioId;
+        this.password= password;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.isActivo = isActivo;
+        this.grupo = grupo;
     }
 
     public Usuario(){
