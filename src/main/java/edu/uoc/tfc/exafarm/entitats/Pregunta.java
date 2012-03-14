@@ -26,7 +26,8 @@ import javax.persistence.*;
     @NamedQuery(name = "preguntas.findByExamenAndUser", query = "SELECT P FROM Pregunta p WHERE p.examenes = :examen AND p.usuario = :usuario"),
     @NamedQuery(name = "preguntas.findActivos", query = "SELECT p FROM Pregunta p WHERE p.isActiva = true"),
     @NamedQuery(name = "preguntas.findByUsuarioActivos", query = "SELECT p FROM Pregunta p WHERE p.usuario = :usuario AND p.isActiva = true"),
-    @NamedQuery(name = "preguntas.countByTema", query = "SELECT COUNT(p) FROM Pregunta p WHERE p.tema = :tema")
+    @NamedQuery(name = "preguntas.countByTema", query = "SELECT COUNT(p) FROM Pregunta p WHERE p.tema = :tema"),
+    @NamedQuery(name = "preguntas.countByUsuario", query="SELECT COUNT(p) FROM Pregunta p WHERE p.usuario = :usuario")
 })
 @ManagedBean
 @RequestScoped

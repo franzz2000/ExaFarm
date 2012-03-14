@@ -150,18 +150,20 @@ public class agregaPreguntaBacking extends AbstractBacking {
     @PostConstruct
     public void construct() {
         String idPregunta = getFacesContext().getExternalContext().getRequestParameterMap().get("pregunta");
-        Pregunta pregunta = ExamenRegistry.getCurrentInstance().getPreguntaById(idPregunta);
-        if(pregunta != null) {
-            newPregunta.setTexto(pregunta.getTexto());
-            newPregunta.setIsActiva(pregunta.getIsActiva());
-            newPregunta.setIsCorta(pregunta.getIsCorta());
-            newPregunta.setIsMezclable(pregunta.getIsMezclable());
-            respuesta1.setTexto(pregunta.getRespuestas().get(0).getTexto());
-            respuesta2.setTexto(pregunta.getRespuestas().get(1).getTexto());
-            respuesta3.setTexto(pregunta.getRespuestas().get(2).getTexto());
-            respuesta4.setTexto(pregunta.getRespuestas().get(3).getTexto());
-            respuesta5.setTexto(pregunta.getRespuestas().get(4).getTexto());
-            
+        if (idPregunta !=null) {
+            Pregunta pregunta = ExamenRegistry.getCurrentInstance().getPreguntaById(idPregunta);
+            if(pregunta != null) {
+                newPregunta.setTexto(pregunta.getTexto());
+                newPregunta.setIsActiva(pregunta.getIsActiva());
+                newPregunta.setIsCorta(pregunta.getIsCorta());
+                newPregunta.setIsMezclable(pregunta.getIsMezclable());
+                respuesta1.setTexto(pregunta.getRespuestas().get(0).getTexto());
+                respuesta2.setTexto(pregunta.getRespuestas().get(1).getTexto());
+                respuesta3.setTexto(pregunta.getRespuestas().get(2).getTexto());
+                respuesta4.setTexto(pregunta.getRespuestas().get(3).getTexto());
+                respuesta5.setTexto(pregunta.getRespuestas().get(4).getTexto());
+
+            }
         }
     }
 }
