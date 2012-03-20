@@ -144,7 +144,7 @@ public class agregaPreguntaBacking extends AbstractBacking {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPreguntaErrorSeleccionCorrecta"));
             return "";
         } 
-        return "principal.xhtml?faces-redirect=true";
+        return "principal.xhtml";
     }
     
     @PostConstruct

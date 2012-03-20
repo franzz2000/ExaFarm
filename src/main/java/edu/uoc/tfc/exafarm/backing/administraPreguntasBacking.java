@@ -60,11 +60,11 @@ public class administraPreguntasBacking implements Serializable{
         return options;
     }
     
-    private SelectItem[] createProfesorOptions(List<Usuario> temas) {
-        SelectItem[] options=new SelectItem[temas.size()+1];
+    private SelectItem[] createProfesorOptions(List<Usuario> profesor) {
+        SelectItem[] options=new SelectItem[profesor.size()+1];
         options[0] = new SelectItem("", Utils.getMessageResourceString("bundle", "AdministrarPreguntasTodos"));
-        for (int i = 0; i < temas.size(); i++) {
-            options[i+1] = new SelectItem(temas.get(i).getId(), temas.get(i).getIdUsuario());
+        for (int i = 0; i < profesor.size(); i++) {
+            options[i+1] = new SelectItem(profesor.get(i).getId(), profesor.get(i).getIdUsuario());
         }
         
         return options;
