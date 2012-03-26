@@ -127,6 +127,7 @@ public class administraPreguntasBacking implements Serializable{
         return examenId;
     }
     
+    
     @PostConstruct
     public void construct(){
         examenId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");

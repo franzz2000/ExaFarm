@@ -7,6 +7,7 @@ package edu.uoc.tfc.exafarm.entitats;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -172,6 +173,25 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
         return letras[resultado];
     }
     
+    public Boolean getTieneExamenesCerrados() {
+        Boolean tieneExamenesCerrados = false;
+        Iterator itr = examenes.iterator(); 
+        while(itr.hasNext()) {
+          Examen element = (Examen) itr.next(); 
+          if(element.getIsCerrado()) tieneExamenesCerrados = true;
+        } 
+        return tieneExamenesCerrados;
+    }
+    
+    public List<Examen> getExamenesCerrados() {
+        List<Examen> examenesCerrados = new ArrayList();
+        Iterator itr = examenes.iterator();
+        while(itr.hasNext()) {
+            Examen element = (Examen) itr.next();
+            if(element.getIsCerrado()) examenesCerrados.add(element);
+        }
+        return examenesCerrados;
+    }
     
     @Override
     public int hashCode() {
@@ -224,5 +244,4 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
         return this.tema.getBloque().getDescripcion().compareToIgnoreCase(pregunta.tema.getBloque().getDescripcion());
     }
 
-    
 }

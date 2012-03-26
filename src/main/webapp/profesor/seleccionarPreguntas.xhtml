@@ -26,7 +26,7 @@
                             <h:outputText value="#{seleccionaPreguntasBacking.titulo}"/>
                         </f:facet>
                         <p:column style="width: 16px">
-                            <p:rowToggler rendered="#{selecciona.pregunta.examenes.size()>0}"/>
+                            <p:rowToggler rendered="#{selecciona.pregunta.tieneExamenesCerrados}"/>
                         </p:column>
                         <p:column>
                             <h:selectBooleanCheckbox value="#{selecciona.seleccion}">
@@ -50,7 +50,7 @@
                             <h:outputText value="#{selecciona.pregunta.usuario}"/>
                         </p:column>
                         <p:rowExpansion>
-                            <p:dataList var="examen" value="#{selecciona.pregunta.examenes}">
+                            <p:dataList var="examen" value="#{selecciona.pregunta.examenesCerrados}">
                                 <h:outputText value="#{examen}"/>                                
                             </p:dataList>
                         </p:rowExpansion>

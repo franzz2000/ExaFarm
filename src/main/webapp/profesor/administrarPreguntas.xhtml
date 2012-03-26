@@ -85,16 +85,19 @@
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarPreguntasModificar}" style="width:32px;">
-                            <p:rowEditor rendered="#{pregunta.isActiva==true}"/>
+<!--                            <p:rowEditor rendered="#{pregunta.isActiva==true}"/>-->
+                            <p:rowEditor/>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarPreguntasVer}">
-                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">
-<!--<p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false"
-                                              rendered="#{pregunta.examenes.size()==0}">                                -->
+<!--                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">-->
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false"
+                                                  title="Modificar texto de pregunta" 
+                                                  rendered="#{!pregunta.tieneExamenesCerrados}">
                                 <f:param value="#{pregunta.id}" name="pregunta"/>
                             </p:commandButton>
                             <p:commandButton image="ui-icon ui-icon-copy" action="/faces/profesor/agregarPregunta.xhtml" ajax="false"
-                                             rendered="#{pregunta.examenes.size()>0}">
+                                             rendered="#{pregunta.tieneExamenesCerrados}"
+                                             title="Copiar texto pregunta">
                                 <f:param value="#{pregunta.id}" name="pregunta"/>
                             </p:commandButton>
                         </p:column>
