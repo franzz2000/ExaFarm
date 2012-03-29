@@ -1,16 +1,7 @@
 package edu.uoc.tfc.exafarm.extras;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
+import com.itextpdf.text.*;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -18,7 +9,11 @@ import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Respuesta;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -222,7 +217,12 @@ public class DocumentoPDF {
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones1"), NORMAL));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones2"), NORMAL));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones3"), NORMAL));
+            Paragraph instruccion = new Paragraph(Utils.getMessageResourceString("examen", "Instrucciones3"), NORMAL);
+            URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/Ejemplo.jpg");        
+            Image imagen = Image.getInstance(resourceURL);
+            imagen.scalePercent(60f);
+            instruccion.add(imagen);
+            listaInstrucciones.add(new ListItem(instruccion));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), NORMAL));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), NORMAL));
             MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones6"));
@@ -236,6 +236,10 @@ public class DocumentoPDF {
             parrafo.setSpacingAfter(10);
             documento.add(addTable(maestra));
         } catch (DocumentException ex) {
+            Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
