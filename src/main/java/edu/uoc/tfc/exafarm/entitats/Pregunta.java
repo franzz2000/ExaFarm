@@ -161,6 +161,11 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
         this.isMezclable = isMezclable;
     }
     
+    /**
+     * Devuelve la pregunta correcta en formato de Letras.
+     * @return 
+     */
+    
     public String getCorrecta() {
         String letras[] = {"A", "B", "C", "D", "E", "Ninguna"};
         int resultado=5;
@@ -173,6 +178,26 @@ public class Pregunta extends AbstractEntity implements Serializable, Comparable
         return letras[resultado];
     }
     
+    /**
+     * Devuelve el número de la pregunta correcta
+     * @return 
+     */
+    public Integer getNumCorrecta() {
+        Integer resultado=6;
+        for (int i=0;i<respuestas.size();i++) {
+            Boolean correcta = respuestas.get(i).getIsCorrecta();
+            if (correcta) {
+                resultado = i;
+            }
+        }
+        return resultado;
+    }
+            
+    /**
+     * Devuelve verdadero si la pregunta se ha utilizado en algún examen que ya está cerrado.
+     * 
+     * @return 
+     */
     public Boolean getTieneExamenesCerrados() {
         Boolean tieneExamenesCerrados = false;
         Iterator itr = examenes.iterator(); 

@@ -32,7 +32,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
- * Genera un examen a partir de los datos de Versión del examen
+ * Genera un examen en PDF a partir de los datos de Versión del examen
  * 
  * @author Franz
  */
@@ -83,9 +83,11 @@ public class DocumentoPDF {
                 documento.add(addTitulo()); 
                 addPreguntas();
                 documento.newPage();
-                addPlantilla();
+                addPlantilla(false);
                 documento.newPage();
                 addResultados();
+                documento.newPage();
+                addPlantilla(true);
             documento.close();
             FacesContext.getCurrentInstance().responseComplete();
             } catch (DocumentException ex) {
@@ -97,7 +99,7 @@ public class DocumentoPDF {
     }
     
     /**
-     * Devuelve un párrafo con el título
+     * Devuelve un párrafo con el título del examen
      * 
      * @return 
      */
@@ -174,11 +176,11 @@ public class DocumentoPDF {
     }
     
     /**
-     * Añade la plantilla de respuestas para rellenar por el alumno
+     * Añade la plantilla de respuestas
      * 
-     * @param Documento donde añadir el texto
+     * @param maestra True si se quiere que marque las respuestas correctas, false si se trata de la plantilla para dar a los estudiantes
      */
-    private void addPlantilla() {
+    private void addPlantilla(Boolean maestra) {
         String texto;
         Paragraph parrafo;
         try {
@@ -187,6 +189,7 @@ public class DocumentoPDF {
             parrafo.setAlignment(Element.ALIGN_CENTER);
             documento.add(parrafo);
             texto = Utils.getMessageResourceString("examen", "Subtitulo");
+            if(maestra) texto = texto + " Maestra";
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);
             parrafo.setSpacingAfter(30);
@@ -231,30 +234,33 @@ public class DocumentoPDF {
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);
             parrafo.setSpacingAfter(10);
-            documento.add(addTable());
+            documento.add(addTable(maestra));
         } catch (DocumentException ex) {
             Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private PdfPTable addTable() {
+    /**
+     * Añade la tabla de respuestas para que marque el estudiante. Dividida en bloques de 10 preguntas
+     * 
+     * @return 
+     */
+    private PdfPTable addTable(Boolean maestra) {
         PdfPTable tabla = new PdfPTable(4);
         tabla.setSpacingBefore(20);
         PdfPCell cell;
         Boolean fin=false;
         int numPreguntas=version.getPreguntas().size();
-        System.out.println("Número de preguntas: " + numPreguntas);
-        System.out.println("Resto: " + numPreguntas%10);
         for(int i=0;i<8;i++) {
             int inicio=i*10+1;
             if((i+1)*10<numPreguntas) {
-                cell = new PdfPCell(addTablaBloque(inicio, 10));
+                cell = new PdfPCell(addTablaBloque(inicio, 10, maestra));
                 cell.setBorder(PdfPCell.NO_BORDER);
                 cell.setPadding(10);
                 tabla.addCell(cell);
             } else {
                 if(!fin) {
-                    cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10));
+                    cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10, maestra));
                     cell.setBorder(PdfPCell.NO_BORDER);
                     cell.setPadding(10);
                     tabla.addCell(cell);
@@ -269,7 +275,14 @@ public class DocumentoPDF {
         return tabla;
     }
     
-    private PdfPTable addTablaBloque(int inicio, int cantidad) {
+    /**
+     * Añade una columna de respuestas con círculos.
+     * 
+     * @param inicio
+     * @param cantidad
+     * @return 
+     */
+    private PdfPTable addTablaBloque(int inicio, int cantidad, Boolean maestra) {
         PdfPTable tabla = new PdfPTable(6);
         PdfPCell cell;
         cell = new PdfPCell(new Paragraph("", NORMAL_BOLD));
@@ -290,24 +303,46 @@ public class DocumentoPDF {
         cell = new PdfPCell(new Paragraph("E", NORMAL_BOLD));
         cell.setBorder(PdfPCell.NO_BORDER);
         tabla.addCell(cell);
+        List<Pregunta> preguntas = version.getPreguntas();
         for(int i=0;i<cantidad;i++) {
+            //Inserta el número de la pregunta
             cell = new PdfPCell(new Phrase(Integer.toString(inicio+i),NORMAL));
             cell.setBorder(PdfPCell.NO_BORDER);
             tabla.addCell(cell);
-            cell = new PdfPCell(new Phrase("0", NORMAL));
-            cell.setBorder(PdfPCell.NO_BORDER);
-            for(int t=0;t<5;t++) {
-                tabla.addCell(cell);
+            //Inserta los círculos
+            PdfPCell cellIncorrecta = new PdfPCell(new Phrase("0", NORMAL));
+            cellIncorrecta.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell cellCorrecta = new PdfPCell(new Phrase("X", NORMAL));
+            cellCorrecta.setBorder(PdfPCell.NO_BORDER);
+            if(maestra==false) {
+                for(int t=0;t<5;t++) {
+                    tabla.addCell(cellIncorrecta);
+                }
+            } else {
+                Integer correcta = preguntas.get(inicio+i-1).getNumCorrecta();
+                for(int t=0;t<5;t++) {
+                    if (t==correcta)
+                        tabla.addCell(cellCorrecta);
+                    else
+                        tabla.addCell(cellIncorrecta);
+                }
             }
         }
         return tabla;
     }
     
+    /**
+     * Método que añade una hoja con las respuestas correctas del examen. Genera una tabla con el número 
+     * correcto de pregunta, el tema y el profesor que ha hecho la pregunta.
+     * 
+     * @throws DocumentException 
+     */
     private void addResultados() throws DocumentException {
         Paragraph texto;
         PdfPCell cell;
         
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "RespuestasTitulo") + version.getNumVersion(), TITULO);
+        documento.add(addTitulo());
+        texto = new Paragraph(Utils.getMessageResourceString("examen", "RespuestasTitulo") +" "+ version.getNumVersion(), TITULO);
         texto.setSpacingAfter(20);
         documento.add(texto);
         int i = 1;
