@@ -496,6 +496,25 @@ try {
 
 return result;
 }
+
+public List<Object[]> getEstadisticasByExamen(final String idExamen) {
+    List<Object[]> result = Collections.emptyList();
+    try {
+        result = doInTransaction(new PersistenceAction<List<Object[]>>(){
+            @Override
+            public List<Object[]> execute(EntityManager em) {
+                Query query = em.createNamedQuery("examenes.countByTema");
+                query.setParameter("idExamen", Long.parseLong(idExamen));
+                List<Object[]> result = query.getResultList();
+                return result;
+            }
+        });
+    } catch (EntityAccessorException ex) {
+        Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    
+    return result;
+}
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Writing Exámenes instances">

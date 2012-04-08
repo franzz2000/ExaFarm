@@ -2,27 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
-        <ui:composition template="./../plantilla_principal.xhtml">
+        <ui:composition template="/plantilla_principal.xhtml">
             <ui:define name="title">#{bundle.PrincipalProfesorTitulo}</ui:define>
             
             <ui:define name="content">
                 <p:panel header="#{bundle.PrincipalProfesorTituloPanel}">
                     <h:panelGrid columns="2">
                         <h:outputText value="#{bundle.PrincipalProfesorNumPreguntas}"/>
-                        <h:outputText value="#{estadisticasBacking.numPreguntas}"/>
+<!--                        <p:outputText value="{estadisticasBacking.numPreguntasProfesor}"/>-->
                         <h:outputText value="#{bundle.PrincipalProfesorExamenesActivos}"/>
                     </h:panelGrid>
-                        <p:dataList value="#{estadisticasBacking.examenesActivos}" var="lista" >
-                            <h:outputText value="#{lista.fechaConvocatoria}">
+<!--                        <p:dataList value="{estadisticasBacking.examenesActivos}" var="lista" >-->
+<!--                            <p:outputText value="{lista.fechaConvocatoria}">
                                 <f:convertDateTime locale="es" type="date" dateStyle="long"/>
-                            </h:outputText>
-                        </p:dataList>
+                            </p:outputText>-->
+<!--                        </p:dataList>-->
                 </p:panel>
             </ui:define>
 

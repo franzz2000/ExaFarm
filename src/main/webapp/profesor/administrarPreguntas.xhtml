@@ -2,21 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
 
-        <ui:composition template="./../plantilla_principal.xhtml">
+        <ui:composition template="/plantilla_principal.xhtml">
             <ui:define name="title">#{bundle.AdministrarPreguntasTitulo}</ui:define>
 
             <ui:define name="content">
                 <h:form>
                     <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4"
                                  emptyMessage="#{bundle.AdministrarPreguntasNoPreguntas}"
-                                 rowEditListener="#{administraPreguntasBacking.modifica}"
-                                 onRowEditUpdate="growl">
+                                 editable="true">
+                        <p:ajax event="rowEdit" listener="#{administraPreguntasBacking.modifica}" update=":growl" />
                         <f:facet name="header">
                             #{bundle.AdministrarPreguntasTituloTabla}
                         </f:facet>

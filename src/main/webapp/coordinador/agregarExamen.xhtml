@@ -3,12 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
-        <ui:composition template="./../plantilla_principal.xhtml">
+        <ui:composition template="/plantilla_principal.xhtml">
 
             <ui:define name="title">
                 #{bundle.AgregarExamenTitulo}
@@ -38,7 +38,7 @@
                             <h:selectBooleanCheckbox id="cerrado" value="#{examen.isCerrado}"/>
                             <h:outputText value="&nbsp;"/>
                             <p:commandButton value="#{bundle.AgregarExamenAnadir}" action="#{administraExamenesBacking.agregaExamen}"
-                                             update="growl"/>
+                                             update=":growl"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>

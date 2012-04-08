@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui">
     
 <f:view contentType="text/html">
     <h:head>
@@ -16,20 +16,21 @@
     <h:body>
         <p:growl id="growl"/>
         <p:layout fullPage="true">
-            <p:layoutUnit position="top" height="80" resizable="false" closable="false" collapsible="false">
+            <p:layoutUnit position="north" size="80" resizable="false" closable="false" collapsible="false">
+<!--            <p:layoutUnit position="top" size="80" resizable="false" closable="false" collapsible="false">-->
                 <h:panelGrid columns="2">
                     <h:graphicImage library="images" name="exafarm_logo.png"/>
                     <h:form style="font-size: 90%;"><h:outputText value=" #{bundle.PrincipalBienvenido} #{sessionScope.currentUser} "/><p:commandLink value="(#{bundle.PrincipalDesconectar})" action="#{loginBacking.logout}" ajax="false"/></h:form>
                 </h:panelGrid>
             </p:layoutUnit>
 
-            <p:layoutUnit position="bottom" height="30" resizable="false" closable="false" collapsible="false">
+            <p:layoutUnit position="south" size="30" resizable="false" closable="false" collapsible="false">
                 <ui:insert name="bottom">
                     <h:outputText id="estado" value="#{bundle.PrincipalEstado}" />
                 </ui:insert>
             </p:layoutUnit>
 
-            <p:layoutUnit position="left" width="185" resizable="false" closable="false" collapsible="true" scrollable="true">
+            <p:layoutUnit position="west" size="185" resizable="false" closable="false" collapsible="true">
                 <h:form>
                     <p:menu>
                         <p:submenu label="#{bundle.PrincipalAdministrador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
@@ -57,7 +58,7 @@
                 </h:form>
             </p:layoutUnit>
 
-            <p:layoutUnit position="center" scrollable="true">
+            <p:layoutUnit position="center">
                 <ui:insert name="content">
                     Contenido
                 </ui:insert>

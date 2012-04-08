@@ -2,21 +2,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
 
-        <ui:composition template="./../plantilla_principal.xhtml">
+        <ui:composition template="/plantilla_principal.xhtml">
             <ui:define name="title">#{bundle.PrincipalCoordinadorTitulo}</ui:define>
             
             <ui:define name="content">
-                <p:panel header="#{bundle.PrincipalCoordinadorTituloPanel}">
-                    
+                <p:panel header="#{bundle.PrincipalCoordinadorTituloPanel}" >
+                    <p:accordionPanel activeIndex="-1"> 
+                        <c:forEach items="${estadisticasBacking.examenes}" var="examen">
+                            <p:tab title="Examen de ${examen}" >
+                                <p:barChart id="horizontal" value="#{estadisticasBacking.estadisticaTemas(examen.id)}" legendPosition="ne" style="height:#{estadisticasBacking.altura(examen.id)}px"  
+                                            title="Distribución por temas" orientation="horizontal" stacked="true"/>
+<!--                                        min="0" max="#{estadisticasBacking.maxX}">-->
+                                <hr/>
+                                <h:outputText value="Total de temas: #{estadisticasBacking.numTemas(examen.id)}"/> | 
+                                <h:outputText value="Total de preguntas de teoría: #{estadisticasBacking.numPreguntasBloque(examen.id, 1)}"/> | 
+                                <h:outputText value="Total de preguntas de seminarios: #{estadisticasBacking.numPreguntasBloque(examen.id, 2)}"/> | 
+                                <h:outputText value="Total de preguntas examen: #{estadisticasBacking.numPreguntas(examen.id)}"/>
+                            </p:tab>
+                        </c:forEach>
+                    </p:accordionPanel>
                 </p:panel>
             </ui:define>
 
         </ui:composition>
-
     </body>
 </html>
