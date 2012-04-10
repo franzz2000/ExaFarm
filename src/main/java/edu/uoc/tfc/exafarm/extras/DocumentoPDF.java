@@ -57,7 +57,9 @@ public class DocumentoPDF {
     private PdfWriter writer;
     private HeaderFooter event;
     
-    
+    /**
+     * Método principal para generar el documento PDF
+     */
     public void generaPDF() {
         Format formatter;
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -78,6 +80,10 @@ public class DocumentoPDF {
                 documento.add(addTitulo()); 
                 addPreguntas();
                 documento.newPage();
+                if(writer.getPageNumber()%2==0) {
+                    writer.setPageEmpty(false);
+                    documento.newPage();
+                }
                 addPlantilla(false);
                 documento.newPage();
                 addResultados();
@@ -255,7 +261,29 @@ public class DocumentoPDF {
         PdfPCell cell;
         Boolean fin=false;
         int numPreguntas=version.getPreguntas().size();
-        for(int i=0;i<8;i++) {
+        int grupos = numPreguntas/10;
+        //Genera bloques de 10 respuestas
+        for(int i=0; i<grupos;i++){
+            int inicio=i*10+1;
+            cell = new PdfPCell(addTablaBloque(inicio, 10, maestra));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(10);
+            tabla.addCell(cell);
+        }
+        if (numPreguntas%10!=0){
+            int inicio = grupos*10+1;
+            cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10, maestra));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(10);
+            tabla.addCell(cell);
+        }
+        for (int i=0;i<8-grupos;i++) {
+            cell = new PdfPCell(new Phrase(""));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            tabla.addCell(cell);
+        }
+                    
+        /*for(int i=0;i<8;i++) {
             int inicio=i*10+1;
             if((i+1)*10<numPreguntas) {
                 cell = new PdfPCell(addTablaBloque(inicio, 10, maestra));
@@ -275,7 +303,7 @@ public class DocumentoPDF {
                     tabla.addCell(cell);
                 }
             }
-        }
+        }*/
         return tabla;
     }
     
