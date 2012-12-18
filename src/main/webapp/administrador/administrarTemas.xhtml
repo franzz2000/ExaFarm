@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">#{bundle.AdministrarTemasTitulo}</ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable var="tema" value="#{administraTemasBacking.lista}" paginator="#{administraTemasBacking.paginator}" rows="10" emptyMessage="No existen temas."
+                                 rowEditListener="#{administraTemasBacking.modifica}" onRowEditUpdate="growl">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.AdministrarTemasListadoTemas}"/>
+                        </f:facet>
+                        <p:column headerText="#{bundle.AdministrarTemasDescripcionCorta}" sortBy="#{tema.descripcionCorta}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tema.descripcionCorta}" style="#{tema.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{tema.descripcionCorta}" style="width: 250px" required="true"
+                                                 requiredMessage="#{bundle.AdministrarTemasErrorDescripcionCorta}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="#{bundle.AdministrarTemasDescripcion}" sortBy="#{tema.descripcion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tema.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputTextarea value="#{tema.descripcion}" style="width: 300px" required="true"
+                                                     requiredMessage="#{bundle.AdministrarTemasErrorDescripcion}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarTemasBloque}" sortBy="#{tema.bloque.descripcion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tema.bloque.descripcion}" style="#{tema.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}" required="true"
+                                                     requiredMessage="#{bundle.AdministrarTemasErrorBloque}">
+                                        <f:selectItems value="#{administraTemasBacking.bloqueOptions}"  
+                                        var="bloque"   
+                                        itemLabel="#{bloque.descripcion}"  
+                                        itemValue="#{bloque}"/>  
+                                    </h:selectOneMenu> 
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarTemasActivo}" sortBy="#{tema.isActivo}" style="width: 50px">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{tema.isActivo?'Sí':'No'}" style="#{tema.isActivo?'':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{tema.isActivo}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:32px;" headerText="#{bundle.AdministrarTemasModificar}">
+                            <p:rowEditor/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

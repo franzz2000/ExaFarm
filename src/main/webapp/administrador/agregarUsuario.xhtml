@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="/plantilla_principal.xhtml">
+            <ui:define name="title">
+                #{bundle.AgregarUsuarioTitulo}
+            </ui:define>
+            <ui:define name="content">
+                <p:panel header="#{bundle.AgregarUsuarioAnadirUsuario}">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.AgregarUsuarioIdUsuario}"/>
+                            <p:inputText id="idUsuario" value="#{usuario.idUsuario}" required="true" requiredMessage="#{bundle.AgregarUsuarioErrorIdUsuario}"/>
+                            <h:outputText value="#{bundle.AgregarUsuarioNombre}"/>
+                            <p:inputText id="nombre"
+                                         value="#{usuario.nombre}"
+                                         required="true" requiredMessage="#{bundle.AgregarUsuarioErrorNombre}"/>
+                            <h:outputText value="#{bundle.AgregarUsuarioApellidos}"/>
+                            <p:inputText id="apellidos"
+                                         value="#{usuario.apellidos}"
+                                         required="true" requiredMessage="#{bundle.AgregarUsuarioErrorApellidos}"/>
+                            <h:outputText value="#{bundle.AgregarUsuarioEmail}"/>
+                            <p:inputText id="email"
+                                         value="#{usuario.email}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarUsuarioErrorEmail}"
+                                         validatorMessage="#{bundle.AdministrarUsuariosEmailIncorrecto}">
+                                <f:validateRegex pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+"/>
+                            </p:inputText>
+                            <h:outputText value="#{bundle.AgregarUsuarioActivo}"/>
+                            <h:selectBooleanCheckbox id="activo" value="#{usuario.isActivo}"/>
+                            <h:outputText value="#{bundle.AgregarUsuarioClave}"/>
+                            <p:password id="password" value="#{usuario.password}" feedback="true"
+                                        goodLabel="#{bundle.AgregarUsuarioBuena}"
+                                        strongLabel="#{bundle.AgregarUsuarioFuerte}"
+                                        promptLabel="#{bundle.AgregarUsuarioIntroduzcaClave}"
+                                        weakLabel="#{bundle.AgregarUsuarioDebil}"
+                                        required="true"
+                                        requiredMessage="#{bundle.AgregarUsuarioErrorClave}"
+                                        validatorMessage="#{bundle.AgregarUsuarioErrorClaveCorta}"
+                                        />
+                            <h:outputText value="#{bundle.AgregarUsuarioGrupo}"/>
+                            <h:selectOneMenu id="grupo" value="#{usuario.grupo}" converter="#{grupoListConverter}" required="true"
+                                             requiredMessage="#{bundle.AgregarUsuarioErrorGrupo}">
+                                <f:selectItems value="#{administraUsuariosBacking.grupoOptions}"  
+                                               var="grupo"
+                                               itemLabel="#{grupo.descripcion}"  
+                                               itemValue="#{grupo}"/>  
+                                        </h:selectOneMenu>
+                            <h:outputText value="&nbsp;"/>
+                            <p:commandButton value="#{bundle.AgregarUsuarioAnadir}"
+                                             action="#{administraUsuariosBacking.agregaUsuario}"
+                                             ajax="false"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

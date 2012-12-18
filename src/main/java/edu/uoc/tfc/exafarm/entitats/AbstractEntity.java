@@ -5,10 +5,12 @@
 
 package edu.uoc.tfc.exafarm.entitats;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -18,8 +20,10 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractEntity implements PersistentEntity<Long> {
 
     @Id
+    @NotNull
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="id", nullable=false)
+    protected Long id;
 
     @Override
     public Long getId() {

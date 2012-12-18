@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+<h:head>
+    <title>Facelet Title</title>
+    <h:outputStylesheet library="css" name="default.css"/>
+    <h:outputStylesheet library="css" name="cssLayout.css"/>
+</h:head>
+<h:body>
+    <center>
+        <h:graphicImage library="images" name="exafarm_login.jpg"/>
+        <br/><h:outputText value="Por favor, introduzca nombre de usuario y contraseña para acceder a la aplicación"/>
+        <form action="j_security_check" method="post">
+<!--        <h:form  id="login" onsubmit="document.{p:component('login')}.action='j_security_check';">-->
+            <h:panelGrid columns="2">
+                <h:outputLabel for="j_username" value="Usuario"/>
+                <p:inputText id="j_username" required="true" tabindex="1"/>
+                <h:outputLabel for="j_password" value="Clave"/>
+                <p:password id="j_password" required="true" feedback="false"/>
+                <h:outputText value="&nbsp;"/>
+                <input type="reset" name="reset" value="Reset"/>
+                <input type="submit" name="submit" value="Enviar"/>
+             </h:panelGrid>
+<!--        </h:form>-->
+            </form>
+    </center>
+</h:body>
+</html>

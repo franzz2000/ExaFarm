@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">
+                #{bundle.AgregarPreguntaTitulo}
+            </ui:define>
+
+            <ui:define name="content">
+                <p:panel header="#{bundle.AgregarPreguntaTituloPanel}">     
+                    <h:form>
+                        <h:panelGrid columns="4">
+                            <h:outputText value="#{bundle.AgregarPreguntaPregunta}"/>
+                            <p:inputTextarea style="width: 500px;" id="nombre"
+                                             value="#{agregaPreguntaBacking.newPregunta.texto}"
+                                             required="true" requiredMessage="#{bundle.AgregarPreguntaErrorPregunta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaActiva}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isActiva}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta1}"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta1"
+                                             value="#{agregaPreguntaBacking.respuesta1.texto}"
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta1}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta1.isCorrecta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta2}"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta2"
+                                             value="#{agregaPreguntaBacking.respuesta2.texto}"
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta2}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta2.isCorrecta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta3}"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta3"
+                                             value="#{agregaPreguntaBacking.respuesta3.texto}"
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta3}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta3.isCorrecta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta4}"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta4"
+                                             value="#{agregaPreguntaBacking.respuesta4.texto}"
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta4}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta4.isCorrecta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaRespuesta5}"/>
+                            <p:inputTextarea style="width: 500px;" id="respuesta5"
+                                             value="#{agregaPreguntaBacking.respuesta5.texto}"
+                                         required="true" requiredMessage="#{bundle.AgregarPreguntaErrorRespuesta5}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaCorrecta}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.respuesta5.isCorrecta}"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaTema}"/>
+                            <h:selectOneMenu value="#{agregaPreguntaBacking.newPregunta.tema}" required="true"
+                                             requiredMessage="#{bundle.AgregarPreguntaErrorTema}" converter="#{temaListConverter}">
+                                <f:selectItems value="#{agregaPreguntaBacking.temasOptions}"
+                                            var="tema"
+                                            itemLabel="#{tema.descripcionCorta}"  
+                                            itemValue="#{tema}"/>  
+                            </h:selectOneMenu>
+                            <h:outputText value="&nbsp;"/>
+                            <h:outputText value="&nbsp;"/>
+                            <h:outputText value="#{bundle.AgregarPreguntaMezclarRespuestas}"/>
+                            <h:selectBooleanCheckbox value="#{agregaPreguntaBacking.newPregunta.isMezclable}"/>
+                        </h:panelGrid>
+                        <p:commandButton value="#{bundle.AgregarPreguntaAnadir}" action="#{agregaPreguntaBacking.agregaPregunta}" ajax="false"/>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

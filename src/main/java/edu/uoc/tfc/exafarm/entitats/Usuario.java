@@ -1,17 +1,20 @@
-
-
 package edu.uoc.tfc.exafarm.entitats;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,7 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 @Entity
 @Table (name="usuarios")
 @NamedQueries ({
-    @NamedQuery(name="usuarios.getAll", query="select u from Usuario as u")
+    @NamedQuery(name="usuarios.findAll", query="SELECT u FROM Usuario AS u"),
+    @NamedQuery(name="usuarios.getUsuarioByIdUsuario", query="SELECT u FROM Usuario AS u WHERE u.idUsuario=:id"),
+    @NamedQuery(name="usuarios.getUsuarioById", query="SELECT u FROM Usuario AS u WHERE u.id =:id"),
+    @NamedQuery(name="usuarios.findActivos", query="SELECT u FROM Usuario AS u WHERE u.isActivo = true"),
+    @NamedQuery(name="usuarios.findAdministradores", query="SELECT u FROM Usuario AS u WHERE u.grupo.idGrupo = 'admin'")
 })
 @ManagedBean
 @RequestScoped
@@ -36,17 +43,33 @@ public class Usuario extends AbstractEntity implements Serializable {
     private String nombre;
     private String apellidos;
     private String email;
-    private String grupo;
+    @Column(name="last_login")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
+    @ManyToOne
+    @JoinColumn(name="grupo")
+    private Grupo grupo;
+    @Column(name="is_activo")
+    private Boolean isActivo;
+    @OneToMany(mappedBy = "usuario", cascade= CascadeType.ALL)
+    private List<Pregunta> preguntas;
 
-    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email) {
-        this.setIdUsuario(usuarioId);
-        this.setPassword(password);
-        this.setNombre(nombre);
-        this.setApellidos(apellidos);
-        this.setEmail(email);
+    public Usuario(String usuarioId, String password, String nombre, String apellidos, String email, Boolean isActivo, Grupo grupo) {
+        this.idUsuario = usuarioId;
+        this.password= password;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.isActivo = isActivo;
+        this.grupo = grupo;
     }
 
-    public Usuario(){}
+    public Usuario(){
+        grupo = new Grupo();
+        preguntas = Collections.emptyList();
+        isActivo=true;
+        password="";
+    }
 
     private Principal getLoggedInUser() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -61,6 +84,26 @@ public class Usuario extends AbstractEntity implements Serializable {
         return false;
     }
     
+    public boolean isUsuarioIsAdministrador() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object request = context.getExternalContext().getRequest();
+        boolean result = false;
+        if (request instanceof HttpServletRequest) {
+            result = ((HttpServletRequest)request).isUserInRole("ADMINISTRADOR");
+        }
+        return result;
+    }
+    
+    public boolean isUsuarioIsCoordinador() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object request = context.getExternalContext().getRequest();
+        boolean result = false;
+        if (request instanceof HttpServletRequest) {
+            result = ((HttpServletRequest)request).isUserInRole("COORDINADOR");
+        }
+        return result;
+    }
+
     public String getLoginUserName() {
         Principal loginUser = getLoggedInUser();
         if (loginUser != null) {
@@ -93,12 +136,20 @@ public class Usuario extends AbstractEntity implements Serializable {
         this.email = email;
     }
 
-    public String getGrupo() {
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Grupo getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(String grupos) {
-        this.grupo = grupos;
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     public String getNombre() {
@@ -114,9 +165,36 @@ public class Usuario extends AbstractEntity implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if(!this.password.equals(password)) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                md.update(password.getBytes("UTF-8"));
+                byte[] byteData = md.digest();
+
+                this.password = Base64.encode(byteData);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
+    public List<Pregunta> getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
+    }
+
+    public Boolean getIsActivo() {
+        return isActivo;
+    }
+
+    public void setIsActivo(Boolean isActivo) {
+        this.isActivo = isActivo;
+    }
 
     @Override
     public int hashCode() {

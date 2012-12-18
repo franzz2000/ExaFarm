@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">#{bundle.AdministrarBloquesTitulo}</ui:define>
+
+            <ui:define name="content">
+                <p:panel header="#{bundle.AdministrarBloquesTituloPanel}">
+                    <h:form>
+                        <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="#{bundle.AdministrarBloquesNoExistenBloques}"
+                                     rowEditListener="#{administraBloquesBacking.modifica}" onRowEditUpdate="growl" style="width: 500px;">
+                            <f:facet name="header">
+                                #{bundle.AdministrarBloquesListadoDeBloques}
+                            </f:facet>
+                            <p:column rendered="false">
+                                <h:outputText value="#{block.id}"/>
+                            </p:column>
+                            <p:column headerText="#{bundle.AdministrarBloquesDescripcion}" sortBy="#{block.descripcion}" style="width: 50px;">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{block.descripcion}" style="#{block.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{block.descripcion}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="#{bundle.AdministrarBloquesActivo}" sortBy="#{block.isActivo}" style="width: 50px">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{block.isActivo?'Sí':'No'}" style="#{block.isActivo?'':'color: red'}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectBooleanCheckbox value="#{block.isActivo}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="#{bundle.AdministrarBloquesModificar}" style="width:32px;">
+                                <p:rowEditor/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

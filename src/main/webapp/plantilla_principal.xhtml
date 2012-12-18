@@ -3,48 +3,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <f:event type="preRenderView"
-             listener="#{loginBacking.forwardToLoginIfNotLoggedIn(cse)}"/>
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+<f:view contentType="text/html">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="/resources/css/default.css" rel="stylesheet" type="text/css" />
-        <link href="/resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
-        <title>Programa ExaFarm - Gestión de exámenes de Farmacología</title>
+        <title><ui:insert name="title">#{bundle.PrincipalTitulo}</ui:insert></title>      
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
     </h:head>
     <h:body>
-        <div id="top" class="top">
-            <ui:insert name="top">
-                <h:graphicImage library="images" name="exafarm_logo.jpg"/>
-                <c:if test="#{loginBacking.usuarioLoggedIn}">
-                    <h:form>Bienvenido, #{sessionScope.currentUsuario.UsuarioId}<h:commandButton value="Logout" action="#{loginBacking.performLogout}"/></h:form>
-                </c:if>
-            </ui:insert>
-        </div>
-        <div>
-            <div id="left">
-                <ui:insert name="left">
-                    <h3>Administrador</h3>
-                    <p>Usuario nuevo</p>
-                    <p>Modificar usuario</p>
-                    <h3>Coordinador</h3>
-                    <p>Nuevo examen</p>
-                    <p>Modificar examen activo</p>
-                    <p>Generar examen</p>
-                    <p>Ver examen</p>
-                    <h3>Profesor</h3>
-                    <p>Principal</p>
-                    <p>Ver preguntas</p>
-                    <p>Añadir pregunta</p>
-                    <p>Ver exámenes</p>
-                    <p>Seleccionar preguntas para examen</p>
-                    <p>Modificar datos personales</p>
+        <p:growl id="growl"/>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="80" resizable="false" closable="false" collapsible="false">
+<!--            <p:layoutUnit position="top" size="80" resizable="false" closable="false" collapsible="false">-->
+                <h:panelGrid columns="2">
+                    <h:graphicImage library="images" name="exafarm_logo.png"/>
+                    <h:form style="font-size: 90%;"><h:outputText value=" #{bundle.PrincipalBienvenido} #{sessionScope.currentUser} "/><p:commandLink value="(#{bundle.PrincipalDesconectar})" action="#{loginBacking.logout}" ajax="false"/></h:form>
+                </h:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="30" resizable="false" closable="false" collapsible="false">
+                <ui:insert name="bottom">
+                    <h:outputText id="estado" value="#{bundle.PrincipalEstado}" />
                 </ui:insert>
-            </div>
-            <div id="content" class="left_content">
-                <ui:insert name="content">Content</ui:insert>
-            </div>
-        </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="185" resizable="false" closable="false" collapsible="true">
+                <h:form>
+                    <p:menu>
+                        <p:submenu label="#{bundle.PrincipalAdministrador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/administrador/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerUsuarios}" url="/faces/administrador/administrarUsuarios.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirUsuario}" url="/faces/administrador/agregarUsuario.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerTemas}" url="/faces/administrador/administrarTemas.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirTema}" url="/faces/administrador/agregarTema.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerBloques}" url="/faces/administrador/administrarBloques.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirBloque}" url="/faces/administrador/agregarBloque.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{bundle.PrincipalCoordinador}" rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/coordinador/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerExamenes}" url="/faces/coordinador/administrarExamenes.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirExamen}" url="/faces/coordinador/agregarExamen.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="#{bundle.PrincipalProfesor}">
+                            <p:menuitem value="#{bundle.PrincipalPrincipal}" url="/faces/profesor/principal.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalVerPreguntas}" url="/faces/profesor/administrarPreguntas.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalAnadirPregunta}" url="/faces/profesor/agregarPregunta.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalSeleccionarPreguntas}" url="/faces/profesor/seleccionarExamen.xhtml"/>
+                            <p:menuitem value="#{bundle.PrincipalModificarDatos}" url="/faces/profesor/administrarDatos.xhtml"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="content">
+                    Contenido
+                </ui:insert>
+            </p:layoutUnit>	
+        </p:layout>
     </h:body>
+</f:view>
 </html>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">
+                #{bundle.AgregarTemaTitulo}
+            </ui:define>
+
+            <ui:define name="content">
+                <p:panel header="#{bundle.AgregarTemaAnadirTema}">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.AgregarTemaDescripcionCorta}"/>
+                            <p:inputText id="descripcionCorta"
+                                         value="#{tema.descripcionCorta}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarTemaMsgDescripcionCorta}"/>
+                            <h:outputText value="#{bundle.AgregarTemaDescripcion}"/>
+                            <p:inputText id="descripcion"
+                                         value="#{tema.descripcion}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarTemaErrorDescripcion}"/>
+                            <h:outputText value="#{bundle.AgregarTemaBloque}"/>
+                            <h:selectOneMenu value="#{tema.bloque}" converter="#{bloqueListConverter}"
+                                             required="true"
+                                             requiredMessage="#{bundle.AgregarTemaErrorBloque}">
+                                <f:selectItems value="#{administraTemasBacking.bloqueOptions}"
+                                            var="bloque"   
+                                            itemLabel="#{bloque.descripcion}"  
+                                            itemValue="#{bloque}" />  
+                                        </h:selectOneMenu>
+                            <h:outputText value="#{bundle.AgregarTemaActivo}"/>
+                            <h:selectBooleanCheckbox value="#{tema.isActivo}"/>
+                            <h:outputText value="&nbsp;"/>
+                            <p:commandButton value="#{bundle.AgregarTemaAnadir}" actionListener="#{administraTemasBacking.agregaTema}"
+                                             update=":growl"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

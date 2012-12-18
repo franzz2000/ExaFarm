@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">#{bundle.AdministrarExamenesTitulo}</ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}"
+                            rows="10"
+                            emptyMessage="#{bundle.AdministrarExamenesNoExamenes}"
+                            editable="true">
+                        <p:ajax event="rowEdit" listener="#{administraExamenesBacking.modifica}" update=":growl"/>
+                        <f:facet name="header">
+                            #{bundle.AdministrarExamenesListaExamenes}
+                        </f:facet>
+                        <p:column style="width: 16px">
+                            <h:outputText value="#{examen.id}"/>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesFecha}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{examen.fechaConvocatoria}">
+                                        <f:convertDateTime type="date" dateStyle="long"/>
+                                    </h:outputText>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{examen.fechaConvocatoria}">
+                                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesPreguntasSeleccionadas}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{examen.preguntasList.size()}/#{examen.numPreguntas}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{examen.numPreguntas}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesNumeroVersiones}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{examen.numVersiones}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{examen.numVersiones}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesActivo}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{examen.isActivo?'Sí':'No'}"/>&nbsp;
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{examen.isActivo}" rendered="#{!examen.isCerrado}"/>
+                                </f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesCerrado}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{examen.isCerrado?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{examen.isCerrado}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:32px;" headerText="#{bundle.AdministrarExamenesModificar}">
+                            <p:rowEditor/>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesVerPreguntas}">
+                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
+                                <f:param value="#{examen.id}" name="examen"/>
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarExamenesGenerar}">
+                            <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{!examen.isCerrado}" ajax="false">
+                                <f:param value="#{examen.id}" name="examen"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+            <ui:define name="title">#{bundle.AdministrarPreguntasTitulo}</ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable id="tabla" var="pregunta" value="#{administraPreguntasBacking.lista}" paginator="true" rows="4"
+                                 emptyMessage="#{bundle.AdministrarPreguntasNoPreguntas}"
+                                 editable="true">
+                        <p:ajax event="rowEdit" listener="#{administraPreguntasBacking.modifica}" update=":growl" />
+                        <f:facet name="header">
+                            #{bundle.AdministrarPreguntasTituloTabla}
+                        </f:facet>
+                        <p:column style="width: 5px" filterBy="#{pregunta.id}" headerText="#{bundle.AdministrarPreguntasId}" 
+                                  filterStyle="width: 20px">
+                            <h:outputText value="#{pregunta.id}"/>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarPreguntasPregunta}">
+                            <h:outputText value="#{pregunta.texto}"/>
+                            <p:dataList id="subTabla" var="respuesta" value="#{pregunta.respuestas}" itemType="a">
+                                <h:outputText value="#{respuesta.texto}" style="#{respuesta.isCorrecta? 'color: green':''}"/>
+                            </p:dataList>
+                        </p:column>
+                        <p:column filterBy="#{pregunta.tema.id}" headerText="#{bundle.AdministrarPreguntasTema}"
+                                  filterOptions="#{administraPreguntasBacking.temasOptions}" filterMatchMode="exact">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.tema.descripcionCorta}-#{pregunta.tema.bloque}" 
+                                                  style="#{pregunta.isActiva? '':'color: red'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{pregunta.tema}" converter="#{temaListConverter}">  
+                                        <f:selectItems value="#{administraPreguntasBacking.temas}"      
+                                            var="tema"   
+                                            itemLabel="#{tema.descripcionCorta}-#{tema.bloque}"  
+                                            itemValue="#{tema}"/>  
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column filterBy="#{pregunta.usuario.id}" headerText="#{bundle.AdministrarPreguntasProfesor}"
+                                  filterOptions="#{administraPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
+                                  rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.usuario}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{pregunta.usuario}" converter="#{usuarioListConverter}">  
+                                        <f:selectItems value="#{administraPreguntasBacking.profesores}"  
+                                            var="user"   
+                                            itemLabel="#{user.idUsuario}"  
+                                            itemValue="#{user}"/>  
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarPreguntasActiva}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.isActiva?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{pregunta.isActiva}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarPreguntasMezclable}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{pregunta.isMezclable?'Sí':'No'}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectBooleanCheckbox value="#{pregunta.isMezclable}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarPreguntasModificar}" style="width:32px;">
+<!--                            <p:rowEditor rendered="#{pregunta.isActiva==true}"/>-->
+                            <p:rowEditor/>
+                        </p:column>
+                        <p:column headerText="#{bundle.AdministrarPreguntasVer}">
+<!--                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false">-->
+                                <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/verPregunta.xhtml" ajax="false"
+                                                  title="Modificar texto de pregunta" 
+                                                  rendered="#{!pregunta.tieneExamenesCerrados}">
+                                <f:param value="#{pregunta.id}" name="pregunta"/>
+                            </p:commandButton>
+                            <p:commandButton image="ui-icon ui-icon-copy" action="/faces/profesor/agregarPregunta.xhtml" ajax="false"
+                                             rendered="#{pregunta.tieneExamenesCerrados}"
+                                             title="Copiar texto pregunta">
+                                <f:param value="#{pregunta.id}" name="pregunta"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

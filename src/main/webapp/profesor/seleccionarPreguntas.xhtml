@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">
+                #{bundle.SeleccionarPreguntasTitulo}
+            </ui:define>
+            
+            <ui:define name="bottom">
+                <h:outputText id="estado" 
+                              value="#{seleccionaPreguntasBacking.numeroPreguntas} #{bundle.SeleccionarPreguntasPreguntasSeleccionadas} #{seleccionaPreguntasBacking.modificado}"/>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable id="tabla" var="selecciona" value="#{seleccionaPreguntasBacking.listaSeleccion}" 
+                                 emptyMessage="#{bundle.SeleccionarPreguntasNoPreguntas}">
+                        <f:facet name="header">
+                            <h:outputText value="#{seleccionaPreguntasBacking.titulo}"/>
+                        </f:facet>
+                        <p:column style="width: 16px">
+                            <p:rowToggler rendered="#{selecciona.pregunta.tieneExamenesCerrados}"/>
+                        </p:column>
+                        <p:column>
+                            <h:selectBooleanCheckbox value="#{selecciona.seleccion}">
+                                <p:ajax update=":estado" listener="#{seleccionaPreguntasBacking.cambioSeleccion}"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column style="width: 16px" filterBy="#{selecciona.pregunta.id}" headerText="#{bundle.SeleccionarPreguntasId}">
+                            <h:outputText value="#{selecciona.pregunta.id}"/>
+                        </p:column>
+                        <p:column headerText="#{bundle.SeleccionarPreguntasPregunta}">
+                            <h:outputText value="#{selecciona.pregunta.texto}"/>
+                            <p:dataList id="subTabla" var="respuesta" value="#{selecciona.pregunta.respuestas}" itemType="a">
+                                <h:outputText value="#{respuesta.texto}" style="#{respuesta.isCorrecta? 'color: green':''}"/>
+                            </p:dataList>
+                        </p:column>
+                        <p:column filterBy="#{selecciona.pregunta.tema.id}" headerText="#{bundle.SeleccionarPreguntasTema}" filterOptions="#{seleccionaPreguntasBacking.temasOptions}" filterMatchMode="exact">
+                            <h:outputText value="#{selecciona.pregunta.tema.descripcionCorta}"/>
+                        </p:column>
+                        <p:column filterBy="#{selecciona.pregunta.usuario.id}" headerText="#{bundle.SeleccionarPreguntasProfesor}" filterOptions="#{seleccionaPreguntasBacking.profesoresOptions}" filterMatchMode="exact"
+                                  rendered="#{sessionScope.currentUser.usuarioIsAdministrador||sessionScope.currentUser.usuarioIsCoordinador}">
+                            <h:outputText value="#{selecciona.pregunta.usuario}"/>
+                        </p:column>
+                        <p:rowExpansion>
+                            <p:dataList var="examen" value="#{selecciona.pregunta.examenesCerrados}">
+                                <h:outputText value="#{examen}"/>                                
+                            </p:dataList>
+                        </p:rowExpansion>
+                    </p:dataTable>
+                    <p:commandButton value="#{bundle.SeleccionarPreguntasGuardar}" action="#{seleccionaPreguntasBacking.guardar}" update=":growl, tabla, :estado"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

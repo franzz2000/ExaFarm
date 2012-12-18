@@ -1,0 +1,6 @@
+Este programa se realizó como proyecto final de carrera.
+Se trata de un proyecto de generador de exámenes para el departamento de Farmacología de la Facultad de Medicina de la Universidad de Oviedo.
+
+El programa se ha realizado en entorno Java2EE, utilizando JSF, el servidor de aplicaciones Glassfish y la base de datos Mysql, aunque es posible utilizar cualquier otra base de datos relacional.
+
+En breve incluiré las instrucciones de instalación.

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="/plantilla_principal.xhtml">
+
+            <ui:define name="title">
+                #{bundle.AgregarExamenTitulo}
+            </ui:define>
+
+            <ui:define name="content">
+                <p:panel header="#{bundle.AgregarExamenTituloPanel}">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.AgregarExamenFechaConvocatoria}"/>
+                            <p:inputText value="#{examen.fechaConvocatoria}" required="true" requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}">
+                                <f:convertDateTime locale="es" pattern="dd/MM/yyyy"/>
+                            </p:inputText>
+                            <h:outputText value="#{bundle.AgregarExamenNumeroPreguntas}"/>
+                            <p:inputText id="numPreguntas"
+                                         value="#{examen.numPreguntas}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorNumeroPreguntas}"/>
+                            <h:outputText value="#{bundle.AgregarExamenNumeroVersiones}"/>
+                            <p:inputText id="numVersiones"
+                                         value="#{examen.numVersiones}"
+                                         required="true"
+                                         requiredMessage="#{bundle.AgregarExamenErrorNumeroVersiones}"/>
+                            <h:outputText value="#{bundle.AgregarExamenActivo}"/>
+                            <h:selectBooleanCheckbox id="activo" value="#{examen.isActivo}"/>
+                            <h:outputText value="#{bundle.AgregarExamenCerrado}"/>
+                            <h:selectBooleanCheckbox id="cerrado" value="#{examen.isCerrado}"/>
+                            <h:outputText value="&nbsp;"/>
+                            <p:commandButton value="#{bundle.AgregarExamenAnadir}" action="#{administraExamenesBacking.agregaExamen}"
+                                             update=":growl"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
