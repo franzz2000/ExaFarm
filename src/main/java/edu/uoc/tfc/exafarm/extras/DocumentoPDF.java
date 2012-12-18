@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +66,7 @@ public class DocumentoPDF {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         version = (Version) ec.getRequestMap().get("lista");
         
-        formatter = new SimpleDateFormat("MMMMMyyyy");
+        formatter = new SimpleDateFormat("MMMMMyyyy", new Locale("es_ES"));
         String fecha = formatter.format(version.getFechaExamen());
         String nombreFichero = fecha+"_"+ version.getNumVersion();
         ec.setResponseHeader("Content-Type", "application/pdf");
@@ -106,7 +107,7 @@ public class DocumentoPDF {
      */
     private Paragraph addTitulo() {
         Paragraph texto;
-        Format formatter = new SimpleDateFormat("MMMMM yyyy");
+        Format formatter = new SimpleDateFormat("MMMMM yyyy", new Locale("es_ES"));
         String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " " + formatter.format(version.getFechaExamen());
         texto = new Paragraph(titulo, TITULO);
         return texto;
