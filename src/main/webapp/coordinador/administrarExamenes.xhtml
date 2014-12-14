@@ -14,7 +14,7 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}"
+                    <p:dataTable var="exam" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}"
                             rows="10"
                             emptyMessage="#{bundle.AdministrarExamenesNoExamenes}"
                             editable="true">
@@ -23,17 +23,17 @@
                             #{bundle.AdministrarExamenesListaExamenes}
                         </f:facet>
                         <p:column style="width: 16px">
-                            <h:outputText value="#{examen.id}"/>
+                            <h:outputText value="#{exam.id}"/>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesFecha}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{examen.fechaConvocatoria}">
+                                    <h:outputText value="#{exam.fechaConvocatoria}">
                                         <f:convertDateTime type="date" dateStyle="long"/>
                                     </h:outputText>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{examen.fechaConvocatoria}">
+                                    <p:inputText value="#{exam.fechaConvocatoria}">
                                         <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                                     </p:inputText>
                                 </f:facet>
@@ -42,30 +42,30 @@
                         <p:column headerText="#{bundle.AdministrarExamenesPreguntasSeleccionadas}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{examen.preguntasList.size()}/#{examen.numPreguntas}"/>
+                                    <h:outputText value="#{exam.preguntasList.size()}/#{exam.numPreguntas}"/> 
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{examen.numPreguntas}"/>
+                                    <p:inputText value="#{exam.numPreguntas}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesNumeroVersiones}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{examen.numVersiones}"/>
+                                    <h:outputText value="#{exam.numVersiones}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="#{examen.numVersiones}"/>
+                                    <p:inputText value="#{exam.numVersiones}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesActivo}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{examen.isActivo?'Sí':'No'}"/>&nbsp;
+                                    <h:outputText value="#{exam.isActivo?'Sí':'No'}"/>&nbsp;
                                 </f:facet>
                                 <f:facet name="input">
-                                    <h:selectBooleanCheckbox value="#{examen.isActivo}" rendered="#{!examen.isCerrado}"/>
+                                    <h:selectBooleanCheckbox value="#{exam.isActivo}" rendered="#{!exam.isCerrado}"/>
                                 </f:facet>
                             </p:cellEditor>
 
@@ -73,10 +73,10 @@
                         <p:column headerText="#{bundle.AdministrarExamenesCerrado}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{examen.isCerrado?'Sí':'No'}"/>
+                                    <h:outputText value="#{exam.isCerrado?'Sí':'No'}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <h:selectBooleanCheckbox value="#{examen.isCerrado}"/>
+                                    <h:selectBooleanCheckbox value="#{exam.isCerrado}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -84,13 +84,13 @@
                             <p:rowEditor/>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesVerPreguntas}">
-                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{examen.isActivo}" update="growl" ajax="false">
-                                <f:param value="#{examen.id}" name="examen"/>
+                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{exam.isActivo}" update="growl" ajax="false">
+                                <f:param value="#{exam.id}" name="examen"/>
                             </p:commandButton>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesGenerar}">
-                            <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{!examen.isCerrado}" ajax="false">
-                                <f:param value="#{examen.id}" name="examen"/>
+                            <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{!exam.isCerrado}" ajax="false">
+                                <f:param value="#{exam.id}" name="examen"/>
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
