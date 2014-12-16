@@ -107,8 +107,9 @@ public class DocumentoPDF {
      */
     private Paragraph addTitulo() {
         Paragraph texto;
-        Format formatter = new SimpleDateFormat("MMMMM yyyy", new Locale("es_ES"));
-        String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " " + formatter.format(version.getFechaExamen());
+        Format formatter = new SimpleDateFormat("MMMMM yyyy", new Locale("es", "ES"));
+        String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " - " + formatter.format(version.getFechaExamen());
+        //titulo = "FARMACOLOGÍA CLÍNICA Diciembre 2014";
         texto = new Paragraph(titulo, TITULO);
         return texto;
     }
@@ -233,7 +234,7 @@ public class DocumentoPDF {
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), NORMAL));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), NORMAL));
             MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones6"));
-            Object[] args = {new Integer(version.getPreguntas().size()/2)};
+            Object[] args = {(float) version.getPreguntas().size()/2};
             texto = textoInstrucciones.format(args);
             listaInstrucciones.add(new ListItem(texto, NORMAL));
             documento.add(listaInstrucciones);
@@ -271,6 +272,7 @@ public class DocumentoPDF {
             cell.setPadding(10);
             tabla.addCell(cell);
         }
+        //Genera el bloque con menos de 10 respuestas
         if (numPreguntas%10!=0){
             int inicio = grupos*10+1;
             cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10, maestra));
@@ -278,7 +280,8 @@ public class DocumentoPDF {
             cell.setPadding(10);
             tabla.addCell(cell);
         }
-        for (int i=0;i<8-grupos;i++) {
+        //Rellena con celdas en blanco la tabla
+        for (int i=0;i<4-((grupos+1)%4);i++) {
             cell = new PdfPCell(new Phrase(""));
             cell.setBorder(PdfPCell.NO_BORDER);
             tabla.addCell(cell);
