@@ -29,7 +29,7 @@ public class ExamenRegistry extends AbstractEntityAccessor implements Serializab
 
 // <editor-fold defaultstate="collapsed" desc="Accessing and initializing the instance">
     public static ExamenRegistry getCurrentInstance() {
-    ExamenRegistry result = null;
+    ExamenRegistry result;
     Map<String, Object> appMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
     result = (ExamenRegistry) appMap.get("examenRegistry");
 
@@ -68,6 +68,7 @@ Bloque result = null;
 try {
     result = doInTransaction(new PersistenceAction<Bloque>() {
 
+        @Override
         public Bloque execute(EntityManager em) {
             Query query = em.createNamedQuery("bloques.findById");
             query.setParameter("id", idBloque);
@@ -187,6 +188,7 @@ List<Tema> result = Collections.emptyList();
 try {
     result = doInTransaction(new PersistenceAction<List<Tema>>() {
 
+        @Override
         public List<Tema> execute(EntityManager em) {
             Query query = em.createNamedQuery("temas.findActivos");
             List<Tema> results = query.getResultList();
