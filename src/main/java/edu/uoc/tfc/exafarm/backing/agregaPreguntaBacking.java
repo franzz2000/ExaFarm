@@ -139,7 +139,7 @@ public class agregaPreguntaBacking extends AbstractBacking {
             } catch (EntityAccessorException ex) {
                 Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPreguntaErrorAnadir"));
                 Logger.getLogger(ExamenRegistry.class.getName()).log(Level.SEVERE, null, ex);
-            }    
+            }  
         } else {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AgregarPreguntaErrorSeleccionCorrecta"));
             return "";

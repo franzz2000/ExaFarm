@@ -20,7 +20,7 @@ import javax.transaction.UserTransaction;
  * @author franzz2000
  */
 public abstract class AbstractEntityAccessor {
-    @PersistenceUnit
+    @PersistenceUnit(unitName="Exafarm-TFC")
     private EntityManagerFactory emf;
 
     @Resource
@@ -33,12 +33,13 @@ public abstract class AbstractEntityAccessor {
     }
 
     protected final <T> T doInTransaction(PersistenceAction<T> action) throws EntityAccessorException {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = null; 
         try {
             int status = 0;
             if (Status.STATUS_ACTIVE != (status = userTransaction.getStatus())){
                 count.incrementAndGet();
                 userTransaction.begin();
+                em = emf.createEntityManager();
             }
             T result = action.execute(em);
             if (Status.STATUS_ACTIVE == (status = userTransaction.getStatus())) {
@@ -60,12 +61,13 @@ public abstract class AbstractEntityAccessor {
     }
 
     protected final void doInTransaction(PersistenceActionWithoutResult action) throws EntityAccessorException {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = null;
         try {
             int status = 0;
             if (Status.STATUS_ACTIVE != (status = userTransaction.getStatus())) {
                 count.incrementAndGet();
                 userTransaction.begin();
+                em = emf.createEntityManager();
             }
             action.execute(em);
             if (Status.STATUS_ACTIVE == (status = userTransaction.getStatus())) {
@@ -81,7 +83,9 @@ public abstract class AbstractEntityAccessor {
             }
             throw new EntityAccessorException(e);
         } finally {
-            em.close();
+            if(em != null) {
+                em.close();
+            }
         }
     }
 

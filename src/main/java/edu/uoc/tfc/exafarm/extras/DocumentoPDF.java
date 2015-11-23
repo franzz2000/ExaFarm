@@ -9,9 +9,7 @@ import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
 import edu.uoc.tfc.exafarm.entitats.Respuesta;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.Format;
@@ -19,6 +17,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,22 +47,26 @@ public class DocumentoPDF {
     }; //Columnas para las preguntas de las páginas consecutivas
     
     //Definición de tipos de letra utilizados en el documento
-    public static final Font NORMAL = new Font(FontFamily.HELVETICA, 9); //Fuente por defecto
-    public static final Font NORMAL_BOLD = new Font(FontFamily.HELVETICA, 9, Font.BOLD); //Fuente por defecto
+    public static final Font NORMAL = new Font(FontFamily.HELVETICA, 9, Font.NORMAL); //Fuente por defecto
+    public static final Font INSTRUCCIONES = new Font(FontFamily.HELVETICA, 8, Font.NORMAL); 
+    public static final Font NORMAL_BOLD = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
     public static final Font TITULO = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
+    public static final Font CIRCULO = new Font(FontFamily.HELVETICA, 10, Font.NORMAL);
     
     private Version version; //Datos de la versión
     private Document documento;
     private PdfWriter writer;
     private HeaderFooter event;
     
-    
+    /**
+     * Método principal para generar el documento PDF
+     */
     public void generaPDF() {
         Format formatter;
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         version = (Version) ec.getRequestMap().get("lista");
         
-        formatter = new SimpleDateFormat("MMMMMyyyy");
+        formatter = new SimpleDateFormat("MMMMMyyyy", new Locale("es_ES"));
         String fecha = formatter.format(version.getFechaExamen());
         String nombreFichero = fecha+"_"+ version.getNumVersion();
         ec.setResponseHeader("Content-Type", "application/pdf");
@@ -78,6 +81,10 @@ public class DocumentoPDF {
                 documento.add(addTitulo()); 
                 addPreguntas();
                 documento.newPage();
+                if(writer.getPageNumber()%2==0) {
+                    writer.setPageEmpty(false);
+                    documento.newPage();
+                }
                 addPlantilla(false);
                 documento.newPage();
                 addResultados();
@@ -100,8 +107,9 @@ public class DocumentoPDF {
      */
     private Paragraph addTitulo() {
         Paragraph texto;
-        Format formatter = new SimpleDateFormat("MMMMM yyyy");
-        String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " " + formatter.format(version.getFechaExamen());
+        Format formatter = new SimpleDateFormat("MMMMM yyyy", new Locale("es", "ES"));
+        String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " - " + formatter.format(version.getFechaExamen());
+        //titulo = "FARMACOLOGÍA CLÍNICA Diciembre 2014";
         texto = new Paragraph(titulo, TITULO);
         return texto;
     }
@@ -197,14 +205,14 @@ public class DocumentoPDF {
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
-            texto = Utils.getMessageResourceString("examen", "NumCorrectas");
+            texto = Utils.getMessageResourceString("examen", "NumRespuestas");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
-            texto = Utils.getMessageResourceString("examen", "NumIncorrectas");
-            parrafo = new Paragraph(texto, NORMAL);
-            parrafo.setSpacingAfter(10);
-            documento.add(parrafo);
+            //texto = Utils.getMessageResourceString("examen", "NumIncorrectas");
+            //parrafo = new Paragraph(texto, NORMAL);
+            //parrafo.setSpacingAfter(10);
+            //documento.add(parrafo);
             texto = Utils.getMessageResourceString("examen", "PuntuacionYPorcentaje");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
@@ -215,26 +223,39 @@ public class DocumentoPDF {
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones1"), NORMAL));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones2"), NORMAL));
-            Paragraph instruccion = new Paragraph(Utils.getMessageResourceString("examen", "Instrucciones3"), NORMAL);
-            URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/Ejemplo.jpg");        
+            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones1"), INSTRUCCIONES));
+            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones2"), INSTRUCCIONES));
+            Paragraph instruccion = new Paragraph(Utils.getMessageResourceString("examen", "Instrucciones3"), INSTRUCCIONES);
+            URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/Ejemplo.jpg");
             Image imagen = Image.getInstance(resourceURL);
             imagen.scalePercent(60f);
+            imagen.setAbsolutePosition(195, 570);
             instruccion.add(imagen);
             listaInstrucciones.add(new ListItem(instruccion));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), NORMAL));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), NORMAL));
+            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), INSTRUCCIONES));
+            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), INSTRUCCIONES));
             MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones6"));
-            Object[] args = {new Integer(version.getPreguntas().size()/2)};
+            Object[] args = {(float) version.getPreguntas().size()/2}; //Calcula la puntuación del aprobado (50%)
             texto = textoInstrucciones.format(args);
-            listaInstrucciones.add(new ListItem(texto, NORMAL));
+            listaInstrucciones.add(new ListItem(texto, INSTRUCCIONES));
             documento.add(listaInstrucciones);
             texto = Utils.getMessageResourceString("examen", "InstruccionesTitulo");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);
             parrafo.setSpacingAfter(10);
             documento.add(addTable(maestra));
+            //Círculos en la maestra
+            resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/circulo.png");
+            imagen = Image.getInstance(resourceURL);
+            imagen.scalePercent(40f);
+            imagen.setAbsolutePosition(5, 760);
+            documento.add(imagen);
+            imagen.setAbsolutePosition(510, 760);
+            documento.add(imagen);
+            imagen.setAbsolutePosition(5, 5);
+            documento.add(imagen);
+            imagen.setAbsolutePosition(510, 5);
+            documento.add(imagen);
         } catch (DocumentException ex) {
             Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -255,26 +276,28 @@ public class DocumentoPDF {
         PdfPCell cell;
         Boolean fin=false;
         int numPreguntas=version.getPreguntas().size();
-        for(int i=0;i<8;i++) {
+        int grupos = numPreguntas/10;
+        //Genera bloques de 10 respuestas
+        for(int i=0; i<grupos;i++){
             int inicio=i*10+1;
-            if((i+1)*10<numPreguntas) {
-                cell = new PdfPCell(addTablaBloque(inicio, 10, maestra));
-                cell.setBorder(PdfPCell.NO_BORDER);
-                cell.setPadding(10);
-                tabla.addCell(cell);
-            } else {
-                if(!fin) {
-                    cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10, maestra));
-                    cell.setBorder(PdfPCell.NO_BORDER);
-                    cell.setPadding(10);
-                    tabla.addCell(cell);
-                    fin=true;
-                } else {
-                    cell = new PdfPCell(new Phrase(""));
-                    cell.setBorder(PdfPCell.NO_BORDER);
-                    tabla.addCell(cell);
-                }
-            }
+            cell = new PdfPCell(addTablaBloque(inicio, 10, maestra));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(10);
+            tabla.addCell(cell);
+        }
+        //Genera el bloque con menos de 10 respuestas
+        if (numPreguntas%10!=0){
+            int inicio = grupos*10+1;
+            cell = new PdfPCell(addTablaBloque(inicio, numPreguntas%10, maestra));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setPadding(10);
+            tabla.addCell(cell);
+        }
+        //Rellena con celdas en blanco la tabla
+        for (int i=0;i<4-((grupos+1)%4);i++) {
+            cell = new PdfPCell(new Phrase(""));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            tabla.addCell(cell);
         }
         return tabla;
     }
@@ -314,9 +337,9 @@ public class DocumentoPDF {
             cell.setBorder(PdfPCell.NO_BORDER);
             tabla.addCell(cell);
             //Inserta los círculos
-            PdfPCell cellIncorrecta = new PdfPCell(new Phrase("0", NORMAL));
+            PdfPCell cellIncorrecta = new PdfPCell(new Phrase("O", CIRCULO));
             cellIncorrecta.setBorder(PdfPCell.NO_BORDER);
-            PdfPCell cellCorrecta = new PdfPCell(new Phrase("X", NORMAL));
+            PdfPCell cellCorrecta = new PdfPCell(new Phrase("X", CIRCULO));
             cellCorrecta.setBorder(PdfPCell.NO_BORDER);
             if(maestra==false) {
                 for(int t=0;t<5;t++) {
@@ -444,7 +467,7 @@ public class DocumentoPDF {
             default:
                 ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT,
                         new Phrase(String.format("v.%d", version.getNumVersion()),NORMAL),
-                        rect.getRight()-35, rect.getBottom()+18, 0);
+                        rect.getRight()-135, rect.getBottom()+18, 0);
                 break;
             }
             String pagina = Utils.getMessageResourceString("examen", "Pagina");

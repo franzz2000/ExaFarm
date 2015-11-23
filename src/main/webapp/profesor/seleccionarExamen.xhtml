@@ -14,25 +14,25 @@
 
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable var="examen" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" 
+                    <p:dataTable var="exam" value="#{administraExamenesBacking.lista}" paginator="#{administraExamenesBacking.paginator}" rows="10" 
                                  emptyMessage="#{bundle.SeleccionarExamenNoExamenes}">
                         <f:facet name="header">
                             #{bundle.SeleccionarExamenTituloTabla}
                         </f:facet>
                         <p:column headerText="#{bundle.SeleccionarExamenId}"  style="width: 16px;">
-                            <h:outputText value="#{examen.id}" style="#{examen.isActivo?'':'color:red;'}"/>
+                            <h:outputText value="#{exam.id}" style="#{exam.isActivo?'':'color:red;'}"/>
                         </p:column>
                         <p:column headerText="#{bundle.SeleccionarExamenFecha}">
-                            <h:outputText value="#{examen.fechaConvocatoria}" style="#{examen.isActivo?'':'color:red;'}">
+                            <h:outputText value="#{exam.fechaConvocatoria}" style="#{exam.isActivo?'':'color:red;'}">
                                 <f:convertDateTime type="date" locale="es" dateStyle="long"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{bundle.SeleccionarExamenActivo}">
-                            <h:outputText value="#{examen.isActivo?'Sí':'No'}" style="#{examen.isActivo?'':'color:red;'}"/>
+                            <h:outputText value="#{exam.isActivo?'Sí':'No'}" style="#{exam.isActivo?'':'color:red;'}"/>
                         </p:column>
                         <p:column headerText="#{bundle.SeleccionarExamenSeleccionar}">
                             <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/seleccionarPreguntas" ajax="false">
-                                <f:param name="examen" value="#{examen.id}"/>
+                                <f:param name="examen" value="#{exam.id}"/>
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>

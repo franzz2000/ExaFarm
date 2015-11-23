@@ -37,7 +37,7 @@ public class EstadisticasBacking extends AbstractBacking {
         while (it.hasNext()) {
             Pregunta element = (Pregunta)it.next();
             Long id = element.getTema().getBloque().getId();
-            if(id==idBloque)
+            if(id.equals(idBloque))
                 suma++;
         }
         return suma+"";
