@@ -57,6 +57,7 @@ public class DocumentoPDF {
     private Document documento;
     private PdfWriter writer;
     private HeaderFooter event;
+    private Rectangle rect;
     
     /**
      * Método principal para generar el documento PDF
@@ -75,6 +76,7 @@ public class DocumentoPDF {
             documento = new Document();
             try {
                 writer = PdfWriter.getInstance(documento, ec.getResponseOutputStream());
+                rect = writer.getPageSize();
                 event = new HeaderFooter();
                 writer.setPageEvent(event);
                 documento.open();
@@ -112,6 +114,37 @@ public class DocumentoPDF {
         //titulo = "FARMACOLOGÍA CLÍNICA Diciembre 2014";
         texto = new Paragraph(titulo, TITULO);
         return texto;
+    }
+    
+    /**
+     * Devuelve una tabla con los círculos para el DNI
+     * 
+     * @return 
+     */
+    private PdfPTable addDNI() {
+        PdfPTable tabla = new PdfPTable(11);
+        PdfPCell cell;
+        String numeros[] = {"", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        for (int i = 0; i<numeros.length;i++) {
+            cell = new PdfPCell(new Phrase(numeros[i], NORMAL_BOLD));
+            cell.setBorder(PdfPCell.NO_BORDER);
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            tabla.addCell(cell);
+        }
+        for(int i=0;i<8;i++) { //Cantidda de números del DNI
+            //Inserta el número de la pregunta
+            cell = new PdfPCell(new Phrase("",NORMAL));
+            //cell.setBorder(PdfPCell.NO_BORDER);
+            tabla.addCell(cell);
+            //Inserta los círculos
+            cell = new PdfPCell(new Phrase("O", CIRCULO));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cell.setBorder(PdfPCell.NO_BORDER);
+            for(int t=0;t<10;t++) {//Números-1
+                    tabla.addCell(cell);
+            }
+        }
+        return tabla;
     }
     
     /**
@@ -188,35 +221,52 @@ public class DocumentoPDF {
         Paragraph parrafo;
         try {
             parrafo = addTitulo();
-            parrafo.setLeading(10F);
+            //parrafo.setLeading(10F);
             parrafo.setAlignment(Element.ALIGN_CENTER);
             documento.add(parrafo);
             texto = Utils.getMessageResourceString("examen", "Subtitulo");
             if(maestra) texto = texto + " Maestra";
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);
-            parrafo.setSpacingAfter(30);
+            parrafo.setSpacingAfter(10);
             documento.add(parrafo);
+            PdfPCell izquierda = new PdfPCell();
+            izquierda.setBorder(PdfPCell.NO_BORDER);
+            izquierda.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            //Datos del estudiante (los meto en una Lista
             texto = Utils.getMessageResourceString("examen", "NombreYApellidos");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
-            documento.add(parrafo);
+            izquierda.addElement(parrafo);
             texto = Utils.getMessageResourceString("examen", "DniYFirma");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
-            documento.add(parrafo);
+            izquierda.addElement(parrafo);
             texto = Utils.getMessageResourceString("examen", "NumRespuestas");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
-            documento.add(parrafo);
+            izquierda.addElement(parrafo);
+            texto = Utils.getMessageResourceString("examen", "PuntuacionYPorcentaje");
+            parrafo = new Paragraph(texto, NORMAL);
+            parrafo.setSpacingAfter(10);
+            izquierda.addElement(parrafo);
             //texto = Utils.getMessageResourceString("examen", "NumIncorrectas");
             //parrafo = new Paragraph(texto, NORMAL);
             //parrafo.setSpacingAfter(10);
             //documento.add(parrafo);
-            texto = Utils.getMessageResourceString("examen", "PuntuacionYPorcentaje");
-            parrafo = new Paragraph(texto, NORMAL);
-            parrafo.setSpacingAfter(10);
-            documento.add(parrafo);
+            //Creo una tabla para poner los datos a la izquierda y el DNI a la derecha
+            PdfPTable tabla = new PdfPTable(2);
+            tabla.setWidthPercentage(100);
+            tabla.setWidths(new int[]{12,10});
+            PdfPCell derecha = new PdfPCell();
+            derecha.addElement(new Phrase("DNI"));
+            derecha.addElement(addDNI());
+            derecha.setBorder(PdfPCell.NO_BORDER);
+            derecha.setPaddingRight(50f);
+            tabla.addCell(izquierda);
+            tabla.addCell(derecha);
+            documento.add(tabla);
+            //Comienzan las instrucciones
             texto = Utils.getMessageResourceString("examen", "InstruccionesTitulo");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);
@@ -229,12 +279,12 @@ public class DocumentoPDF {
             URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/Ejemplo.jpg");
             Image imagen = Image.getInstance(resourceURL);
             imagen.scalePercent(60f);
-            imagen.setAbsolutePosition(195, 570);
-            instruccion.add(imagen);
+            instruccion.add(new Chunk(imagen, 0, -10, true));
             listaInstrucciones.add(new ListItem(instruccion));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), INSTRUCCIONES));
             listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), INSTRUCCIONES));
-            MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones6"));
+            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones6"), INSTRUCCIONES));
+            MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones7"));
             Object[] args = {(float) version.getPreguntas().size()/2}; //Calcula la puntuación del aprobado (50%)
             texto = textoInstrucciones.format(args);
             listaInstrucciones.add(new ListItem(texto, INSTRUCCIONES));
@@ -245,16 +295,24 @@ public class DocumentoPDF {
             parrafo.setSpacingAfter(10);
             documento.add(addTable(maestra));
             //Círculos en la maestra
+            float porcentaje;
+            porcentaje = 25f;
+            float margen = 10f;
             resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/circulo.png");
             imagen = Image.getInstance(resourceURL);
-            imagen.scalePercent(40f);
-            imagen.setAbsolutePosition(5, 760);
+            float desplazamiento = imagen.getWidth()*porcentaje/100; //Tamaño de la imagen
+            imagen.scalePercent(porcentaje);
+            //Superior izquierda x,y
+            imagen.setAbsolutePosition(rect.getLeft(margen), rect.getTop(margen)-desplazamiento);
             documento.add(imagen);
-            imagen.setAbsolutePosition(510, 760);
+            //Superior derecha
+            imagen.setAbsolutePosition(rect.getRight(margen)-desplazamiento, rect.getTop(margen)-desplazamiento);
             documento.add(imagen);
-            imagen.setAbsolutePosition(5, 5);
+            //Inferior izquierda
+            imagen.setAbsolutePosition(rect.getLeft(margen), rect.getBottom(margen));
             documento.add(imagen);
-            imagen.setAbsolutePosition(510, 5);
+            //Inferior derecha
+            imagen.setAbsolutePosition(rect.getRight(margen)-desplazamiento, rect.getBottom(margen));
             documento.add(imagen);
         } catch (DocumentException ex) {
             Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
@@ -460,20 +518,20 @@ public class DocumentoPDF {
          */
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
-            Rectangle rect = writer.getPageSize();
+            //Rectangle rect = writer.getPageSize();
             switch(writer.getPageNumber()) {
             case 1:
                 break;
             default:
                 ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT,
                         new Phrase(String.format("v.%d", version.getNumVersion()),NORMAL),
-                        rect.getRight()-135, rect.getBottom()+18, 0);
+                        rect.getRight()-105, rect.getBottom()+43, 0);
                 break;
             }
             String pagina = Utils.getMessageResourceString("examen", "Pagina");
             ColumnText.showTextAligned(writer.getDirectContent(),
             Element.ALIGN_CENTER, new Phrase(String.format("%s %d", pagina, pagenumber),NORMAL),
-            (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() + 18, 0);
+            (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() + 43, 0);
         }
     }
 }
