@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:cc="http://java.sun.com/jsf/composite"
-      xmlns:p="http://primefaces.prime.com.tr/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 <head>
 
 <title>Composite para login</title>
@@ -25,7 +26,7 @@
             <h:outputLabel for="j_username" value="#{cc.attrs.useridLabel}"/>
             <p:inputText id="j_username" required="true" tabindex="1"/>
             <h:outputLabel for="j_password" value="#{cc.attrs.passwordLabel}"/>
-            <p:password id="j_password" required="true" feedback="false" minLength="0"/>
+            <p:password id="j_password" required="true" feedback="false"><f:validateLength minimum="0"/></p:password>
             <h:outputText value="&nbsp;"/>
             <input type="reset" name="reset" value="#{cc.attrs.resetButtonLabel}"/>
             <input type="submit" name="submit" value="#{cc.attrs.loginButtonLabel}"/>
