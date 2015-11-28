@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     
 <h:head>
     <title>Programa ExaFarm - Login</title>
@@ -21,7 +22,7 @@
                 <h:outputLabel for="username" value="#{bundle.LoginUsuario}"/>
                 <p:inputText id="username" value="#{loginBacking.username}" required="true" tabindex="1" requiredMessage="#{bundle.LoginErrorUsuario}"/>
                 <h:outputLabel for="password" value="#{bundle.LoginClave}"/>
-                <p:password id="password" value="#{loginBacking.password}" required="true" feedback="false" minLength="0" requiredMessage="#{bundle.LoginErrorClave}"/>
+                <p:password id="password" value="#{loginBacking.password}" required="true" feedback="false" requiredMessage="#{bundle.LoginErrorClave}"/>
                 <h:outputText value="&nbsp;"/>
                 <p:commandButton type="submit" value="#{bundle.LoginEnviar}" action="#{loginBacking.authenticate()}" ajax="false"/>
              </h:panelGrid>
