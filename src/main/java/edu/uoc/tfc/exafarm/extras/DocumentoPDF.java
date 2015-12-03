@@ -2,6 +2,7 @@ package edu.uoc.tfc.exafarm.extras;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -47,17 +48,20 @@ public class DocumentoPDF {
     }; //Columnas para las preguntas de las páginas consecutivas
     
     //Definición de tipos de letra utilizados en el documento
+    public static final String FONT = "fuentes/FreeSerif.ttf";
     public static final Font NORMAL = new Font(FontFamily.HELVETICA, 9, Font.NORMAL); //Fuente por defecto
     public static final Font INSTRUCCIONES = new Font(FontFamily.HELVETICA, 8, Font.NORMAL); 
     public static final Font NORMAL_BOLD = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
     public static final Font TITULO = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
-    public static final Font CIRCULO = new Font(FontFamily.HELVETICA, 10, Font.NORMAL);
+    public static final Font CRUZ = new Font(FontFamily.HELVETICA, 10, Font.NORMAL);
+    
     
     private Version version; //Datos de la versión
     private Document documento;
     private PdfWriter writer;
     private HeaderFooter event;
     private Rectangle rect;
+    private BaseFont bf;
     
     /**
      * Método principal para generar el documento PDF
@@ -66,6 +70,15 @@ public class DocumentoPDF {
         Format formatter;
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         version = (Version) ec.getRequestMap().get("lista");
+        try {
+            bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        } catch (IOException e) {
+            System.out.println("Imposible leer la fuente");
+            Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, e);
+        } catch (DocumentException ex) {
+            System.out.println("La fuente es inválida");
+            Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         formatter = new SimpleDateFormat("MMMMMyyyy", new Locale("es_ES"));
         String fecha = formatter.format(version.getFechaExamen());
@@ -137,7 +150,7 @@ public class DocumentoPDF {
             //cell.setBorder(PdfPCell.NO_BORDER);
             tabla.addCell(cell);
             //Inserta los círculos
-            cell = new PdfPCell(new Phrase("O", CIRCULO));
+            cell = new PdfPCell(new Phrase("O", new Font(bf, 12)));
             cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
             cell.setBorder(PdfPCell.NO_BORDER);
             for(int t=0;t<10;t++) {//Números-1
@@ -395,9 +408,9 @@ public class DocumentoPDF {
             cell.setBorder(PdfPCell.NO_BORDER);
             tabla.addCell(cell);
             //Inserta los círculos
-            PdfPCell cellIncorrecta = new PdfPCell(new Phrase("O", CIRCULO));
+            PdfPCell cellIncorrecta = new PdfPCell(new Phrase("\u25cf", new Font(bf, 12)));
             cellIncorrecta.setBorder(PdfPCell.NO_BORDER);
-            PdfPCell cellCorrecta = new PdfPCell(new Phrase("X", CIRCULO));
+            PdfPCell cellCorrecta = new PdfPCell(new Phrase("X", CRUZ));
             cellCorrecta.setBorder(PdfPCell.NO_BORDER);
             if(maestra==false) {
                 for(int t=0;t<5;t++) {
