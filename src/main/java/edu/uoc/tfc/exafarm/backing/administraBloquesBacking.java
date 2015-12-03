@@ -50,10 +50,10 @@ public class administraBloquesBacking implements Serializable{
         return lista.size()>10;
     }
     
-    public void modifica(RowEditEvent ev) {
+    public void modifica(Bloque bloque) {
         Bloque obj = null;
         try {
-            obj = (Bloque) ev.getObject();
+            obj = bloque;
             ExamenRegistry.getCurrentInstance().updateBloque(obj);
         } catch (EntityAccessorException ex) {
             Utils.addMessage(FacesMessage.SEVERITY_ERROR, Utils.getMessageResourceString("bundle", "AdministrarBloquesErrorModificar"));

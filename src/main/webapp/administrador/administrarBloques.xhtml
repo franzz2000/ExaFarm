@@ -16,7 +16,8 @@
                 <p:panel header="#{bundle.AdministrarBloquesTituloPanel}">
                     <h:form>
                         <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="#{bundle.AdministrarBloquesNoExistenBloques}"
-                                     rowEditListener="#{administraBloquesBacking.modifica}" onRowEditUpdate="growl" style="width: 500px;">
+                                       style="width: 500px;">
+                            <p:ajax event="rowEdit" update="tabla, :growl" listener="#{administraBloquesBacking.modifica}"/>
                             <f:facet name="header">
                                 #{bundle.AdministrarBloquesListadoDeBloques}
                             </f:facet>
