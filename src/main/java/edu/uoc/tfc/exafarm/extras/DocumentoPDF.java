@@ -270,7 +270,8 @@ public class DocumentoPDF {
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            texto = "V. ";
+            parrafo = new Paragraph("Versión: ", NORMAL);
+            texto = "";
             for(int i = 1; i<=6;i++) {
                 if (i==numVersion) {
                     
@@ -280,7 +281,6 @@ public class DocumentoPDF {
                 }
             }
             Phrase frase = new Phrase(texto, new Font(this.bf, 10));
-            parrafo = new Paragraph("Versión: ", NORMAL);
             parrafo.add(frase);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
