@@ -17,4 +17,4 @@ Primeramente es necesario tener un servidor de aplicaciones Glassfish. Yo lo he 
     * Descargar el conector de mysql para jpa de la web de MySQL.
     * Copiarlo en el directorio lib del servidor glassfish o en el directorio lib del dominio que se quiera
 
-3. 
+3. Configurar glassfish para que tenga un conector a la base de datos 
