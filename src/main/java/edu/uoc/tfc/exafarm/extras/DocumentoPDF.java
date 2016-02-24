@@ -270,7 +270,7 @@ public class DocumentoPDF {
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            texto = "";
+            texto = "V. ";
             for(int i = 1; i<=6;i++) {
                 if (i==numVersion) {
                     
