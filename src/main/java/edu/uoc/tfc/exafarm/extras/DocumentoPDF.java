@@ -17,8 +17,10 @@ import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -286,17 +288,13 @@ public class DocumentoPDF {
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones1"), INSTRUCCIONES));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones2"), INSTRUCCIONES));
-            Paragraph instruccion = new Paragraph(Utils.getMessageResourceString("examen", "Instrucciones3"), INSTRUCCIONES);
-            URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/Ejemplo.jpg");
-            Image imagen = Image.getInstance(resourceURL);
-            imagen.scalePercent(60f);
-            instruccion.add(new Chunk(imagen, 0, -10, true));
-            listaInstrucciones.add(new ListItem(instruccion));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones4"), INSTRUCCIONES));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones5"), INSTRUCCIONES));
-            listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones6"), INSTRUCCIONES));
+            int numeroInstrucciones = Integer.parseInt(Utils.getMessageResourceString("examen", "NumInstrucciones"));
+            Map m = new HashMap();
+            m.put("calculo", (float) version.getPreguntas().size()/2);
+            for (int i = 1; i < numeroInstrucciones+1; i++) {
+                listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones"+i), INSTRUCCIONES));
+                
+            }
             MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones7"));
             Object[] args = {(float) version.getPreguntas().size()/2}; //Calcula la puntuación del aprobado (50%)
             texto = textoInstrucciones.format(args);
@@ -311,8 +309,8 @@ public class DocumentoPDF {
             float porcentaje;
             porcentaje = 25f;
             float margen = 10f;
-            resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/circulo.png");
-            imagen = Image.getInstance(resourceURL);
+            URL resourceURL = Thread.currentThread().getContextClassLoader().getResource("images/circulo.png");
+            Image imagen = Image.getInstance(resourceURL);
             float desplazamiento = imagen.getWidth()*porcentaje/100; //Tamaño de la imagen
             imagen.scalePercent(porcentaje);
             //Superior izquierda x,y
