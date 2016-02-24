@@ -17,10 +17,8 @@ import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,9 +141,9 @@ public class DocumentoPDF {
     private PdfPTable addDNI(Boolean maestra) {
         PdfPTable tabla = new PdfPTable(11);
         String numeros[] = {"", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-	//Añade a la tabla los números en la primera fila
-        for (int i = 0; i<numeros.length;i++) {
-            PdfPCell cell = new PdfPCell(new Phrase(numeros[i], NORMAL_BOLD));
+        //Añade a la tabla los números en la primera fila
+        for (String numero : numeros) {
+            PdfPCell cell = new PdfPCell(new Phrase(numero, NORMAL_BOLD));
             cell.setBorder(PdfPCell.NO_BORDER);
             cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
             tabla.addCell(cell);
@@ -158,14 +156,14 @@ public class DocumentoPDF {
             tabla.addCell(cell);
             //Inserta los círculos
 	    for (int t=0; t<10; t++) {
-		    if ((maestra) && (t==0)) {
-			    cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(this.bf, 10.0F)));
-		    } else {
-			    cell = new PdfPCell(new Phrase(CIRCULO_BLANCO, new Font(this.bf, 10.0F)));
-		    }
-		    cell.setHorizontalAlignment(1);
-		    cell.setBorder(0);
-		    tabla.addCell(cell);
+                if ((maestra) && (t==0)) {
+                        cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(this.bf, 10.0F)));
+                } else {
+                        cell = new PdfPCell(new Phrase(CIRCULO_BLANCO, new Font(this.bf, 10.0F)));
+                }
+                cell.setHorizontalAlignment(1);
+                cell.setBorder(0);
+                tabla.addCell(cell);
 	    }
         }
         return tabla;
@@ -240,6 +238,7 @@ public class DocumentoPDF {
      * @param maestra True si se quiere que marque las respuestas correctas, false si se trata de la plantilla para dar a los estudiantes
      */
     private void addPlantilla(Boolean maestra) {
+        long numVersion=version.getNumVersion();
         try {
             Paragraph parrafo = addTitulo();
             //parrafo.setLeading(10F);
@@ -269,6 +268,20 @@ public class DocumentoPDF {
             izquierda.addElement(parrafo);
             texto = Utils.getMessageResourceString("examen", "PuntuacionYPorcentaje");
             parrafo = new Paragraph(texto, NORMAL);
+            parrafo.setSpacingAfter(10);
+            izquierda.addElement(parrafo);
+            texto = "";
+            for(int i = 1; i<=6;i++) {
+                if (i==numVersion) {
+                    
+                    texto += CIRCULO_NEGRO+"  ";
+                } else {
+                    texto += CIRCULO_BLANCO+"  ";
+                }
+            }
+            Phrase frase = new Phrase(texto, new Font(this.bf, 10));
+            parrafo = new Paragraph("Versión: ", NORMAL);
+            parrafo.add(frase);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
 
