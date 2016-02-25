@@ -303,7 +303,11 @@ public class DocumentoPDF {
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
+<<<<<<< Updated upstream
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);// true, false
+=======
+            com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);
+>>>>>>> Stashed changes
             int numeroInstrucciones = Integer.parseInt(Utils.getMessageResourceString("examen", "NumInstrucciones"));
             for (int i = 1; i < numeroInstrucciones+1; i++) {
                 listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones"+i), INSTRUCCIONES));
