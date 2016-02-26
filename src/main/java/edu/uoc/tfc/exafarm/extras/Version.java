@@ -7,9 +7,7 @@ package edu.uoc.tfc.exafarm.extras;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import edu.uoc.tfc.exafarm.entitats.Pregunta;
-import edu.uoc.tfc.exafarm.entitats.Respuesta;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +29,8 @@ public class Version implements Serializable {
     private List<Pregunta> preguntas;
     private Date fechaExamen;
     private Long numVersion;
-    private String fichero;
+    private Integer numVersiones;
+    
     /**
      * Constructor vacío
      */
@@ -39,13 +38,15 @@ public class Version implements Serializable {
     /**
      * Constructor que se inicializa con los parámetros enviados
      * 
-     * @param texto Texto de cabecera del examen
+     * @param fechaExamen
+     * @param numVersion
      * @param preguntas Lista de preguntas a incluir en el examen
      */
-    public Version(Date fechaExamen, List<Pregunta> preguntas, Long numVersion) {
+    public Version(Date fechaExamen, List<Pregunta> preguntas, Long numVersion, Integer numVersiones) {
         this.fechaExamen = fechaExamen;
         this.preguntas = preguntas;
         this.numVersion = numVersion;
+        this.numVersiones = numVersiones;
     }
             
     /**
@@ -76,7 +77,7 @@ public class Version implements Serializable {
     /**
      * Setter de cabecera de examen
      * 
-     * @param version 
+     * @param fechaExamen 
      */
     public void setFechaExamen(Date fechaExamen) {
         this.fechaExamen = fechaExamen;
@@ -90,11 +91,17 @@ public class Version implements Serializable {
         this.numVersion = numVersion;
     }
 
+    public Integer getNumVersiones() {
+        return numVersiones;
+    }
+
+    public void setNumVersiones(Integer numVersiones) {
+        this.numVersiones = numVersiones;
+    }
     
     /**
      * Mezcla las preguntas del examen y las respuestas si son mezclables.
      * 
-     * @param seed Semilla para la generación de mezcla semialeatoria 
      */
     public void mezcla() {
         Random random = new Random(numVersion);

@@ -54,7 +54,7 @@ public class generaExamenBacking implements Serializable{
         examen = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("examen");
         currentExamen = ExamenRegistry.getCurrentInstance().getExamenById(examen);
         for (Long i=0L; i<currentExamen.getNumVersiones(); i++) {
-            Version version = new Version(currentExamen.getFechaConvocatoria(), new ArrayList<Pregunta>(currentExamen.getPreguntasList()), i+1);
+            Version version = new Version(currentExamen.getFechaConvocatoria(), new ArrayList<Pregunta>(currentExamen.getPreguntasList()), i+1, currentExamen.getNumVersiones());
             version.mezcla();
             version.ordena();
             versiones.add(version);

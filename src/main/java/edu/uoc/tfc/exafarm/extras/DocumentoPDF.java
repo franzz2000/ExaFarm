@@ -290,7 +290,7 @@ public class DocumentoPDF {
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
             parrafo = new Paragraph(new Chunk("Versión: ", NORMAL));
-            for(int i = 1; i<=6;i++) {
+            for(int i = 1; i<=version.getNumVersiones();i++) {
                 if (i==numVersion) {
                     parrafo.add(new Chunk(CIRCULO_NEGRO, new Font(this.bf, 12)));
 		    parrafo.add(new Chunk(" ", NORMAL));
