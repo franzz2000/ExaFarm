@@ -45,15 +45,31 @@ public class DocumentoPDF {
    /*  46 */   public static final float[][] COLUMNS2 = { { 36.0F, 36.0F, 286.0F, 806.0F }, { 319.0F, 36.0F, 559.0F, 806.0F } };//Columnas para las preguntas de las páginas consecutivas
     
     //Definición de tipos de letra utilizados en el documento
-   public static final String FONT = "resources/fuentes/FreeSerif.ttf";
+   public static final String FONT = "resources/fuentes/ionicons.ttf";
    public static final float TAMANO_FUENTE = 10.0F;
-   public static final String CIRCULO_BLANCO = "◯";// White circle \u25cb
-   public static final String CIRCULO_NEGRO = "⬤";// Black circle \u25cf
+   public static final String CIRCULO_BLANCO = "\uf153";//"◯";// White circle \u25cb
+   public static final String CIRCULO_NEGRO = "\uf158";//"⬤";// Black circle \u25cf
    public static final Font NORMAL = new Font(Font.FontFamily.HELVETICA, 9.0F, Font.NORMAL);//Fuente por defecto
    public static final Font INSTRUCCIONES = new Font(Font.FontFamily.HELVETICA, 7.0F, Font.NORMAL);
    public static final Font NORMAL_BOLD = new Font(Font.FontFamily.HELVETICA, 10.0F, Font.BOLD);
    public static final Font TITULO = new Font(FontFamily.HELVETICA, 12, Font.BOLD);
    public static final Font CRUZ = new Font(FontFamily.HELVETICA, 10, Font.NORMAL);
+   public static final String CIRCULO_0 = "\uf138";
+   public static final String CIRCULO_1 = "\uf13b";
+   public static final String CIRCULO_2 = "\uf13c";
+   public static final String CIRCULO_3 = "\uf145";
+   public static final String CIRCULO_4 = "\uf146";
+   public static final String CIRCULO_5 = "\uf14c";
+   public static final String CIRCULO_6 = "\uf14d";
+   public static final String CIRCULO_7 = "\uf14e";
+   public static final String CIRCULO_8 = "\uf14f";
+   public static final String CIRCULO_9 = "\uf150";
+   public static final String CIRCULO_A = "\uf151";
+   public static final String CIRCULO_B = "\uf152";
+   public static final String CIRCULO_C = "\uf154";
+   public static final String CIRCULO_D = "\uf155";
+   public static final String CIRCULO_E = "\uf156";
+   public static final String CIRCULO_F = "\uf157";
 
 
     private Version version; //Datos de la versión
@@ -140,12 +156,14 @@ public class DocumentoPDF {
      */
     private PdfPTable addDNI(Boolean maestra) {
         PdfPTable tabla = new PdfPTable(11);
-        String numeros[] = {"", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        String numerosTxt[] = {"", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+	String numerosCirculo[] = {CIRCULO_0, CIRCULO_1, CIRCULO_2, CIRCULO_3, CIRCULO_4, CIRCULO_5, CIRCULO_6, CIRCULO_7, CIRCULO_8, CIRCULO_9};  
         //Añade a la tabla los números en la primera fila
-        for (String numero : numeros) {
+        for (String numero : numerosTxt) {
             PdfPCell cell = new PdfPCell(new Phrase(numero, NORMAL_BOLD));
             cell.setBorder(PdfPCell.NO_BORDER);
             cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+	    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             tabla.addCell(cell);
         }
 
@@ -157,11 +175,12 @@ public class DocumentoPDF {
             //Inserta los círculos
 	    for (int t=0; t<10; t++) {
                 if ((maestra) && (t==0)) {
-                        cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(this.bf, 10.0F)));
+                        cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(this.bf, 14.0F)));
                 } else {
-                        cell = new PdfPCell(new Phrase(CIRCULO_BLANCO, new Font(this.bf, 10.0F)));
+                        cell = new PdfPCell(new Phrase(numerosCirculo[t], new Font(this.bf, 14.0F)));
                 }
                 cell.setHorizontalAlignment(1);
+	    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setBorder(0);
                 tabla.addCell(cell);
 	    }
@@ -270,17 +289,17 @@ public class DocumentoPDF {
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            parrafo = new Paragraph("Versión: ", NORMAL);
-            texto = "";
+            parrafo = new Paragraph(new Chunk("Versión: ", NORMAL));
             for(int i = 1; i<=6;i++) {
                 if (i==numVersion) {
-                    
-                    texto += CIRCULO_NEGRO+"  ";
+                    parrafo.add(new Chunk(CIRCULO_NEGRO, new Font(this.bf, 12)));
+		    parrafo.add(new Chunk(" ", NORMAL));
                 } else {
-                    texto += CIRCULO_BLANCO+"  ";
+                    parrafo.add(new Chunk(CIRCULO_BLANCO, new Font(this.bf, 12)));
+		    parrafo.add(new Chunk(" ", NORMAL));
                 }
             }
-            Phrase frase = new Phrase(texto, new Font(this.bf, 10));
+            Phrase frase = new Phrase(texto, new Font(this.bf, 12));
             parrafo.add(frase);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
@@ -303,11 +322,7 @@ public class DocumentoPDF {
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
-<<<<<<< Updated upstream
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);// true, false
-=======
-            com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);
->>>>>>> Stashed changes
             int numeroInstrucciones = Integer.parseInt(Utils.getMessageResourceString("examen", "NumInstrucciones"));
             for (int i = 1; i < numeroInstrucciones+1; i++) {
                 listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones"+i), INSTRUCCIONES));
@@ -359,7 +374,6 @@ public class DocumentoPDF {
     private PdfPTable addTable(Boolean maestra) {
         PdfPTable tabla = new PdfPTable(4);
         tabla.setSpacingBefore(20);
-        Boolean fin=false;
         int numPreguntas=version.getPreguntas().size();
         int grupos = numPreguntas/10;
         //Genera bloques de 10 respuestas
@@ -378,7 +392,7 @@ public class DocumentoPDF {
             cell.setPadding(10);
             tabla.addCell(cell);
         }
-        //Rellena con celdas en blanco la tabla
+        //Rellena la tabla con celdas en blanco
         for (int i=0;i<4-((grupos+1)%4);i++) {
             PdfPCell cell = new PdfPCell(new Phrase(""));
             cell.setBorder(PdfPCell.NO_BORDER);
@@ -395,40 +409,38 @@ public class DocumentoPDF {
      * @return 
      */
     private PdfPTable addTablaBloque(int inicio, int cantidad, Boolean maestra) {
+	//Genero un array con círculos de letras
+	String[] letrasCirculo = {CIRCULO_A, CIRCULO_B, CIRCULO_C, CIRCULO_D, CIRCULO_E};  
+	PdfPCell[] cellLetra = new PdfPCell[letrasCirculo.length];
+	for(int i = 0; i<letrasCirculo.length; i++) {
+		cellLetra[i] = new PdfPCell(new Phrase(letrasCirculo[i], new Font(bf, 13)));
+		cellLetra[i].setBorder(PdfPCell.NO_BORDER);//0
+	}
+	PdfPCell cellCorrecta = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(bf, 13)));
+        cellCorrecta.setBorder(PdfPCell.NO_BORDER); // 0
+
+	//Nueva tabla
         PdfPTable tabla = new PdfPTable(6);
+	String[] letras = {"", "A", "B", "C", "D", "E"};
         PdfPCell cell;
-        cell = new PdfPCell(new Paragraph("", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
-        cell = new PdfPCell(new Paragraph("A", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
-        cell = new PdfPCell(new Paragraph("B", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
-        cell = new PdfPCell(new Paragraph("C", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
-        cell = new PdfPCell(new Paragraph("D", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
-        cell = new PdfPCell(new Paragraph("E", NORMAL_BOLD));
-        cell.setBorder(PdfPCell.NO_BORDER); // 0
-        tabla.addCell(cell);
+	for (String letra : letras) {
+		cell = new PdfPCell(new Paragraph(letra, NORMAL_BOLD));
+		cell.setBorder(PdfPCell.NO_BORDER); // 0
+		tabla.addCell(cell);
+	}
         java.util.List preguntas = version.getPreguntas();
+
         for(int i=0;i<cantidad;i++) {
             //Inserta el número de la pregunta
             cell = new PdfPCell(new Phrase(Integer.toString(inicio+i),NORMAL));
             cell.setBorder(PdfPCell.NO_BORDER); // 0
+	    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             tabla.addCell(cell);
             //Inserta los círculos
-            PdfPCell cellIncorrecta = new PdfPCell(new Phrase(CIRCULO_BLANCO, new Font(bf, 10)));
-            cellIncorrecta.setBorder(PdfPCell.NO_BORDER); // 0
-            PdfPCell cellCorrecta = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(bf, 10)));
-            cellCorrecta.setBorder(PdfPCell.NO_BORDER); // 0
+	    //Genera círculos con las letras A-E
             if(!maestra) {
                 for(int t = 0; t < 5; t++) {
-                    tabla.addCell(cellIncorrecta);
+                    tabla.addCell(cellLetra[t]);
                 }
             } else {
                 Integer correcta = ((Pregunta) preguntas.get(inicio+i-1)).getNumCorrecta();
@@ -436,10 +448,17 @@ public class DocumentoPDF {
                     if (t==correcta)
                         tabla.addCell(cellCorrecta);
                     else
-                        tabla.addCell(cellIncorrecta);
+                        tabla.addCell(cellLetra[t]);
                 }
             }
         }
+	for(int i=0; i<10-cantidad; i++) {
+		for(int t=0; t<5; t++) {
+			PdfPCell celda = new PdfPCell(new Phrase(" "));
+			celda.setBorder(PdfPCell.NO_BORDER);
+			tabla.addCell(celda);
+		}
+	};
         return tabla;
     }
     
