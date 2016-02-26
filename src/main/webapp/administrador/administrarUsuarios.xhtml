@@ -12,10 +12,11 @@
 
         <ui:define name="title">#{bundle.AdministrarUsuariosTitulo}</ui:define>
         <ui:define name="content">
-            <h:form>
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="false"/>
                 <p:dataTable id="tabla" var="user" value="#{administraUsuariosBacking.lista}" paginator="#{administraUsuariosBacking.paginator}" rows="10" emptyMessage="No existen usuarios."
-                             rowEditListener="#{administraUsuariosBacking.modifica}"
-                             onRowEditUpdate="growl">
+                             editable="true">
+                    <p:ajax event="rowEdit" listener="#{administraUsuariosBacking.modifica}" update=":form:msgs"/>
                     <f:facet name="header">
                         #{bundle.AdministrarUsuariosListaUsuarios}
                     </f:facet>
@@ -69,7 +70,9 @@
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:password value="#{user.password}" feedback="false" minLength="0"/>
+                                <p:password value="#{user.password}" feedback="false">
+                                    <f:validateLength minimum="2" />
+                                </p:password>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

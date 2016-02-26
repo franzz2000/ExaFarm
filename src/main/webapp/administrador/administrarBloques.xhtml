@@ -14,11 +14,13 @@
 
             <ui:define name="content">
                 <p:panel header="#{bundle.AdministrarBloquesTituloPanel}">
-                    <h:form>
+                    <h:form id="form">
+                        <p:growl id="msgs" showDetail="false"/>
+                        
                         <p:dataTable id="tabla" var="block" value="#{administraBloquesBacking.lista}" paginator="#{administraBloquesBacking.paginator}" rows="10" emptyMessage="#{bundle.AdministrarBloquesNoExistenBloques}"
-                                      onRowEditUpdate="growl" style="width: 500px;">
-			    <!-- elimino rowEditListener="#{administraBloquesBacking.modifica}"-->
-			    <p:ajax event="rowEdit" update="@this" listener="#{administraBloquesBacking.modifica(ev)}"/>
+                                      editable="true" style="width: 500px;">
+			    <!-- elimino rowEditListener="#{administraBloquesBacking.modifica}" y  onRowEditUpdate="growl"-->
+                            <p:ajax event="rowEdit" listener="#{administraBloquesBacking.modifica}" update=":form:msgs"/>
                             <f:facet name="header">
                                 #{bundle.AdministrarBloquesListadoDeBloques}
                             </f:facet>
