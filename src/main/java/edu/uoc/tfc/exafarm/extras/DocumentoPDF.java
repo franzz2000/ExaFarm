@@ -144,7 +144,7 @@ public class DocumentoPDF {
      */
     private Paragraph addTitulo() {
         Format formatter = new SimpleDateFormat("MMMMM yyyy", new Locale("es", "ES"));
-        String titulo = Utils.getMessageResourceString("examen", "Titulo")+ " - " + formatter.format(version.getFechaExamen());
+        String titulo = Utils.getMessageResourceString("textoexamen", "Titulo")+ " - " + formatter.format(version.getFechaExamen());
         Paragraph texto = new Paragraph(titulo, TITULO);
         return texto;
     }
@@ -263,7 +263,7 @@ public class DocumentoPDF {
             //parrafo.setLeading(10F);
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
             documento.add(parrafo);
-            String texto = Utils.getMessageResourceString("examen", "Subtitulo");
+            String texto = Utils.getMessageResourceString("textoexamen", "Subtitulo");
             if(maestra) texto = texto + " Maestra";
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
@@ -273,19 +273,19 @@ public class DocumentoPDF {
             izquierda.setBorder(PdfPCell.NO_BORDER);// 0
             izquierda.setVerticalAlignment(Element.ALIGN_MIDDLE);// 5
             //Datos del estudiante (los meto en una Lista
-            texto = Utils.getMessageResourceString("examen", "NombreYApellidos");
+            texto = Utils.getMessageResourceString("textoexamen", "NombreYApellidos");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            texto = Utils.getMessageResourceString("examen", "DniYFirma");
+            texto = Utils.getMessageResourceString("textoexamen", "DniYFirma");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            texto = Utils.getMessageResourceString("examen", "NumRespuestas");
+            texto = Utils.getMessageResourceString("textoexamen", "NumRespuestas");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
-            texto = Utils.getMessageResourceString("examen", "PuntuacionYPorcentaje");
+            texto = Utils.getMessageResourceString("textoexamen", "PuntuacionYPorcentaje");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
@@ -317,22 +317,22 @@ public class DocumentoPDF {
             documento.add(tabla);
 
             //Comienzan las instrucciones
-            texto = Utils.getMessageResourceString("examen", "InstruccionesTitulo");
+            texto = Utils.getMessageResourceString("textoexamen", "InstruccionesTitulo");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
             parrafo.setSpacingAfter(10);
             documento.add(parrafo);
             com.itextpdf.text.List listaInstrucciones = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED, com.itextpdf.text.List.NUMERICAL);// true, false
-            int numeroInstrucciones = Integer.parseInt(Utils.getMessageResourceString("examen", "NumInstrucciones"));
+            int numeroInstrucciones = Integer.parseInt(Utils.getMessageResourceString("textoexamen", "NumInstrucciones"));
             for (int i = 1; i < numeroInstrucciones+1; i++) {
-                listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("examen", "Instrucciones"+i), INSTRUCCIONES));
+                listaInstrucciones.add(new ListItem(Utils.getMessageResourceString("textoexamen", "Instrucciones"+i), INSTRUCCIONES));
             }
-            MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("examen", "Instrucciones7"));
+            MessageFormat textoInstrucciones = new MessageFormat(Utils.getMessageResourceString("textoexamen", "Instrucciones7"));
             Object[] args = {(float) version.getPreguntas().size()/2}; //Calcula la puntuación del aprobado (50%)
             texto = textoInstrucciones.format(args);
             listaInstrucciones.add(new ListItem(texto, INSTRUCCIONES));
             documento.add(listaInstrucciones);
-            texto = Utils.getMessageResourceString("examen", "InstruccionesTitulo");
+            texto = Utils.getMessageResourceString("textoexamen", "InstruccionesTitulo");
             parrafo = new Paragraph(texto, NORMAL);
             parrafo.setAlignment(Element.ALIGN_CENTER);// 1
             parrafo.setSpacingAfter(10);
@@ -473,7 +473,7 @@ public class DocumentoPDF {
         PdfPCell cell;
         
         documento.add(addTitulo());
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "RespuestasTitulo") +" "+ version.getNumVersion(), TITULO);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "RespuestasTitulo") +" "+ version.getNumVersion(), TITULO);
         texto.setSpacingAfter(20);
         documento.add(texto);
         int i = 1;
@@ -482,18 +482,18 @@ public class DocumentoPDF {
         tabla.setWidths(new float[] {.2F,.5F,.5F,1,2});
         tabla.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
         tabla.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "NumPregunta"),NORMAL);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "NumPregunta"),NORMAL);
         tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
         tabla.addCell(texto);
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "Correcta"),NORMAL);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "Correcta"),NORMAL);
         tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
         tabla.addCell(texto);
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "IdPregunta"), NORMAL);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "IdPregunta"), NORMAL);
         tabla.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         tabla.addCell(texto);
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "Bloque"), NORMAL);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "Bloque"), NORMAL);
         tabla.addCell(texto);
-        texto = new Paragraph(Utils.getMessageResourceString("examen", "Profesor"), NORMAL);
+        texto = new Paragraph(Utils.getMessageResourceString("textoexamen", "Profesor"), NORMAL);
         tabla.addCell(texto);
         tabla.getDefaultCell().setBackgroundColor(null);
         tabla.setHeaderRows(1);
@@ -582,7 +582,7 @@ public class DocumentoPDF {
                         rect.getRight()-105, rect.getBottom()+posicionY, 0);
                 break;
             }
-            String pagina = Utils.getMessageResourceString("examen", "Pagina");
+            String pagina = Utils.getMessageResourceString("textoexamen", "Pagina");
             ColumnText.showTextAligned(writer.getDirectContent(),
             Element.ALIGN_CENTER, new Phrase(String.format("%s %d", pagina, pagenumber),NORMAL),
             (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() + posicionY, 0);

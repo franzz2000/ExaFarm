@@ -61,6 +61,10 @@ public class Examen extends AbstractEntity implements Serializable {
     })
     private List<Pregunta> preguntasList;
 
+    /**
+     * Devuelve la fecha de la convocatoria
+     * @return
+     */
     public Date getFechaConvocatoria() {
         return fechaConvocatoria;
     }

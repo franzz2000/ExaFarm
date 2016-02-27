@@ -84,12 +84,12 @@
                             <p:rowEditor/>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesVerPreguntas}">
-                            <p:commandButton  image="ui-icon ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{exam.isActivo}" update="growl" ajax="false">
+                            <p:commandButton  icon="ui-icon-search" action="/faces/profesor/administrarPreguntas" rendered="#{exam.isActivo}" update="growl" ajax="false">
                                 <f:param value="#{exam.id}" name="examen"/>
                             </p:commandButton>
                         </p:column>
                         <p:column headerText="#{bundle.AdministrarExamenesGenerar}">
-                            <p:commandButton  image="ui-icon ui-icon-script" action="generarExamen" rendered="#{!exam.isCerrado}" ajax="false">
+                            <p:commandButton  icon="ui-icon-script" action="generarExamen" rendered="#{!exam.isCerrado}" ajax="false">
                                 <f:param value="#{exam.id}" name="examen"/>
                             </p:commandButton>
                         </p:column>

@@ -16,7 +16,8 @@
 
             <ui:define name="content">
                 <p:panel header="#{bundle.AgregarExamenTituloPanel}">
-                    <h:form>
+                    <h:form id="form">
+                        <p:growl id="growl" showDetail="false"/>
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.AgregarExamenFechaConvocatoria}"/>
                             <p:inputText value="#{examen.fechaConvocatoria}" required="true" requiredMessage="#{bundle.AgregarExamenErrorFechaConvocatoria}">
@@ -38,7 +39,7 @@
                             <h:selectBooleanCheckbox id="cerrado" value="#{examen.isCerrado}"/>
                             <h:outputText value="&nbsp;"/>
                             <p:commandButton value="#{bundle.AgregarExamenAnadir}" action="#{administraExamenesBacking.agregaExamen}"
-                                             update=":growl"/>
+                                             update=":form:growl"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>
