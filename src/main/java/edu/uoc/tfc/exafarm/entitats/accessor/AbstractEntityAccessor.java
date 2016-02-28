@@ -12,7 +12,12 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
 import javax.transaction.Status;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -26,7 +31,7 @@ public abstract class AbstractEntityAccessor {
     @Resource
     private UserTransaction userTransaction;
 
-    private AtomicInteger count;
+    private final AtomicInteger count;
 
     public AbstractEntityAccessor() {
         count = new AtomicInteger(0);
@@ -48,10 +53,10 @@ public abstract class AbstractEntityAccessor {
                 }
             }
             return result;
-        } catch (Exception e) {
+        } catch (SystemException | NotSupportedException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException e) {
             try {
                 userTransaction.rollback();
-            } catch (Exception ex) {
+            } catch (IllegalStateException | SecurityException | SystemException ex) {
                 Logger.getLogger(AbstractEntityAccessor.class.getName()).log(Level.SEVERE, null, ex);
             }
             throw new EntityAccessorException(e);
@@ -75,10 +80,10 @@ public abstract class AbstractEntityAccessor {
                     userTransaction.commit();
                 }
             }
-        } catch (Exception e) {
+        } catch (SystemException | NotSupportedException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException e) {
             try {
                 userTransaction.rollback();
-            } catch (Exception ex) {
+            } catch (IllegalStateException | SecurityException | SystemException ex) {
                 Logger.getLogger(AbstractEntityAccessor.class.getName()).log(Level.SEVERE, null, ex);
             }
             throw new EntityAccessorException(e);
