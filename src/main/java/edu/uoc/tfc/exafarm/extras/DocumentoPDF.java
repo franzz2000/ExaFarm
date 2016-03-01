@@ -79,6 +79,8 @@ public class DocumentoPDF {
     private String bloque;
     private Rectangle rect;
     private BaseFont bf;
+    private Font fuenteCirculoGris;
+    private Font fuenteCirculoNegro;
     
     /**
      * Método principal para generar el documento PDF
@@ -89,6 +91,9 @@ public class DocumentoPDF {
         version = (Version) ec.getRequestMap().get("lista");
         try {
             this.bf = BaseFont.createFont(ec.getRealPath(FONT), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            fuenteCirculoGris = new Font(this.bf, 13.0F);
+            fuenteCirculoGris.setColor(BaseColor.LIGHT_GRAY);
+            fuenteCirculoNegro = new Font(this.bf, 13.0F);            
         } catch (IOException e) {
             System.out.println("Imposible leer la fuente");
             Logger.getLogger(DocumentoPDF.class.getName()).log(Level.SEVERE, null, e);
@@ -175,9 +180,9 @@ public class DocumentoPDF {
             //Inserta los círculos
 	    for (int t=0; t<10; t++) {
                 if ((maestra) && (t==0)) {
-                        cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(this.bf, 14.0F)));
+                        cell = new PdfPCell(new Phrase(CIRCULO_NEGRO, fuenteCirculoNegro));
                 } else {
-                        cell = new PdfPCell(new Phrase(numerosCirculo[t], new Font(this.bf, 14.0F)));
+                        cell = new PdfPCell(new Phrase(numerosCirculo[t], fuenteCirculoGris));
                 }
                 cell.setHorizontalAlignment(1);
 	    	cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -292,15 +297,15 @@ public class DocumentoPDF {
             parrafo = new Paragraph(new Chunk("Versión: ", NORMAL));
             for(int i = 1; i<=version.getNumVersiones();i++) {
                 if (i==numVersion) {
-                    parrafo.add(new Chunk(CIRCULO_NEGRO, new Font(this.bf, 12)));
+                    parrafo.add(new Chunk(CIRCULO_NEGRO, fuenteCirculoNegro));
 		    parrafo.add(new Chunk(" ", NORMAL));
                 } else {
-                    parrafo.add(new Chunk(CIRCULO_BLANCO, new Font(this.bf, 12)));
+                    parrafo.add(new Chunk(CIRCULO_BLANCO, fuenteCirculoNegro));
 		    parrafo.add(new Chunk(" ", NORMAL));
                 }
             }
-            Phrase frase = new Phrase(texto, new Font(this.bf, 12));
-            parrafo.add(frase);
+            //Phrase frase = new Phrase(texto, new Font(this.bf, 12));
+            //parrafo.add(frase);
             parrafo.setSpacingAfter(10);
             izquierda.addElement(parrafo);
 
@@ -413,10 +418,10 @@ public class DocumentoPDF {
 	String[] letrasCirculo = {CIRCULO_A, CIRCULO_B, CIRCULO_C, CIRCULO_D, CIRCULO_E};  
 	PdfPCell[] cellLetra = new PdfPCell[letrasCirculo.length];
 	for(int i = 0; i<letrasCirculo.length; i++) {
-		cellLetra[i] = new PdfPCell(new Phrase(letrasCirculo[i], new Font(bf, 13)));
+		cellLetra[i] = new PdfPCell(new Phrase(letrasCirculo[i], fuenteCirculoGris));
 		cellLetra[i].setBorder(PdfPCell.NO_BORDER);//0
 	}
-	PdfPCell cellCorrecta = new PdfPCell(new Phrase(CIRCULO_NEGRO, new Font(bf, 13)));
+	PdfPCell cellCorrecta = new PdfPCell(new Phrase(CIRCULO_NEGRO, fuenteCirculoNegro));
         cellCorrecta.setBorder(PdfPCell.NO_BORDER); // 0
 
 	//Nueva tabla
